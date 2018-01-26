@@ -1,0 +1,16 @@
+// Built files and vendor
+node_modules
+client/dist
+**/*.pyc
+
+// Platform specific
+.DS_Store
+
+// IDE
+.idea
+.vscode
+.chrome
+
+// Blog entries
+blog/*.md
+src/posts.json
