@@ -3,17 +3,22 @@ import { Link } from 'react-router-dom';
 import Tags from './Tags';
 import { parseDate } from '../utils';
 
-export interface IPost {
+interface IPost {
   title: string;
   body: string;
+  slug: string;
   wordCount: number;
   created: number;
   tags: string[]
 }
 
-export interface IPosts {[s: string]: IPost}
-
-const posts: IPosts = require('../posts')  // Posts as a map of slug -> {title, body, slug, created, tags}
+const posts: IPost[] = Object.entries(require('../posts'))
+  .map(pair => {
+    const slug = pair[0]
+    const rest = pair[1]
+    return {slug: slug, ...rest}
+  })
+  .sort((prev, curr) => curr.created-prev.created)  // Posts in chronological order
 
 const PostStub: React.SFC<{title: string, slug: string, wordCount: number, created: number, tags: string[]}> 
   = ({ title, slug, wordCount, created, tags }) => (
@@ -29,16 +34,13 @@ const PostStub: React.SFC<{title: string, slug: string, wordCount: number, creat
 const Posts: React.SFC<{location: Location}> = ({ location }) => {
   const query = new URLSearchParams(location.search)
   const tag = query.get('tag')
-  const filteredPosts = Object.keys(posts).map(slug => {
-    return {...posts[slug], slug: slug}
-  }).filter(post => tag == null || post.tags.indexOf(tag) != -1)
-  .sort((a, b) => b.created - a.created)
+  const filtered = posts.filter(post => tag == null || post.tags.indexOf(tag) != -1)
 
   return (
     <div>
       <ul>
         {
-          filteredPosts.map((post, i)=> {
+          filtered.map((post, i)=> {
             const { body, ...rest } = post;
             return <PostStub key={i} {...rest} />
           })
