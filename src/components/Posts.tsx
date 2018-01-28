@@ -13,7 +13,7 @@ export interface IPost {
 
 export interface IPosts {[s: string]: IPost}
 
-const posts: IPosts = require('../posts')  // Posts as a map of slug -> {title, body, created, tags}
+const posts: IPosts = require('../posts')  // Posts as a map of slug -> {title, body, slug, created, tags}
 
 const PostStub: React.SFC<{title: string, slug: string, wordCount: number, created: number, tags: string[]}> 
   = ({ title, slug, wordCount, created, tags }) => (
@@ -32,6 +32,7 @@ const Posts: React.SFC<{location: Location}> = ({ location }) => {
   const filteredPosts = Object.keys(posts).map(slug => {
     return {...posts[slug], slug: slug}
   }).filter(post => tag == null || post.tags.indexOf(tag) != -1)
+  .sort((a, b) => b.created - a.created)
 
   return (
     <div>
