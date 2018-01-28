@@ -2,6 +2,7 @@ import os
 import glob
 import json
 import mistune
+from datetime import datetime
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters import html
@@ -21,11 +22,12 @@ markdown = mistune.Markdown(renderer=renderer)  # Cache the parser
 
 def process_file(f):
     parse_meta = lambda line: line.split(':').pop().strip()
+    to_timestamp = lambda parsed: datetime.strptime(parsed, "%Y-%m-%d").timestamp()
 
     f.readline() # ---
     title = parse_meta(f.readline())
     tags = parse_meta(f.readline()).split(' ')
-    created = parse_meta(f.readline())
+    created = to_timestamp(parse_meta(f.readline()))
     f.readline() # ---
 
     # Returns an estimate of the number of words in a Markdown entry
