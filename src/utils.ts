@@ -1,5 +1,5 @@
 export const parseDate = (timestamp: number) => {
-  const date = new Date(timestamp)
+  const date = new Date(1000*timestamp)
   const monthNames = [
     'January', 'February', 'March', 'April',
     'May', 'June', 'July', 'August',
