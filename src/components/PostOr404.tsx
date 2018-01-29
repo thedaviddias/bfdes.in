@@ -4,7 +4,7 @@ import Tags from './Tags';
 import NoMatch from './NoMatch';
 import { parseDate } from '../utils';
 
-interface IPost {
+type IPost = {
   title: string;
   body: string;
   wordCount?: number;

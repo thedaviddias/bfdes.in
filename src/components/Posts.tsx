@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Tags from './Tags';
 import { parseDate } from '../utils';
 
-interface IPost {
+type IPost = {
   title: string;
   body: string;
   slug: string;
