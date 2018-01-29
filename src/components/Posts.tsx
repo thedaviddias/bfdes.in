@@ -31,18 +31,25 @@ const PostStub: React.SFC<{title: string, slug: string, wordCount: number, creat
     </li>
   )
 
-const Posts: React.SFC<{location: Location}> = ({ location }) => {
-  const query = new URLSearchParams(location.search)
-  const tag = query.get('tag')
-  const filtered = posts.filter(post => tag == null || post.tags.indexOf(tag) != -1)
+export function withTag<P extends {tag?: string}>(Component: React.SFC<P>) { 
+  return (props: {location: Location}) => {
+    const { location } = props
+    const query = new URLSearchParams(location.search)
+    const tag = query.get('tag')
+    return tag != null  ? <Component tag={tag}/> : <Component/>
+  }
+}
 
+const Posts: React.SFC<{limit?: number, tag?: string}> = ({ limit, tag }) => {
+  const filtered = tag == undefined ? posts : posts.filter(post => post.tags.indexOf(tag) != -1)
+  const sliced = limit == undefined ? filtered : filtered.slice(0, limit)
   return (
     <div>
       <ul>
         {
-          filtered.map((post, i)=> {
+          sliced.map((post, i) => {
             const { body, ...rest } = post;
-            return <PostStub key={i} {...rest} />
+            return <PostStub key={i} {...rest}/>
           })
         }
       </ul>
