@@ -22,6 +22,7 @@ app.get('*', (req, res, next) => {
     <App />
   )
   res.send(`
+    <!DOCTYPE html>
     <html>
       <head>
         <title>BFdes blog</title>

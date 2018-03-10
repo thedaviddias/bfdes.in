@@ -1,12 +1,8 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import { hydrate } from 'react-dom';
 import App from '../shared/containers/App';
 
-ReactDOM.render(
+hydrate(
   <App/>,
   document.getElementById('root'),
 );
-
-if (module.hot) {
-  module.hot.accept();
-}
