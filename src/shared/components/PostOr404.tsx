@@ -12,7 +12,7 @@ type IPost = {
   tags: string[] 
 }
 
-const posts: {[s: string]: IPost} = require('../posts') // Represented as slug -> {title, body, wordCount, created, tags}
+const posts: {[s: string]: IPost} = {} // Represented as slug -> {title, body, wordCount, created, tags}
 
 const Post: React.SFC<{title: string, body: string, created: number, tags: string[]}>
   = ({title, body, created, tags}) => (

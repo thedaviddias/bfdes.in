@@ -12,7 +12,7 @@ type IPost = {
   tags: string[]
 }
 
-const posts: IPost[] = Object.entries(require('../posts'))
+const posts: IPost[] = []
   .map(pair => {
     const slug = pair[0]
     const rest = pair[1]
