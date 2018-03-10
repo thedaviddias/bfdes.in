@@ -1,7 +1,6 @@
 // Built files and vendor
 node_modules
 dist
-**/*.pyc
 
 // Platform specific
 .DS_Store
@@ -13,4 +12,3 @@ dist
 
 // Blog entries
 blog/*.md
-src/posts.json

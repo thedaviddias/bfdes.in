@@ -3,6 +3,6 @@ import { hydrate } from 'react-dom';
 import App from '../shared/containers/App';
 
 hydrate(
-  <App/>,
+  <App />,
   document.getElementById('root'),
 );
