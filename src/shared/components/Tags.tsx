@@ -6,9 +6,11 @@ const Tag: React.SFC<{name: string}> = ({ name }) => <Link to={`/posts/?tag=${na
 const Tags: React.SFC<{tags: string[]}> = ({ tags }) => (
   <span>
     {
-      tags
-        .map((name, i) => <Tag key={i} name={name}/>)
-        .reduce((acc, tag) => [...acc, ' # ', tag], [])
+      tags.map((name, i) => 
+        <Tag key={i} name={name}/>
+      ).reduce((acc, tag) => 
+        [...acc, ' # ', tag], []
+      )
     }
   </span>
 )

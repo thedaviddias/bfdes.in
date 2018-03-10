@@ -25,6 +25,7 @@ app.get('*', (req, res, next) => {
     <html>
       <head>
         <title>BFdes blog</title>
+        <script src='/bundle.js' defer></script>
       </head>
       <body>
         <div id="root">${markup}</div>

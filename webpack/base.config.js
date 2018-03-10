@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const path  = require('path');
-const HTMLWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = [{
   entry: path.resolve(__dirname, '../src/browser', 'index.tsx'),
@@ -26,11 +25,6 @@ module.exports = [{
     }]
   },
   plugins: [
-    new HTMLWebpackPlugin({
-      template: path.resolve(__dirname, '../src/browser', 'index.html'),
-      filename: 'index.html',
-      inject: 'body'
-    }),
     new webpack.DefinePlugin({
       __isBrowser__: 'true'
     })
