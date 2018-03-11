@@ -6,6 +6,7 @@ import * as loggger from 'morgan'
 import { renderToString } from 'react-dom/server'
 import * as React from 'react'
 
+import { parseFiles } from './utils'
 import App from '../shared/containers/App'
 
 const app = express()
@@ -13,6 +14,7 @@ const app = express()
 if(process.env.NODE_ENV == 'development') {
   app.use(loggger('dev'))
 }
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 app.use(express.static(path.resolve('dist')))
@@ -48,4 +50,8 @@ app.use((err: NetworkError, req: Request, res: Response, next: NextFunction) => 
   });
 });
 
-module.exports = app
+module.exports = (path: string) => {
+  app.set('posts', parseFiles(path))
+  console.log(app.get('posts'))
+  return app
+}
