@@ -11,4 +11,4 @@ dist
 .chrome
 
 // Blog entries
-blog/*.md
+posts/*.md
