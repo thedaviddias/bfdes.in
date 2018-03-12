@@ -23,7 +23,7 @@ function parseFile(path: string): Post {
   const parseMeta = (meta: string) => meta.split(':').pop().trim()
 
   const toTimestamp = (date: string) => {
-    const [year, month, day] = date.split('-').map(parseInt)
+    const [year, month, day] = date.split('-').map(s => parseInt(s))
     return (new Date(year, month, day)).valueOf()
   }
 
