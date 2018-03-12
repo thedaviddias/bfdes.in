@@ -34,40 +34,27 @@ function parseFile(path: string): Post {
       .filter((_, i) => (i % 2 == 0))
       .reduce((total, block) => total + block.split(' ').length, 0)
 
-  const post: any = {}
-  const buffer: string[] = []
+  const [meta, content] = fs.readFileSync(path, 'utf8')
+    .split('# ----')
+    .filter((_, i) => i != 0)
+    .map(_=> _.trim())
 
-  const r = createInterface({
-    input: fs.createReadStream(path)
-  })
-  r.once('line', _ => {})
-  r.once('line', l => {
-    post.title = parseMeta(l)
-  })
-  r.once('line', l => {
-    post.tags = parseMeta(l).split(' ')
-  })
-  r.once('line', l => {
-    post.created = toTimestamp(parseMeta(l))
-  })
-  r.once('line', _ => {})
-  r.on('line', l => buffer.push(l))
-  r.on('close', () => {
-    const content = buffer.join('\r\n')
-    post.content = parseMarkdown(content)
-    post.wordCount = getWordCount(content)
-  })
+  const rest = meta.split(/[\r\n]+/)
+    .reduce((post, l, i) => {switch(i) {
+      case 0: return {title: parseMeta(l), ...post}
+      case 1: return {tags: parseMeta(l).split(' '), ...post}
+      case 2: return {created: toTimestamp(parseMeta(l)), ...post}
+    }}, {} as Post)
 
-  return post
+  return {body: parseMarkdown(content), wordCount: getWordCount(content), ...rest}
 }
 
 export function parseFiles(dirname: string): Posts {
   const filenames = fs.readdirSync(dirname)
   return filenames.map(filename => {
     const [slug, _] = filename.split('.')
-    return [slug, parseFile(path.resolve(dirname, filename))]
+    return {[slug]: parseFile(path.resolve(dirname, filename))}
   }).reduce((others, post) => {
-    const [slug, rest] = post
-    return {slug: rest, ...others}
+    return {...post, ...others}
   }, {})
 }
