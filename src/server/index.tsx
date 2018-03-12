@@ -52,6 +52,5 @@ app.use((err: NetworkError, req: Request, res: Response, next: NextFunction) => 
 
 module.exports = (path: string) => {
   app.set('posts', parseFiles(path))
-  console.log(app.get('posts'))
   return app
 }
