@@ -4,6 +4,8 @@ import { createInterface } from 'readline'
 import * as marked from 'marked'
 import * as hljs from 'highlight.js'
 
+import { Post, Posts } from '../shared/utils'
+
 marked.setOptions({
   renderer: new marked.Renderer(),
   gfm: true,
@@ -15,9 +17,6 @@ marked.setOptions({
   smartypants: false,
   highlight: code => hljs.highlightAuto(code).value
 })
-
-export type Post = {title: string, wordCount: number, body: string, tags: string[], created: number}
-export type Posts = {[s: string]: Post}
 
 function parseFile(path: string): Post {
   const parseMeta = (meta: string) => meta.split(':').pop().trim()
