@@ -1,26 +1,28 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import Tags from './Tags';
-import { parseDate } from '../utils';
+import { parseDate, get, NetworkError } from '../utils';
 
-type IPost = {
-  title: string;
-  body: string;
-  slug: string;
-  wordCount: number;
-  created: number;
-  tags: string[]
+type Post = {
+  title: string,
+  slug: string,
+  wordCount: number,
+  tags: string[],
+  created: number
 }
 
-const posts: IPost[] = []
-  .map(pair => {
-    const slug = pair[0]
-    const rest = pair[1]
-    return {slug: slug, ...rest}
-  })
-  .sort((prev, curr) => curr.created-prev.created)  // Posts in chronological order
+type Props = {
+  posts?: Post[],
+  tag?: string,
+}
 
-const PostStub: React.SFC<{title: string, slug: string, wordCount: number, created: number, tags: string[]}> 
+type State = {
+  posts: Post[],
+  loading: boolean,
+  error: NetworkError
+}
+
+const PostStub: React.SFC<Post> 
   = ({ title, slug, wordCount, created, tags }) => (
     <li className='post'>
       <Link to={`/posts/${slug}`}><h2>{title}</h2></Link>
@@ -31,7 +33,7 @@ const PostStub: React.SFC<{title: string, slug: string, wordCount: number, creat
     </li>
   )
 
-export function withTag<P extends {tag?: string}>(Component: React.SFC<P>) { 
+export function withTag(Component: React.ComponentClass<{tag?: string}>) { 
   return (props: {location: Location}) => {
     const { location } = props
     const query = new URLSearchParams(location.search)
@@ -40,21 +42,65 @@ export function withTag<P extends {tag?: string}>(Component: React.SFC<P>) {
   }
 }
 
-const Posts: React.SFC<{limit?: number, tag?: string}> = ({ limit, tag }) => {
-  const filtered = tag == undefined ? posts : posts.filter(post => post.tags.indexOf(tag) != -1)
-  const sliced = limit == undefined ? filtered : filtered.slice(0, limit)
-  return (
-    <div>
+class Posts extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props)
+
+    const { posts } = props
+    
+    this.state = {
+      posts,
+      error: null,
+      loading: false
+    }
+  }
+
+  componentDidMount() {
+    const { posts } = this.props
+    if(posts == null) {
+      this.setState({loading: true})
+
+      const { tag } = this.props
+      this.fetchPosts(tag).then(posts => 
+        this.setState({posts, loading: false})
+      ).catch(err => 
+        this.setState({error: err.message, loading: false})
+      )
+    }
+  }
+
+  componentDidUpdate(prevProps: Props, _: State) {
+    if(prevProps.tag != this.props.tag) {
+      this.setState({loading: true})
+      const { tag } = this.props
+      this.fetchPosts(tag).then(posts => 
+        this.setState({posts, loading: false})
+      ).catch(error => 
+        this.setState({error, loading: false})
+      )
+    }
+  }
+
+  private fetchPosts(tag: string): Promise<Post[]> {
+    const url = tag == undefined ? '/api/posts' : `/api/posts?tag=${tag}`
+    return get(url)
+  }
+
+  render() {
+    const { posts, loading, error } = this.state
+    if(loading || posts == null) {
+      return <div>Loading...</div>
+    }
+    if(error) {
+      return <div>There was an error fetching the posts.</div>
+    }
+
+    return (
       <ul>
-        {
-          sliced.map((post, i) => {
-            const { body, ...rest } = post;
-            return <PostStub key={i} {...rest}/>
-          })
-        }
+        {posts.map((post, i) => <PostStub key={i} {...post}/>)}
       </ul>
-    </div>
-  )
+    )
+  }
 }
 
 export default Posts;
