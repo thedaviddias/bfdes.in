@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { 
-  BrowserRouter as Router,
   Redirect,
   Route,
   Switch
@@ -17,29 +16,19 @@ import {
 
 import { withTag } from '../components/Posts'
 
-// class App extends React.Component {
-//   render() {
-//     return (
-//       <Router>
-//         <div className='container'>
-//           <Route path='/' component={Sidebar}/>
-//           <Switch>
-//             <Route path='/' exact render={() => <Posts limit={5}/>}/>
-//             <Route path='/about' exact component={About}/>
-//             <Route path='/posts/:slug' exact component={PostOr404}/>
-//             <Route path='/posts' component={withTag(Posts)}/>
-//             <Route component={NoMatch}/>
-//           </Switch>
-//         </div>
-//       </Router>
-//     )
-//   }
-// }
-
 class App extends React.Component {
   render() {
     return (
-      <div>Hello World</div>
+      <div className='container'>
+        <Route path='/' component={Sidebar} />
+        <Switch>
+          <Route path='/' exact component={Posts} />
+          <Route path='/about' exact component={About} />
+          <Route path='/posts/:slug' exact component={PostOr404} />
+          <Route path='/posts' component={withTag(Posts)} />
+          <Route component={NoMatch}/>
+        </Switch>
+      </div>
     )
   }
 }
