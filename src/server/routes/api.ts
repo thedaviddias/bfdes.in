@@ -1,14 +1,14 @@
 import { Router } from 'express'
-import conn from '../shared/services'
+import conn from '../../shared/services'
 
 const router = Router()
 
 // GET /posts
 // Fetch all the posts in chronological order and filter by query params
 router.get('/posts', (req, res, next) => {
-  const { tag, limit } = req.query
+  const { tag } = req.query
   const Post = conn(req.app.get('posts'))
-  res.status(200).json(Post.fetchPosts(tag, limit))
+  res.status(200).json(Post.fetchPosts(tag))
 })
 
 
