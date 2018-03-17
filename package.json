@@ -1,5 +1,5 @@
 {
-  "name": "bfdes.com",
+  "name": "bfdes.in",
   "version": "1.0.0",
   "description": "Personal blog",
   "main": "index.js",
@@ -9,7 +9,7 @@
   "scripts": {
     "build:dev": "webpack -w --config webpack/dev.config.js",
     "serve:dev": "nodemon bin/www",
-    "build:prod": "webpack --config webpack/prod.config.js",
+    "build:prod": "webpack -p --config webpack/prod.config.js",
     "serve:prod": "node bin/www"
   },
   "dependencies": {
