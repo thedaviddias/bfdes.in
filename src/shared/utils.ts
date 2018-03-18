@@ -4,6 +4,16 @@ export const parseDate = (timestamp: number) => {
   return date.toLocaleDateString('en-gb', options)
 }
 
+/** Method to parse query compatible with client and server. Ref: https://stackoverflow.com/a/3855394/4981237 */
+export const parseQuery = (queryString: string) =>
+  (/^[?#]/.test(queryString) ? queryString.slice(1) : queryString)
+    .split('&')
+    .reduce((params, param) => {
+      let [ key, value ] = param.split('=');
+      params[key] = value ? decodeURIComponent(value.replace(/\+/g, ' ')) : '';
+      return params;
+    }, {} as {[s: string]: string})
+
 export type Post = {title: string, wordCount: number, body: string, tags: string[], created: number}
 export type Posts = {[s: string]: Post}
 
