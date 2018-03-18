@@ -15,6 +15,9 @@ import {
 } from '../components/';
 
 import { withTag } from '../components/Posts'
+import { withSlug } from '../components/PostOr404'
+
+import routes from '../routes'
 
 class App extends React.Component {
   render() {
@@ -22,11 +25,9 @@ class App extends React.Component {
       <div className='container'>
         <Route path='/' component={Sidebar} />
         <Switch>
-          <Route path='/' exact component={Posts} />
-          <Route path='/about' exact component={About} />
-          <Route path='/posts/:slug' exact component={PostOr404} />
-          <Route path='/posts' component={withTag(Posts)} />
-          <Route component={NoMatch}/>
+          {routes.map(({ path, exact, component: Component, ...rest}, i) => 
+            <Route key={i} path={path} exact={exact} render={props => <Component {...props} {...rest} />}/>
+          )}
         </Switch>
       </div>
     )

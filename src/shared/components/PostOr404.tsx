@@ -4,6 +4,8 @@ import Tags from './Tags';
 import NoMatch from './NoMatch';
 import { parseDate, NetworkError, get } from '../utils';
 
+declare const __isBrowser__: boolean  // Injected by Webpack to indicate whether we are running JS on the client
+
 const Post: React.SFC<Post>
   = ({title, body, created, tags}) => (
     <div className='post'>
@@ -21,58 +23,69 @@ type Post = {
 }
 
 type Props = {
-  match?: match<{slug: string}>,
-  post?: Post
+  slug?: string,
+  staticContext?: {
+    data: Post
+  }
 }
 
 type State = {
   post: Post,
+  loading: boolean,
   error: NetworkError,
-  loading: boolean
+}
+
+export function withSlug(Component: React.ComponentClass<{slug?: string}>) { 
+  return (props: {match: match<{slug: string}>}) => {
+    const { match, ...rest } = props
+    const { slug } = props.match.params
+    return <Component slug={slug} {...rest}/>
+  }
 }
 
 class PostOr404 extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    const { post } = props
+    const post = __isBrowser__ ? null : this.props.staticContext.data
+
     this.state = {
       post,
       error: null,
       loading: false
     }
+
+    this.fetchPost = this.fetchPost.bind(this)
   }
 
   componentDidMount() {
-    const { post } = this.props
-    const { slug } = this.props.match.params
-    if(post == null) {
-      this.setState({loading: true})
-      get(slug).then(post => 
-        this.setState({post, loading: false})
-      ).catch(error =>
-        this.setState({error, loading: false})
-      )
-    }
+    console.log(`Called on ${__isBrowser__ ? 'browser' : 'server'}`)
+    const { slug } = this.props
+    this.fetchPost(slug)
   }
 
   componentDidUpdate(prevProps: Props, _: State) {
-    const { slug } = this.props.match.params
-    const prevSlug = prevProps.match.params.slug
-    if(slug != prevSlug) {
-      this.setState({loading: true})
-      get(slug).then(post =>
+    if(prevProps.slug != this.props.slug) {
+      const { slug } = this.props
+      this.fetchPost(slug)
+    }
+  }
+
+  private fetchPost(slug: string): void {
+    const url = `/api/posts/${slug}`
+    this.setState({loading: true}, () =>
+      get(url).then(post => 
         this.setState({post, loading: false})
-      ).catch(error =>
+      ).catch(error => 
         this.setState({error, loading: false})
       )
-    }
+    )
   }
 
   render() {
     const { post, error, loading } = this.state 
 
-    if(loading || !post) {
+    if(loading || post == null) {
       return <div>Loading...</div>
     }
     if(error && error.status == 404) {
@@ -84,7 +97,5 @@ class PostOr404 extends React.Component<Props, State> {
     return <Post {...post} />
   }
 }
-
-
 
 export default PostOr404;
