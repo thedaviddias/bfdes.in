@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { RouteProps } from 'react-router-dom'
 import { Request } from 'express'
 
 import {
@@ -9,16 +10,21 @@ import {
   Sidebar
 } from './components'
 
+import { withTag } from './components/Posts'
+import { withSlug } from './components/PostOr404'
+
 import conn from './services'
 
-const routes = [
+type RouteConfig = RouteProps & {fetchInitialData?: (req: Request) => any}
+
+const routes: RouteConfig[] = [
   {
     path: '/',
     component: Posts,
     exact: true,
     fetchInitialData: (req: Request) => {
       const Post = conn(req.app.get('posts'))
-      return Post.fetchPosts(null, 5)
+      return Post.fetchPosts()
     }
   },
   {
@@ -28,7 +34,7 @@ const routes = [
   },
   {
     path: '/posts/:slug',
-    component: PostOr404,
+    component: withSlug(PostOr404),
     exact: true,
     fetchInitialData: (req: Request) => {
       const Post = conn(req.app.get('posts'))
@@ -38,12 +44,12 @@ const routes = [
   },
   {
     path: '/posts',
-    component: Posts,
+    component: withTag(Posts),
     exact: true,
     fetchInitialData: (req: Request) => {
       const Post = conn(req.app.get('posts'))
-      const { tag, limit } = req.query
-      return Post.fetchPosts(tag, limit)
+      const { tag } = req.query
+      return Post.fetchPosts(tag)
     }
   },
   {
