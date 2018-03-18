@@ -59,7 +59,6 @@ class PostOr404 extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    console.log(`Called on ${__isBrowser__ ? 'browser' : 'server'}`)
     const { slug } = this.props
     this.fetchPost(slug)
   }
@@ -83,14 +82,15 @@ class PostOr404 extends React.Component<Props, State> {
   }
 
   render() {
-    const { post, error, loading } = this.state 
-
-    if(loading || post == null) {
-      return <div>Loading...</div>
-    }
+    const { post, error, loading } = this.state
+    
     if(error && error.status == 404) {
       return <NoMatch />
     }
+    if(loading || post == null) {
+      return <div>Loading...</div>
+    }
+    
     if(error) {
       return <div>There was an error fetching the post.</div>
     }

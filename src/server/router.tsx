@@ -28,7 +28,7 @@ router.get('/api/posts/:slug', (req, res, next) => {
   if(postOrNone != null) {
     res.status(200).json(postOrNone)
   } else {
-    res.status(400).json({
+    res.status(404).json({
       error: {
         message: "404: No post with that slug"
       }

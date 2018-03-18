@@ -72,7 +72,6 @@ class Posts extends React.Component<Props, State> {
   Fetch posts when component mounts (not called on server).
   */
   componentDidMount() {
-    console.log(`Called on ${__isBrowser__ ? 'browser' : 'server'}`)
     const { tag } = this.props
     this.fetchPosts(tag)
   }
