@@ -56,8 +56,20 @@ class Posts extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    // Initial set of posts are supplied in advance on the server
-    const posts = __isBrowser__ ? null : this.props.staticContext.data
+    /*
+    On the server posts are supplied through static context,
+    but on the client a deferred render occurs and this DOM must match that rendered on the server.
+    To ensure this happens we need to supply the data through the window too.
+
+    Otherwise the render must be caused by internal navigation, in which case the window will be clean due to (1)
+    */
+    let posts
+    if(__isBrowser__) {
+      posts = (window as any).__INITIAL_DATA__
+      delete (window as any).__INITIAL_DATA__   // (1)
+    } else {
+      posts = this.props.staticContext.data
+    }
 
     this.state = {
       posts,
@@ -69,11 +81,14 @@ class Posts extends React.Component<Props, State> {
   }
 
   /*
-  Fetch posts when component mounts (not called on server).
+  Fetch posts when component mounts (not called on server),
+  but not when React's deferred first render occurs.
   */
   componentDidMount() {
-    const { tag } = this.props
-    this.fetchPosts(tag)
+    if(!this.state.posts) {
+      const { tag } = this.props
+      this.fetchPosts(tag)
+    }
   }
 
   /*

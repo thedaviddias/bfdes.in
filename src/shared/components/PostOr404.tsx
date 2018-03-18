@@ -47,7 +47,13 @@ class PostOr404 extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    const post = __isBrowser__ ? null : this.props.staticContext.data
+    let post
+    if(__isBrowser__) {
+      post = (window as any).__INITIAL_DATA__
+      delete (window as any).__INITIAL_DATA__
+    } else {
+      post = this.props.staticContext.data
+    }
 
     this.state = {
       post,

@@ -51,6 +51,7 @@ router.get('*', (req, res, next) => {
       <head>
         <title>BFdes blog</title>
         <script src='/bundle.js' defer></script>
+        <script>window.__INITIAL_DATA__ = ${JSON.stringify(data)}</script>
       </head>
       <body>
         <div id="root">${markup}</div>
