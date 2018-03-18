@@ -5,9 +5,11 @@ import * as bodyParser from 'body-parser'
 import * as loggger from 'morgan'
 import { renderToString } from 'react-dom/server'
 import * as React from 'react'
+import { matchPath } from 'react-router-dom'
 
 import { parseFiles } from './utils'
 import App from '../shared/containers/App'
+import router from './router'
 
 const app = express()
 
@@ -19,23 +21,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 app.use(express.static(path.resolve('dist')))
 
-app.get('*', (req, res, next) => {
-  const markup = renderToString(
-    <App />
-  )
-  res.send(`
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>BFdes blog</title>
-        <script src='/bundle.js' defer></script>
-      </head>
-      <body>
-        <div id="root">${markup}</div>
-      </body>
-    </html>
-  `)
-})
+app.use('/', router)
 
 // Error handler
 type NetworkError = {status?: number} & Error;
