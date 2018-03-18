@@ -83,16 +83,15 @@ class PostOr404 extends React.Component<Props, State> {
 
   render() {
     const { post, error, loading } = this.state
-    
+
     if(error && error.status == 404) {
       return <NoMatch />
     }
-    if(loading || post == null) {
-      return <div>Loading...</div>
-    }
-    
     if(error) {
       return <div>There was an error fetching the post.</div>
+    }
+    if(loading || post == null) {
+      return <div>Loading...</div>
     }
     return <Post {...post} />
   }
