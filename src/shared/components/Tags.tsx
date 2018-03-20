@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-const Tag: React.SFC<{name: string}> = ({ name }) => <Link to={`/posts/?tag=${name}`}>{name}</Link>
+const Tag: React.SFC<{name: string}> = ({ name }) => <Link to={`/posts?tag=${name}`}>{name}</Link>
 
 const Tags: React.SFC<{tags: string[]}> = ({ tags }) => (
   <span>

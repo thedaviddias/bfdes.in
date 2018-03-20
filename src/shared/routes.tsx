@@ -33,16 +33,6 @@ const routes: RouteConfig[] = [
     exact: true
   },
   {
-    path: '/posts/:slug',
-    component: withSlug(PostOr404),
-    exact: true,
-    fetchInitialData: (req: Request) => {
-      const Post = conn(req.app.get('posts'))
-      const { slug } = req.params
-      return Post.fetchPost(slug)
-    }
-  },
-  {
     path: '/posts',
     component: withTag(Posts),
     exact: true,
@@ -52,6 +42,17 @@ const routes: RouteConfig[] = [
       return Post.fetchPosts(tag)
     }
   },
+  {
+    path: '/posts/:slug',
+    component: withSlug(PostOr404),
+    exact: true,
+    fetchInitialData: (req: Request) => {
+      const Post = conn(req.app.get('posts'))
+      const { slug } = req.params
+      return Post.fetchPost(slug)
+    }
+  },
+  
   {
     component: NoMatch,
     exact: false

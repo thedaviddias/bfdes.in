@@ -37,7 +37,7 @@ router.get('/api/posts/:slug', (req, res, next) => {
 })
 
 router.get('*', (req, res, next) => {
-  const activeRoute = routes.find(route => matchPath(req.url, route) != null)
+  const activeRoute = routes.find(route => matchPath(req.path, route) != null)
   const data = activeRoute.fetchInitialData ? activeRoute.fetchInitialData(req) : {}
   const markup = renderToString(
     <StaticRouter location={req.url} context={{ data }}>
