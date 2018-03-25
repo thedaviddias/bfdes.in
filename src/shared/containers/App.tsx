@@ -21,16 +21,16 @@ import routes from '../routes'
 
 class App extends React.Component {
   render() {
-    return (
+    return [
+      <Route path='/' component={Sidebar} />,
       <div className='container'>
-        <Route path='/' component={Sidebar} />
         <Switch>
           {routes.map(({ path, exact, component: Component, ...rest}, i) => 
             <Route key={i} path={path} exact={exact} render={props => <Component {...props} {...rest} />}/>
           )}
         </Switch>
       </div>
-    )
+    ]
   }
 }
 
