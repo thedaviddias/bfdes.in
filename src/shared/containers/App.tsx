@@ -19,11 +19,11 @@ import { withSlug } from '../components/PostOr404'
 
 import routes from '../routes'
 
-class App extends React.Component {
+class App extends React.Component<{style: any}> {
   render() {
     return (
       <>
-        <Route path='/' component={Sidebar} />,
+        <Route path='/' component={Sidebar} />
         <div className='container'>
           <Switch>
             {routes.map(({ path, exact, component: Component, ...rest}, i) => 
