@@ -50,6 +50,7 @@ router.get('*', (req, res, next) => {
     <html>
       <head>
         <title>BFdes blog</title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
         <script src='/bundle.js' defer></script>
         <script>window.__INITIAL_DATA__ = ${JSON.stringify(data)}</script>
       </head>
