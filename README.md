@@ -4,6 +4,10 @@ Source for my personal blog, built using React SSR and written in TypeScript.
 
 The Blog is edited by supplying Jekyll-like Markdown documents in a posts directory beneath the root. When the server boots all the documents are parsed into an in-memory object that can be queried.
 
+### Requirements:
+
+- Node v8.10.0 or greater
+
 ### Usage:
 
 #### Installation
@@ -20,6 +24,6 @@ There is no dev server with hot reload facility because the point of SSR app dev
 #### Testing
 TODO
 
-#### Deployment
+### Deployment:
 
 TODO
