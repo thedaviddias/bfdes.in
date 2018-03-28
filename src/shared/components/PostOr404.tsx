@@ -7,10 +7,14 @@ import { parseDate, NetworkError, get } from '../utils';
 declare const __isBrowser__: boolean  // Injected by Webpack to indicate whether we are running JS on the client
 
 const Post: React.SFC<Post>
-  = ({title, body, created, tags}) => (
+  = ({title, body, created, tags, wordCount}) => (
     <div className='post'>
-      <h2>{title}</h2>
-      <p>Posted on {parseDate(created)}&nbsp;&middot;&nbsp; in <Tags tags={tags}/></p>
+      <h1>{title}</h1>
+      <p>
+        {parseDate(created)}&nbsp;&middot;&nbsp;
+        <Tags tags={tags}/>&nbsp;&middot;&nbsp;
+        {wordCount} {wordCount != 1 ? 'words' : 'word'}
+      </p>
       <p dangerouslySetInnerHTML={{__html: body}}/>
     </div>
   )
@@ -19,7 +23,8 @@ type Post = {
   title: string,
   body: string,
   created: number,
-  tags: string[]
+  tags: string[],
+  wordCount: number
 }
 
 type Props = {
@@ -94,7 +99,12 @@ class PostOr404 extends React.Component<Props, State> {
       return <NoMatch />
     }
     if(error) {
-      return <div>There was an error fetching the post.</div>
+      return (
+        <>
+          <h1>Error</h1>
+          <div>There was an error fetching the post.</div>
+        </>
+      )
     }
     if(loading || post == null) {
       return <div>Loading...</div>

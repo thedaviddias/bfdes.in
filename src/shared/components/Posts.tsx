@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import Tags from './Tags';
 import { parseDate, parseQuery, get, NetworkError } from '../utils';
 
@@ -12,6 +13,27 @@ type Post = {
   tags: string[],
   created: number
 }
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: var(--dark);
+  &:hover, &:focus {
+    text-decoration: bold
+  }
+  &:after {
+    text-decoration: none
+  }
+`
+
+const UL = styled.ul`
+  list-style-type: none;
+  padding: 0;
+
+  li {
+    padding: 0;
+    margin: 0;
+  }
+`
 
 /*
 A tag may be supplied (by React Router) if the user has chosen to filter posts by tag.
@@ -33,7 +55,7 @@ type State = {
 const PostStub: React.SFC<Post> 
   = ({ title, slug, wordCount, created, tags }) => (
     <li className='post'>
-      <Link to={`/posts/${slug}`}><h2>{title}</h2></Link>
+      <StyledLink to={`/posts/${slug}`}><h1>{title}</h1></StyledLink>
       <p>
         {parseDate(created)}&nbsp;&middot;&nbsp;
         <Tags tags={tags}/>&nbsp;&middot;&nbsp;
@@ -118,13 +140,18 @@ class Posts extends React.Component<Props, State> {
       return <div>Loading...</div>
     }
     if(error) {
-      return <div>There was an error fetching the posts.</div>
+      return (
+        <>
+          <h1>Error</h1>
+          <div>There was an error fetching the posts.</div>
+        </>
+      )
     }
 
     return (
-      <ul>
+      <UL>
         {posts.map((post, i) => <PostStub key={i} {...post}/>)}
-      </ul>
+      </UL>
     )
   }
 }

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 export default () => (
   <div>
-    <h2>About</h2>
+    <h1>About</h1>
 
     <p>Hello, my name is Bruno Fernandes and work as a software developer.</p>
     <p>My interests include reactive programming and applied maths (in relation to statistical learning).</p>

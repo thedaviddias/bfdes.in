@@ -16,12 +16,10 @@ const Sidebar = styled.aside`
     height: 10rem;
   }
 
-  ul {
-    list-style-type: none;
-    padding: 0;
-    li {
-      padding: 0;
-      margin: 0;
+  .nav {
+    text-align: center;
+    a {
+      display: block
     }
   }
 `
@@ -39,9 +37,9 @@ const StyledLink = styled(Link)`
 export default () => (
   <Sidebar id='sidebar'>
     <img></img>
-    <ul>
-      <li><StyledLink to='/posts'><h3>Blog</h3></StyledLink></li>
-      <li><StyledLink to='/about'><h3>About</h3></StyledLink></li>
-    </ul>
+    <div className='nav'>
+      <StyledLink to='/posts'><h3>Blog</h3></StyledLink>
+      <StyledLink to='/about'><h3>About</h3></StyledLink>
+    </div>
   </Sidebar>
 )
