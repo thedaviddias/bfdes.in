@@ -47,3 +47,10 @@ export const get = (url: string) =>
     method: 'get',
     headers: new Headers({'content-type': 'application/json'})
   }))
+
+/** Delays a promise from resolving for interval milliseconds if it succeeds */
+export function delay<T>(promise: Promise<T>, interval: number) {
+    return promise.then(data =>
+      new Promise<T>((resolve, _) => setTimeout(() => resolve(data), interval))
+    )
+}

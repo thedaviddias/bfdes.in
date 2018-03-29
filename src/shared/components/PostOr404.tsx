@@ -2,7 +2,8 @@ import * as React from 'react';
 import { match } from 'react-router-dom';
 import Tags from './Tags';
 import NoMatch from './NoMatch';
-import { parseDate, NetworkError, get } from '../utils';
+import Spinner from './Spinner';
+import { parseDate, NetworkError, get, delay } from '../utils';
 
 declare const __isBrowser__: boolean  // Injected by Webpack to indicate whether we are running JS on the client
 
@@ -94,20 +95,19 @@ class PostOr404 extends React.Component<Props, State> {
 
   render() {
     const { post, error, loading } = this.state
-
     if(error && error.status == 404) {
       return <NoMatch />
     }
     if(error) {
       return (
-        <>
+        <div className='error'>
           <h1>Error</h1>
           <div>There was an error fetching the post.</div>
-        </>
+        </div>
       )
     }
     if(loading || post == null) {
-      return <div>Loading...</div>
+      return <Spinner />
     }
     return <Post {...post} />
   }

@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import Spinner from './Spinner';
 import Tags from './Tags';
-import { parseDate, parseQuery, get, NetworkError } from '../utils';
+import { parseDate, parseQuery, get, delay, NetworkError } from '../utils';
 
 declare const __isBrowser__: boolean  // Injected by Webpack to indicate whether we are running JS on the client
 
@@ -126,7 +127,7 @@ class Posts extends React.Component<Props, State> {
   private fetchPosts(tag: string): void {
     const url = tag == undefined ? '/api/posts' : `/api/posts?tag=${tag}`
     this.setState({loading: true}, () => 
-      get(url).then(posts => 
+      delay(get(url), 250).then(posts => 
         this.setState({posts, loading: false})
       ).catch(error => 
         this.setState({error, loading: false})
@@ -137,14 +138,14 @@ class Posts extends React.Component<Props, State> {
   render() {
     const { posts, loading, error } = this.state
     if(loading || posts == null) {
-      return <div>Loading...</div>
+      return <Spinner />
     }
     if(error) {
       return (
-        <>
+        <div className='error'>
           <h1>Error</h1>
           <div>There was an error fetching the posts.</div>
-        </>
+        </div>
       )
     }
 

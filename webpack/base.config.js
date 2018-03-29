@@ -22,6 +22,10 @@ module.exports = [{
       enforce: 'pre', 
       test: /\.js$/,
       use: 'source-map-loader'
+    }, {
+      test: /\.(jpg|png|svg)$/,
+      include: path.resolve(__dirname, '../src/shared/images'),
+      use: 'url-loader'
     }]
   },
   plugins: [
@@ -49,6 +53,14 @@ module.exports = [{
         path.resolve(__dirname, '../src/shared')
       ],
       loader: 'ts-loader'
+    }, {
+      enforce: 'pre', 
+      test: /\.js$/,
+      use: 'source-map-loader'
+    }, {
+      test: /\.(jpg|png|svg)$/,
+      include: path.resolve(__dirname, '../src/shared/images'),
+      use: 'url-loader'
     }]
   },
   plugins: [
