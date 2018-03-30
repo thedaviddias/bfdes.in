@@ -71,8 +71,10 @@ class PostOr404 extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { slug } = this.props
-    this.fetchPost(slug)
+    if(!this.state.post) {
+      const { slug } = this.props
+      this.fetchPost(slug)
+    }
   }
 
   componentDidUpdate(prevProps: Props, _: State) {
