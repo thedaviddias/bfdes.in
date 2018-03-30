@@ -37,8 +37,8 @@ export default () => (
   <Sidebar id='sidebar'>
     <img></img>
     <div className='nav'>
-      <StyledLink to='/posts'><h3>Blog</h3></StyledLink>
-      <StyledLink to='/about'><h3>About</h3></StyledLink>
+      <StyledLink to='/posts'><h2>Blog</h2></StyledLink>
+      <StyledLink to='/about'><h2>About</h2></StyledLink>
     </div>
   </Sidebar>
 )
