@@ -16,7 +16,7 @@ const Post: React.SFC<Post>
         <Tags tags={tags}/>&nbsp;&middot;&nbsp;
         {wordCount} {wordCount != 1 ? 'words' : 'word'}
       </p>
-      <p dangerouslySetInnerHTML={{__html: body}}/>
+      <div dangerouslySetInnerHTML={{__html: body}}/>
     </div>
   )
 
