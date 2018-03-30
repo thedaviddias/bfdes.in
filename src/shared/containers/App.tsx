@@ -19,8 +19,6 @@ import {
 import { withTag } from '../components/Posts'
 import { withSlug } from '../components/PostOr404'
 
-import routes from '../routes'
-
 injectGlobal`
   html, body {
     margin: 0;
@@ -59,9 +57,11 @@ class App extends React.Component {
         <Route path='/' component={Sidebar} />
         <Wrapper id="content">
           <Switch>
-            {routes.map(({ path, exact, component: Component, ...rest}, i) => 
-              <Route key={i} path={path} exact={exact} render={props => <Component {...props} {...rest} />}/>
-            )}
+            <Route path='/' exact component={Posts} />
+            <Route path='/about' exact component={About} />
+            <Route path='/posts' exact component={withTag(Posts)} />
+            <Route path='/posts/:slug' exact component={withSlug(PostOr404)} />
+            <Route component={NoMatch} />
           </Switch>
         </Wrapper>
       </>

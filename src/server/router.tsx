@@ -2,7 +2,6 @@ import { Router } from 'express'
 import * as React from 'react'
 import { renderToString } from 'react-dom/server'
 import { StaticRouter, matchPath } from 'react-router-dom'
-import routes from '../shared/routes'
 
 import App from '../shared/containers/App'
 
@@ -10,8 +9,24 @@ import conn from '../shared/services'
 
 const router = Router()
 
-// GET /api/posts
-// Fetch all the posts in chronological order and filter by query params
+const template = (markup: string, data: any) =>
+  `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>BFdes blog</title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <script src='/bundle.js' defer></script>
+        <script>window.__INITIAL_DATA__ = ${JSON.stringify(data)}</script>
+      </head>
+      <body>
+        <div id="root">${markup}</div>
+      </body>
+    </html>
+  `
+
+// GET /api/posts?tag=<tag>
+// Fetch all the posts in chronological order and filter by tag if supplied
 router.get('/api/posts', (req, res, next) => {
   const { tag } = req.query
   const Post = conn(req.app.get('posts'))
@@ -36,29 +51,62 @@ router.get('/api/posts/:slug', (req, res, next) => {
   }
 })
 
-router.get('*', (req, res, next) => {
-  const activeRoute = routes.find(route => matchPath(req.path, route) != null)
-  const data = activeRoute.fetchInitialData ? activeRoute.fetchInitialData(req) : {}
+// GET / is an alias for GET /posts
+router.get('/', (req, res, next) => {
+  const Post = conn(req.app.get('posts'))
+  const data = Post.fetchPosts()
   const markup = renderToString(
     <StaticRouter location={req.url} context={{ data }}>
       <App />
     </StaticRouter>
   )
+  res.send(template(markup, data))
+})
 
-  res.send(`
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>BFdes blog</title>
-        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-        <script src='/bundle.js' defer></script>
-        <script>window.__INITIAL_DATA__ = ${JSON.stringify(data)}</script>
-      </head>
-      <body>
-        <div id="root">${markup}</div>
-      </body>
-    </html>
-  `)
+// GET /about
+router.get('/about', (req, res, next) => {
+  const markup = renderToString(
+    <StaticRouter location={req.url} context={{}}>
+      <App />
+    </StaticRouter>
+  )
+  res.send(template(markup, null))
+})
+
+// GET /posts?tag=<tag>
+router.get('/posts', (req, res, next) => {
+  const Post = conn(req.app.get('posts'))
+  const { tag } = req.query
+  const data = Post.fetchPosts(tag)
+  const markup = renderToString(
+    <StaticRouter location={req.url} context={{ data }}>
+      <App />
+    </StaticRouter>
+  )
+  res.send(template(markup, data))
+})
+
+// GET /posts/<slug>
+router.get('/posts/:slug', (req, res, next) => {
+  const Post = conn(req.app.get('posts'))
+  const { slug } = req.params
+  const data = Post.fetchPost(slug)
+  const markup = renderToString(
+    <StaticRouter location={req.url} context={{ data }}>
+      <App />
+    </StaticRouter>
+  )
+  res.send(template(markup, data))
+})
+
+// 404 handler
+router.get('*', (req, res, next) => {
+  const markup = renderToString(
+    <StaticRouter location={req.url} context={{}}>
+      <App />
+    </StaticRouter>
+  )
+  res.send(template(markup, null))
 })
 
 export default router
