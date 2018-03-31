@@ -2,32 +2,43 @@ import { Router } from 'express'
 import * as React from 'react'
 import { renderToString } from 'react-dom/server'
 import { StaticRouter, matchPath } from 'react-router-dom'
+import { ServerStyleSheet } from 'styled-components' 
 
 import App from '../shared/containers/App'
-
 import conn from '../shared/services'
 
 const router = Router()
 
-const template = (markup: string, data: any) =>
-  `
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>BFdes blog</title>
-        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-        <script src='/bundle.js' defer></script>
-        <script>window.__INITIAL_DATA__ = ${JSON.stringify(data)}</script>
-      </head>
-      <body>
-        <div id="root">${markup}</div>
-      </body>
-    </html>
-  `
+const markupForRoute = (url: string, data: any) => {
+  const sheet = new ServerStyleSheet()
+  const markup = renderToString(sheet.collectStyles(
+    <StaticRouter location={url} context={{ data }}>
+      <App />
+    </StaticRouter>
+  )) 
+  const styleTags = sheet.getStyleTags()
+  return (
+    `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>BFdes blog</title>
+          <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+          ${styleTags}
+          <script src='/bundle.js' defer></script>
+          <script>window.__INITIAL_DATA__ = ${JSON.stringify(data)}</script>
+        </head>
+        <body>
+          <div id="root">${markup}</div>
+        </body>
+      </html>
+    `
+  )
+}
 
 // GET /api/posts?tag=<tag>
 // Fetch all the posts in chronological order and filter by tag if supplied
-router.get('/api/posts', (req, res, next) => {
+router.get('/api/posts', (req, res) => {
   const { tag } = req.query
   const Post = conn(req.app.get('posts'))
   res.status(200).json(Post.fetchPosts(tag))
@@ -36,7 +47,7 @@ router.get('/api/posts', (req, res, next) => {
 
 // GET /api/posts/<slug>
 // Fetch a single post; these are uniquely identfied by their slugs
-router.get('/api/posts/:slug', (req, res, next) => {
+router.get('/api/posts/:slug', (req, res) => {
   const { slug } = req.params
   const Post = conn(req.app.get('posts'))
   const postOrNone = Post.fetchPost(slug)
@@ -52,61 +63,36 @@ router.get('/api/posts/:slug', (req, res, next) => {
 })
 
 // GET / is an alias for GET /posts
-router.get('/', (req, res, next) => {
+router.get('/', (req, res) => {
   const Post = conn(req.app.get('posts'))
   const data = Post.fetchPosts()
-  const markup = renderToString(
-    <StaticRouter location={req.url} context={{ data }}>
-      <App />
-    </StaticRouter>
-  )
-  res.send(template(markup, data))
+  res.send(markupForRoute(req.url, data))
 })
 
 // GET /about
-router.get('/about', (req, res, next) => {
-  const markup = renderToString(
-    <StaticRouter location={req.url} context={{}}>
-      <App />
-    </StaticRouter>
-  )
-  res.send(template(markup, null))
+router.get('/about', (req, res) => {
+  res.send(markupForRoute(req.url, {}))
 })
 
 // GET /posts?tag=<tag>
-router.get('/posts', (req, res, next) => {
+router.get('/posts', (req, res) => {
   const Post = conn(req.app.get('posts'))
   const { tag } = req.query
   const data = Post.fetchPosts(tag)
-  const markup = renderToString(
-    <StaticRouter location={req.url} context={{ data }}>
-      <App />
-    </StaticRouter>
-  )
-  res.send(template(markup, data))
+  res.send(markupForRoute(req.url, data))
 })
 
 // GET /posts/<slug>
-router.get('/posts/:slug', (req, res, next) => {
+router.get('/posts/:slug', (req, res) => {
   const Post = conn(req.app.get('posts'))
   const { slug } = req.params
   const data = Post.fetchPost(slug)
-  const markup = renderToString(
-    <StaticRouter location={req.url} context={{ data }}>
-      <App />
-    </StaticRouter>
-  )
-  res.send(template(markup, data))
+  res.send(markupForRoute(req.url, data))
 })
 
 // 404 handler
-router.get('*', (req, res, next) => {
-  const markup = renderToString(
-    <StaticRouter location={req.url} context={{}}>
-      <App />
-    </StaticRouter>
-  )
-  res.send(template(markup, null))
+router.get('*', (req, res) => {
+  res.send(markupForRoute(req.url, {}))
 })
 
 export default router
