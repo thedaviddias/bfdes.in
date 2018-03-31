@@ -108,7 +108,7 @@ class Posts extends React.Component<Props, State> {
   but not when React's deferred first render occurs.
   */
   componentDidMount() {
-    if(!this.state.posts) {
+    if(this.state.posts == null) {
       const { tag } = this.props
       this.fetchPosts(tag)
     }
