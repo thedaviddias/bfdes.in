@@ -35,7 +35,7 @@ const StyledLink = styled(Link)`
 
 export default () => (
   <Sidebar id='sidebar'>
-    <img></img>
+    <img src={require('../images/avatar.jpg')}></img>
     <div className='nav'>
       <StyledLink to='/posts'><h2>Blog</h2></StyledLink>
       <StyledLink to='/about'><h2>About</h2></StyledLink>
