@@ -13,6 +13,7 @@ const Sidebar = styled.aside`
   img {
     width: 10rem;
     height: 10rem;
+    border-radius: 5em;
   }
 
   .nav {
