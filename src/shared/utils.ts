@@ -6,7 +6,7 @@ export const parseDate = (timestamp: number) => {
     'September', 'October', 'November', 'December'
   ]
   const day = date.getDate()
-  const month = monthNames[date.getMonth()]
+  const month = monthNames[date.getMonth()-1]
   const year = date.getFullYear()
   return `${day} ${month} ${year}`
 }
