@@ -8,7 +8,7 @@ module.exports = [{
     path: path.resolve(__dirname, '../dist'),
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.json']
+    extensions: ['.ts', '.tsx', '.js']
   },
   module: {
     rules: [{
@@ -18,10 +18,6 @@ module.exports = [{
         path.resolve(__dirname, '../src/shared')
       ],
       use: 'ts-loader'
-    }, {
-      enforce: 'pre', 
-      test: /\.js$/,
-      use: 'source-map-loader'
     }, {
       test: /\.(jpg|png|svg)$/,
       include: path.resolve(__dirname, '../src/shared/images'),
@@ -43,7 +39,7 @@ module.exports = [{
     libraryTarget: 'commonjs2'
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.json']
+    extensions: ['.ts', '.tsx', '.js']
   },
   module: {
     rules: [{
@@ -53,10 +49,6 @@ module.exports = [{
         path.resolve(__dirname, '../src/shared')
       ],
       loader: 'ts-loader'
-    }, {
-      enforce: 'pre', 
-      test: /\.js$/,
-      use: 'source-map-loader'
     }, {
       test: /\.(jpg|png|svg)$/,
       include: path.resolve(__dirname, '../src/shared/images'),
