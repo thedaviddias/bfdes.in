@@ -7,36 +7,38 @@ import { renderToString } from 'react-dom/server'
 import * as React from 'react'
 import { matchPath } from 'react-router-dom'
 
-import { parseFiles } from './utils'
 import App from '../shared/containers/App'
 import router from './router'
+import { Posts } from '../shared/utils';
 
-const app = express()
+export function factory(posts: Posts) {
+  const app = express()
 
-if(process.env.NODE_ENV == 'development') {
-  app.use(loggger('dev'))
-}
+  if(process.env.NODE_ENV == 'development') {
+    app.use(loggger('dev'))
+  }
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json())
-app.use(express.static(path.resolve('dist')))
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.json())
+  app.use(express.static(path.resolve('dist')))
 
-app.use('/', router)
+  app.use('/', router)
 
-// Error handler
-type NetworkError = {status?: number} & Error;
+  // Error handler
+  type NetworkError = {status?: number} & Error;
 
-app.use((err: NetworkError, req: Request, res: Response, next: NextFunction) => {
-  res.status(err.status || 500);  // Server error if no status
-  console.error(err.stack);
-  res.json({
-      error: {
-          message: (err.status == 500) ? '500: Internal Server error' : err.message
-      }
+  app.use((err: NetworkError, req: Request, res: Response, next: NextFunction) => {
+    res.status(err.status || 500);  // Server error if no status
+    console.error(err.stack);
+    res.json({
+        error: {
+            message: (err.status == 500) ? '500: Internal Server error' : err.message
+        }
+    });
   });
-});
 
-module.exports = (path: string) => {
-  app.set('posts', parseFiles(path))
+  app.set('posts', posts)
   return app
 }
+
+export { parseFiles } from './utils'

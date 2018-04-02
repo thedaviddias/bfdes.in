@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
 const path = require('path')
+const http = require('http')
 const debug = require('debug')('init:server');
-const http = require('http');
 
-const posts = path.resolve(__dirname, '../posts')
-const app = require('../dist/server.js')(posts)
+const dist = require('../dist/server')
+const posts = dist.parseFiles(path.resolve(__dirname, '../posts'))
+const app = dist.factory(posts)
 
 const server = http.createServer(app);
 
