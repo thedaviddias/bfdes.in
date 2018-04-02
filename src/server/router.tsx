@@ -25,6 +25,7 @@ const markupForRoute = (url: string, data: any) => {
           <title>BFdes blog</title>
           <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
           <link href="https://unpkg.com/highlight.js/styles/github.css" rel="stylesheet">
+          <link href="https://unpkg.com/katex/dist/katex.min.css" rel="stylesheet">
           ${styleTags}
           <script src='/bundle.js' defer></script>
           <script>window.__INITIAL_DATA__ = ${JSON.stringify(data)}</script>

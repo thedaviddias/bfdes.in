@@ -3,6 +3,7 @@ import * as path from 'path'
 import { createInterface } from 'readline'
 import * as marked from 'marked'
 import * as hljs from 'highlight.js'
+import * as katex from 'katex'
 
 import { Post, Posts } from '../shared/utils'
 
@@ -15,7 +16,12 @@ marked.setOptions({
   sanitize: true,
   smartLists: true,
   smartypants: false,
-  highlight: code => hljs.highlightAuto(code).value
+  highlight: (code, lang) => {
+    if(lang == 'math') {
+      return katex.renderToString(code)
+    }
+    return hljs.highlightAuto(code).value
+  }
 })
 
 function parseFile(path: string): Post {
