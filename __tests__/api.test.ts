@@ -43,7 +43,7 @@ test('post can be fetched by slug', () => {
     .get('/api/posts/my-first-post')
     .expect(200)
     .then(res => {
-      expect(res.body).toMatchObject({
+      expect(res.body).toEqual({
         title: 'My first post',
         body: 'Lorem ipsum delorum sit amet',
         created: 1523401200000,
@@ -58,7 +58,7 @@ test('404 response returned for non-existent post', () => {
     .get('/api/posts/my-third-post')
     .expect(404)
     .then(res => {
-      expect(res.body).toMatchObject({
+      expect(res.body).toEqual({
         error: {
           message: "404: No post with that slug"
         }
