@@ -34,6 +34,11 @@ export class NetworkError extends Error {
   }
 }
 
+/**
+ * Excecutes the given request and wraps the result in a Promise, failing the request for client errors.
+ * @param req Request to excecute
+ * @returns {Promise<any>} Wrapped payload
+ */
 const client = (req: Request) => 
   fetch(req).then(res => 
     res.json().then(data => {
@@ -49,7 +54,7 @@ export const get = (url: string) =>
   }))
 
 /**
- * Delays a promise for the given interval if it succeeds
+ * Delays a promise for the given interval if it succeeds.
  * @param promise Promise to delay
  * @param interval Delay interval in milliseconds
  */
