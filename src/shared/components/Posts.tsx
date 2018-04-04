@@ -26,7 +26,7 @@ const StyledLink = styled(Link)`
   }
 `
 
-const UL = styled.ul`
+const Ul = styled.ul`
   list-style-type: none;
   padding: 0;
 
@@ -150,9 +150,9 @@ class Posts extends React.Component<Props, State> {
     }
 
     return (
-      <UL>
+      <Ul>
         {posts.map((post, i) => <PostStub key={i} {...post}/>)}
-      </UL>
+      </Ul>
     )
   }
 }
