@@ -12,9 +12,9 @@ const Post: React.SFC<Post>
     <div className='post'>
       <h1>{title}</h1>
       <p>
-        {parseDate(created)}&nbsp;&middot;&nbsp;
-        <Tags tags={tags}/>&nbsp;&middot;&nbsp;
-        {wordCount} {wordCount != 1 ? 'words' : 'word'}
+        {parseDate(created)}
+        {' · '}<Tags tags={tags}/>
+        {' · '}{wordCount} {wordCount != 1 ? 'words' : 'word'}
       </p>
       <div dangerouslySetInnerHTML={{__html: body}}/>
     </div>

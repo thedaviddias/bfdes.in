@@ -58,9 +58,9 @@ const PostStub: React.SFC<Post>
     <li className='post'>
       <StyledLink to={`/posts/${slug}`}><h1>{title}</h1></StyledLink>
       <p>
-        {parseDate(created)}&nbsp;&middot;&nbsp;
-        <Tags tags={tags}/>&nbsp;&middot;&nbsp;
-        {wordCount} {wordCount != 1 ? 'words' : 'word'}
+        {parseDate(created)}
+        {' · '}<Tags tags={tags}/>
+        {' · '}{wordCount}{wordCount != 1 ? 'words' : 'word'}
       </p>
     </li>
   )
