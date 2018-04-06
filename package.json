@@ -60,6 +60,9 @@
     "transform": {
       "\\.(ts|tsx)$": "ts-jest"
     },
-    "testRegex": "/tests/.*\\.(ts|tsx)$"
+    "testRegex": "/tests/.*\\.(ts|tsx)$",
+    "moduleNameMapper": {
+      "\\.(svg|jpeg)$": "<rootDir>/tests/utils/assetTransformer.js"
+    }
   }
 }

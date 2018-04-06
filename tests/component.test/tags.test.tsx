@@ -1,14 +1,9 @@
 import * as React from 'react'
-import { BrowserRouter } from 'react-router-dom'
+import { Link, MemoryRouter } from 'react-router-dom'
 import { configure, shallow, mount } from 'enzyme'
 import * as Adapter from 'enzyme-adapter-react-16'
 
-import {
-  PostOr404,
-  Posts
-} from '../src/shared/components'
-
-import Tags from '../src/shared/components/Tags'
+import Tags from '../../src/shared/components/Tags'
 
 beforeAll(() => {
   configure({adapter: new Adapter()})
@@ -32,22 +27,14 @@ describe('<Tags />', () => {
 
   test('<Tag /> navigates to correct route when clicked', () => {
     const wrapper = mount(
-      <BrowserRouter>
+      <MemoryRouter>
         <Tags tags={['Algorithms', 'Python']}/>
-      </BrowserRouter>
+      </MemoryRouter>
     );
     expect(wrapper
-      .find('Link')
+      .find(Link)
       .first()
       .props().to
     ).toBe('/posts?tag=Algorithms')
   })
-})
-
-describe('test <Posts />', () => {
-
-})
-
-describe('test <PostOr404 />', () => {
-
 })
