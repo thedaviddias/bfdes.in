@@ -14,7 +14,7 @@ const Post: React.SFC<Post>
       <p>
         {parseDate(created)}
         {' · '}<Tags tags={tags}/>
-        {' · '}{wordCount} {wordCount != 1 ? 'words' : 'word'}
+        {' · '}{wordCount} {wordCount != 1 ? ' words' : ' word'}
       </p>
       <div dangerouslySetInnerHTML={{__html: body}}/>
     </div>
