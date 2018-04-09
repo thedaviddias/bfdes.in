@@ -127,9 +127,9 @@ class Posts extends React.Component<Props, State> {
   private fetchPosts(tag: string): void {
     const url = tag == undefined ? '/api/posts' : `/api/posts?tag=${tag}`
     this.setState({loading: true}, () => 
-      delay(get(url), 250).then(posts => 
+      delay(get(url), 250).then(posts =>
         this.setState({posts, loading: false})
-      ).catch(error => 
+      ).catch(error =>
         this.setState({error, loading: false})
       )
     )
@@ -137,9 +137,6 @@ class Posts extends React.Component<Props, State> {
 
   render() {
     const { posts, loading, error } = this.state
-    if(loading || posts == null) {
-      return <Spinner />
-    }
     if(error) {
       return (
         <div className='error'>
@@ -147,6 +144,9 @@ class Posts extends React.Component<Props, State> {
           <div>There was an error fetching the posts.</div>
         </div>
       )
+    }
+    if(loading || posts == null) {
+      return <Spinner />
     }
 
     return (
