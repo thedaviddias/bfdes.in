@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Link, MemoryRouter } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 import { configure, shallow, mount } from 'enzyme'
 import * as Adapter from 'enzyme-adapter-react-16'
 
@@ -11,18 +11,20 @@ beforeAll(() => {
 
 describe('<Tags />', () => {
   it('renders empty span for a post with no tags', () => {
+    // Edge case
     const wrapper = shallow(<Tags tags={[]} />)
-    expect(wrapper.find('span').text()).toBe('')
+    expect(wrapper.find('Tag')).toHaveLength(0)
   })
 
   it('renders a single tag', () => {
+    // Edge case
     const wrapper = shallow(<Tags tags={['Algorithms']} />)
-    expect(wrapper.find('span').text()).toBe(' # <Tag />')
+    expect(wrapper.find('Tag')).toHaveLength(1)
   })
 
   it('renders multiple tags', () => {
     const wrapper = shallow(<Tags tags={['Algorithms', 'Python']} />)
-    expect(wrapper.find('span').text()).toBe(' # <Tag /> # <Tag />')
+    expect(wrapper.find('Tag')).toHaveLength(2)
   })
 
   test('<Tag /> navigates to correct route when clicked', () => {
@@ -32,7 +34,7 @@ describe('<Tags />', () => {
       </MemoryRouter>
     );
     expect(wrapper
-      .find(Link)
+      .find('Link')
       .first()
       .props().to
     ).toBe('/posts?tag=Algorithms')
