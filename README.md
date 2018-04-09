@@ -2,7 +2,7 @@
 
 Source for my personal blog, built using React SSR and written in TypeScript.
 
-The Blog is edited by supplying Jekyll-like Markdown documents in a posts directory beneath the root. When the server boots all the documents are parsed into an in-memory object that can be queried.
+The Blog is edited by supplying Jekyll-like Markdown documents in a posts directory beneath the root. When the server boots all the documents are parsed into an object that can be queried.
 
 ### Requirements:
 
@@ -23,7 +23,7 @@ There is no dev server with hot reload facility because the point of SSR app dev
 
 #### Testing
 
-Run ```yarn test``` to run the tests using Jest in watch mode.
+Run ```yarn test:watch``` to run the tests using Jest in watch mode.
 
 ### Deployment:
 

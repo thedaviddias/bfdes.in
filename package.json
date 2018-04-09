@@ -11,7 +11,8 @@
     "serve:dev": "nodemon bin/www",
     "build:prod": "webpack --mode production --config webpack/prod.config.js",
     "serve:prod": "node bin/www",
-    "test": "jest --watch"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
@@ -62,7 +63,7 @@
     },
     "testRegex": "/tests/.*\\.(ts|tsx)$",
     "moduleNameMapper": {
-      "\\.(svg|jpeg)$": "<rootDir>/tests/utils/assetTransformer.js"
+      "\\.(svg|jpeg)$": "<rootDir>/tests/setup/assetTransformer.js"
     }
   }
 }
