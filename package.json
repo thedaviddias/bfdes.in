@@ -12,7 +12,8 @@
     "build:prod": "webpack --mode production --config webpack/prod.config.js",
     "serve:prod": "node bin/www",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "postinstall": "yarn build:prod"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
@@ -51,6 +52,9 @@
     "url-loader": "^1.0.1",
     "webpack": "^4.4.1",
     "webpack-cli": "^2.0.13"
+  },
+  "engines": {
+    "node": "8.10.0"
   },
   "jest": {
     "moduleFileExtensions": [
