@@ -13,6 +13,8 @@
     "serve:prod": "node bin/www",
     "test": "jest",
     "test:watch": "jest --watch",
+
+    "start": "yarn serve:prod",
     "postinstall": "yarn build:prod"
   },
   "dependencies": {
