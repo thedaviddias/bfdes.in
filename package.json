@@ -52,6 +52,9 @@
     "webpack": "^4.4.1",
     "webpack-cli": "^2.0.13"
   },
+  "engines": {
+    "node": "8"
+  },
   "jest": {
     "moduleFileExtensions": [
       "ts",

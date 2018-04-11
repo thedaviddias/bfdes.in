@@ -10,5 +10,5 @@ dist
 .vscode
 .chrome
 
-// Blog entries
-posts/*.md
+// Environment
+.env
