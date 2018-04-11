@@ -14,8 +14,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
 
-    "start": "yarn serve:prod",
-    "postinstall": "yarn build:prod"
+    "start": "yarn run serve:prod",
+    "postinstall": "yarn run build:prod"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
