@@ -21,13 +21,36 @@ Run ```yarn install``` within the root directory.
 
 Run ```yarn build:dev```. Uses Webpack in watch mode to compile the TS source for both the frontend and the backend.
 
+Write any posts you wish to display in a 'posts' folder under the root directory. The format is
+
+```
+# ----
+title: <TITLE>
+tags: <TAG1> <TAG2>
+created: <YEAR>-<MONTH>-<DAY>
+# ----
+<BODY IN MARKDOWN>
+```
+and the title of the markdown file corresponds to the slug of its post.
+
 Then (also) run ```yarn serve:dev``` to serve the app on port 8080 using Nodemon.
+
 There is no dev server with hot reload facility because the point of SSR app development is to observe the static and traditional render.
 
 #### Testing
 
-Run ```yarn test:watch``` to run the tests using Jest in watch mode. Travis CI will run this same test suite for every code push to master.
+Run ```yarn test:watch``` to run the tests using Jest in watch mode. Travis CI will also run this test suite for every code push to master.
 
 ### Deployment:
 
-TODO
+#### Heroku
+
+Deployment via Heroku should be straightforward owing to the changes in the 'heroku' branch.
+
+Fork this repo and clone the aforementioned branch, setting up Heroku deployment pipelines to listen for a code push.
+
+#### Bare metal or VM
+
+Running ```yarn build:prod``` generates two built bundles i) client code ii) server-side code.
+
+You should configure your webserver to serve the client bundle under /static.
