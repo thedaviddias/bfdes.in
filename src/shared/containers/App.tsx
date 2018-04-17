@@ -38,16 +38,18 @@ injectGlobal`
   }
 
   #root {
-    display: grid;
     height: 100%;
-    grid-template-columns: 20% 80%;
-    grid-template-rows: auto;
-    grid-template-areas: "sidebar content";
   }
 `
 
 const Wrapper = styled.div`
+  display: grid
+  grid-template-columns: 20vw auto;
   padding: 4em;
+
+  div, ul {
+    grid-column-start: 2;
+  }
 `
 
 class App extends React.Component {

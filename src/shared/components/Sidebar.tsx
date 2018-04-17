@@ -5,6 +5,9 @@ import styled from 'styled-components'
 const Sidebar = styled.aside`
   background-color: var(--dark);
 
+  height: 100vh;
+  position: fixed;
+  width: 20vw;
   display: flex;
   flex-direction: column;
   align-items: center;
