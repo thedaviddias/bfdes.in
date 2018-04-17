@@ -27,7 +27,7 @@ const markupForRoute = (url: string, data: any) => {
           <link href="https://unpkg.com/highlight.js/styles/github.css" rel="stylesheet">
           <link href="https://unpkg.com/katex/dist/katex.min.css" rel="stylesheet">
           ${styleTags}
-          <script src='/bundle.js' defer></script>
+          <script src='/static/bundle.js' defer></script>
           <script>window.__INITIAL_DATA__ = ${JSON.stringify(data)}</script>
         </head>
         <body>

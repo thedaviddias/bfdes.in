@@ -5,7 +5,7 @@ module.exports = [{
   entry: path.resolve(__dirname, '../src/browser', 'index.tsx'),
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, '../dist'),
+    path: path.resolve(__dirname, '../dist/static'),
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js']
