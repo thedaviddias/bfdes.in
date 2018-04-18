@@ -13,7 +13,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
 
-    "start": "yarn run serve:prod",
+    "start": "node dist/server.js ./posts",
     "postinstall": "yarn run build:prod"
   },
   "dependencies": {
