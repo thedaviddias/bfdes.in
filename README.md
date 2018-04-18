@@ -53,4 +53,5 @@ Fork this repo and clone the aforementioned branch, setting up Heroku deployment
 
 Running ```yarn build:prod``` generates two built bundles i) client code ii) server-side code.
 
-You should configure your webserver to serve the client bundle under /static.
+- Configure your webserver to serve the client bundle under /static
+- Run the server script under a Node.js process manager with a path to the folder containing posts

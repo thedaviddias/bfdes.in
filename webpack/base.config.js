@@ -31,7 +31,7 @@ module.exports = [{
   ],
   target: 'web'
 }, {
-  entry: path.resolve(__dirname, '../src/server', 'index.tsx'),
+  entry: path.resolve(__dirname, '../src/server', 'server.ts'),
   output: {
     filename: 'server.js',
     path: path.resolve(__dirname, '../dist'),

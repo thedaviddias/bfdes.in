@@ -8,9 +8,8 @@
   "private": false,
   "scripts": {
     "build:dev": "webpack -w --mode development --config webpack/dev.config.js",
-    "serve:dev": "nodemon bin/www",
+    "serve:dev": "nodemon dist/server.js ./posts",
     "build:prod": "webpack --mode production --config webpack/prod.config.js",
-    "serve:prod": "node bin/www",
     "test": "jest",
     "test:watch": "jest --watch"
   },
