@@ -5,7 +5,7 @@ module.exports = [{
   entry: path.resolve(__dirname, '../src/browser', 'index.tsx'),
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, '../dist'),
+    path: path.resolve(__dirname, '../dist/static'),
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js']
@@ -31,7 +31,7 @@ module.exports = [{
   ],
   target: 'web'
 }, {
-  entry: path.resolve(__dirname, '../src/server', 'index.tsx'),
+  entry: path.resolve(__dirname, '../src/server', 'server.ts'),
   output: {
     filename: 'server.js',
     path: path.resolve(__dirname, '../dist'),

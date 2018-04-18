@@ -1,5 +1,5 @@
 import * as request from 'supertest'
-import { factory } from '../src/server'
+import factory from '../src/server'
 
 let app
 

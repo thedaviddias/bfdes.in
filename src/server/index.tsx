@@ -1,8 +1,9 @@
-import * as express from 'express'
+const express = require('express')
+const path = require('path')
+const bodyParser = require('body-parser')
+const logger = require('morgan')
+
 import { Request, Response, NextFunction } from 'express'
-import * as path from 'path'
-import * as bodyParser from 'body-parser'
-import * as loggger from 'morgan'
 import { renderToString } from 'react-dom/server'
 import * as React from 'react'
 import { matchPath } from 'react-router-dom'
@@ -11,11 +12,11 @@ import App from '../shared/containers/App'
 import router from './router'
 import { Posts } from '../shared/utils';
 
-export function factory(posts: Posts) {
+export default function factory(posts: Posts) {
   const app = express()
 
   if(process.env.NODE_ENV == 'development') {
-    app.use(loggger('dev'))
+    app.use(logger('dev'))
   }
 
   app.use(bodyParser.urlencoded({ extended: false }));
@@ -40,5 +41,3 @@ export function factory(posts: Posts) {
   app.set('posts', posts)
   return app
 }
-
-export { parseFiles } from './utils'
