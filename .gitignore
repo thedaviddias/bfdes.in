@@ -12,3 +12,6 @@ dist
 
 // Environment
 .env
+
+// Posts
+posts/*.md
