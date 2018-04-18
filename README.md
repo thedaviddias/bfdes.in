@@ -31,7 +31,7 @@ created: <YEAR>-<MONTH>-<DAY>
 # ----
 <BODY IN MARKDOWN>
 ```
-and the title of the markdown file corresponds to the slug of its post.
+and the name of the markdown file should correspond to the slug of its post.
 
 Then (also) run ```yarn serve:dev``` to serve the app on port 8080 using Nodemon.
 
