@@ -43,12 +43,20 @@ injectGlobal`
 `
 
 const Wrapper = styled.div`
-  display: grid
-  grid-template-columns: 20vw auto;
   padding: 4em;
-
+  display: grid;
+  grid-template-columns: 20vw auto;
   div, ul {
     grid-column-start: 2;
+  }
+
+  @media(hover: none) {
+    grid-template-columns: auto
+    grid-template-rows: 15vh auto;
+    div, ul {
+      grid-column-start: 1;
+      grid-row-start: 2;
+    }
   }
 `
 

@@ -4,7 +4,6 @@ import styled from 'styled-components'
 
 const Sidebar = styled.aside`
   background-color: var(--dark);
-
   height: 100vh;
   position: fixed;
   width: 20vw;
@@ -22,7 +21,21 @@ const Sidebar = styled.aside`
   .nav {
     text-align: center;
     a {
-      display: block
+      display: block;
+    }
+  }
+
+  @media(hover: none) {
+    height: 15vh;
+    width: 100%;
+
+    .nav {
+      text-align: center;
+      width: 100%;
+      a {
+        display: inline-block;
+        padding: 1em;
+      }
     }
   }
 `
