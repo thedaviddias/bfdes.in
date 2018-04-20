@@ -31,9 +31,8 @@ injectGlobal`
     --blue: #4078c0;
     
     font-family: 'Roboto', sans-serif;
-    line-height: 1.5;
-    font-size: 14px;
-    font-size: 1vw;
+    line-height: 1.375em;
+    font-size: 1em;
     color: var(--grey);
   }
 
@@ -50,7 +49,7 @@ const Wrapper = styled.div`
     grid-column-start: 2;
   }
 
-  @media(hover: none) {
+  @media only screen and (max-device-width : 640px) {
     grid-template-columns: auto
     grid-template-rows: 15vh auto;
     div, ul {

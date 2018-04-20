@@ -25,9 +25,10 @@ const Sidebar = styled.aside`
     }
   }
 
-  @media(hover: none) {
+  @media only screen and (max-device-width : 640px) {
     height: 15vh;
     width: 100%;
+    padding: 1vh;
 
     .nav {
       text-align: center;
