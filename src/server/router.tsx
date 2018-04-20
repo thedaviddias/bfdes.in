@@ -22,7 +22,8 @@ const markupForRoute = (url: string, data: any) => {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>BFdes blog</title>
+          <title>bfdes.in</title>
+          <link href=${require('../shared/images/favicon.png')} rel="icon">
           <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
           <link href="https://unpkg.com/highlight.js/styles/github.css" rel="stylesheet">
           <link href="https://unpkg.com/katex/dist/katex.min.css" rel="stylesheet">
