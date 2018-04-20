@@ -55,7 +55,7 @@ function parseFile(path: string): Post {
 }
 
 export function parseFiles(dirname: string): Posts {
-  const filenames = fs.readdirSync(dirname)
+  const filenames = fs.readdirSync(dirname).filter(f => /\.md$/.test(f))
   return filenames.map(filename => {
     const [slug, _] = filename.split('.')
     return {[slug]: parseFile(path.resolve(dirname, filename))}
