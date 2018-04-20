@@ -1,8 +1,7 @@
-const express = require('express')
-const path = require('path')
-const bodyParser = require('body-parser')
-const logger = require('morgan')
-
+import * as path from 'path'
+import * as bodyParser from 'body-parser'
+import * as logger from 'morgan'
+import * as express from 'express'
 import { Request, Response, NextFunction } from 'express'
 import { renderToString } from 'react-dom/server'
 import * as React from 'react'

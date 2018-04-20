@@ -1,4 +1,5 @@
-const http = require('http')
+import * as http from 'http'
+import * as path from 'path'
 
 import factory from './index'
 import { parseFiles } from './utils'
