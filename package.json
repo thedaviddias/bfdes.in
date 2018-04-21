@@ -11,10 +11,7 @@
     "serve:dev": "nodemon dist/server.js ./posts",
     "build:prod": "webpack --mode production --config webpack/prod.config.js",
     "test": "jest",
-    "test:watch": "jest --watch",
-
-    "start": "node dist/server.js ./posts",
-    "postinstall": "yarn run build:prod"
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
