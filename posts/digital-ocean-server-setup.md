@@ -91,7 +91,9 @@ ssh <USERNAME>@<SERVER_IP> -p <SSH_PORT>
 
 *The rest of this section will assume you working with a DO Droplet.*
 
-We will use Digital Ocean's Cloud Firewall service to create rules that limit traffic to the machine. Unlike approaches which involve modifying IP tables this method will not consume system resources.
+We will use Digital Ocean's Cloud Firewall service to create rules that limit traffic to the machine.
+
+Unlike approaches which involve modifying IP tables this method will not consume system resources.
 
 It will however mean we cannot implement protection through port knocking.
 
@@ -304,7 +306,7 @@ You should find that your site configuration file has been modified by certbot.
 ## References
 
 An article by my friend, outlining very similar steps he took:
-- [Securing an Ubuntu droplet, by Adil Parvez](https://blog.adilparvez.com/post/2016/06/30/1/server-setup.html)
+- [Securing an Ubuntu droplet](https://blog.adilparvez.com/post/2016/06/30/1/server-setup.html), by Adil Parvez
 
 Vendor articles:
 - [Setting up an Ubuntu droplet](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-16-04)
