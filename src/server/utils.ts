@@ -17,10 +17,13 @@ marked.setOptions({
   smartLists: true,
   smartypants: false,
   highlight: (code, lang) => {
-    if(lang == 'math') {
+    if(typeof lang == 'undefined') {
+      return code
+    } else if(lang == 'math') {
       return katex.renderToString(code)
+    } else {
+      return hljs.highlightAuto(code).value
     }
-    return hljs.highlightAuto(code).value
   }
 })
 
