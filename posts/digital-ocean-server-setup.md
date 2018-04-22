@@ -20,7 +20,7 @@ SSH into the machine:
 ssh root@<SERVER_IP>
 ```
 
-You will be prompted for root authentication, by password usually.
+You will be prompted for root authentication, by password usually, unless your ssh key is known to Digital Ocean.
 
 Create a new user and add it to the sudo group.
 
@@ -33,7 +33,7 @@ gpasswd -a <USERNAME> sudo
 
 **Back on the client** we generate an SSH key-pair (if we do not already have one), and then transfer the public key to the server:
 
-Copy the public key, usually kept at ```~/.ssh/id_rsa.pub```, to your clipboard.
+Copy the public key, usually kept at `~/.ssh/id_rsa.pub`, to your clipboard.
 
 **On the server** create an SSH profile for the new user.
 
@@ -42,11 +42,10 @@ su - <USERNAME>
 mkdir ~/.ssh
 chmod 700 ~/.ssh
 ```
-Create a file called ```authorized_keys``` under this directory and paste your key into it. Then restrict the permissions of the file.
+Create a file called `authorized_keys` under this directory and paste your key into it. Then restrict the permissions of the file.
 
 ```
 chmod 600 ~/.ssh/authorized_keys
-exit
 ```
 
 ### Disable password authentication
@@ -57,17 +56,20 @@ Before attempting to disable password authentication verify that you can login t
 ssh <USERNAME>@<SERVER_IP>
 ```
 
-After that is done edit the SSH daemon configuration, usually kept at ```etc/ssh/sshd_config```, **on the server** with sudo privileges.
+After that is done edit the SSH daemon configuration, usually kept at `etc/ssh/sshd_config`, **on the server** with sudo privileges.
 
 Ensure following key-value pairs are present:
 
 ```
-PasswordAuthentication no
+PermitRootLogin no
 PubkeyAuthentication yes
 ChallengeResponseAuthentication no
+PasswordAuthentication no
 ```
 
-You may also want to change the default SSH port to mitigate against brute force attacks (security through obscurity).
+You may also want to change the default SSH port to mitigate against brute force attacks (security through obscurity) and keep a clean log file.
+
+Ensure it is a port that can only be opened by a privileged user (i.e. one below 1024). Credit to [Daniel Li](http://danyll.com/) for this point.
 
 ```
 Port <SSH_PORT>
@@ -89,18 +91,34 @@ ssh <USERNAME>@<SERVER_IP> -p <SSH_PORT>
 
 *The rest of this section will assume you working with a DO Droplet.*
 
-We will use Digital Ocean's Cloud Firewall service to create rules that limit traffic to the machine. Unlike approaches which involve modifying IP tables this method will not consume system resources. It will however mean we cannot implement protection through port knocking.
+We will use Digital Ocean's Cloud Firewall service to create rules that limit traffic to the machine. Unlike approaches which involve modifying IP tables this method will not consume system resources.
+
+It will however mean we cannot implement protection through port knocking.
 
 Create the following inbound rules on the dashboard:
 1. one to permit HTTPS traffic,
 2. another to permit HTTP traffic (optional),
 3. and another to permit TCP connections through the SSH port configured above.
 
+If you are using Digital Ocean now would be a good time to power down the Droplet and create a snapshot.
+
+```
+sudo poweroff
+```
+
+## Port knocking
+
+Changing the SSH port will not stop a determined attacker from finding it by a port scan.
+
+Pork knocking involves having a total firewall and only opening a port to an IP in response to the correct sequence of port 'knocks'.
+
+Take a look at [kockd](http://www.zeroflux.org/projects/knock), or if you want something more secure [knockknock](https://moxie.org/software/knockknock/) and [fwknop](http://www.cipherdyne.org/fwknop/).  
+
 ## Purchase a domain
 
-Now is a good time to purchase a domain and point it to your machine's IPs.
+Now is a good time to purchase a domain from a registrar and point it to your machine's IPs by setting DNS records.
 
-On Google Domains basic DNS records could look like:
+For example, basic DNS records as set on Google Domains look like:
 
 | Name | Type  | TTL  | Data           |
 | :--- | :---- | :--- | :------------- |
@@ -108,9 +126,11 @@ On Google Domains basic DNS records could look like:
 | @    | AAA   | 1h   | &lt;IPv6&gt;   |
 | www  | CNAME | 1h   | &lt;DOMAIN&gt; |
 
+Note that it might take a while for your own ISP's DNS servers to be updated with the mapping.
+
 ## Web server
 
-Install NGINX webserver (another sensible option is Caddy).
+Install nginx webserver (another sensible option is Caddy), e.g. from the Ubuntu PPA.
 
 ```
 sudo apt-get update
@@ -126,60 +146,166 @@ systlemctl status nginx
 curl -Is <SERVER_IP> | head -n 1
 ```
 
-Update the default config, usually kept at ```/etc/nginx/sites-available/default```, with the domain name.
+Supply a site configuration file.
 
 ```
-...
-sever_name <DOMAIN> www.<DOMAIN>
-...
-
-# Verify the changes have taken effect
-curl -Is <DOMAIN> | head -n 1
+sudo touch /etc/nginx/conf.d/<DOMAIN>.conf
 ```
 
-If the server does not reload automatically then run ```sudo systemctl reload nginx```.
+Example configuration for a server that serves static files and proxies an application server on 8080:
+
+```
+server {
+  listen 80 default_server;
+  listen [::]:80 default_server;
+  server_name <DOMAIN> www.<DOMAIN>;
+  root /var/www/<DOMAIN>;
+
+  location /static {
+    # First attempt to serve request as file, then
+    # as directory, then fall back to a 404.
+    try_files $uri $uri/ =404;
+  }
+
+  location / {
+    proxy_pass http://localhost:8080;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host $host;
+    proxy_cache_bypass $http_upgrade;
+  }
+}
+```
+
+Remove the symlink to the default configuration file from `/etc/nginx/sites-enabled`. It is available for reference in `/etc/nginx/sites-available`.
+
+Check the vailidity of your nginx configuration.
+
+```
+sudo nginx -t
+```
+
+Make the root folder if you haven't already.
+
+```
+cd /var/wwww
+sudo mkdir <DOMAIN>
+sudo chgrp www-data bfdes.in # Change permissions group to one that nginx uses
+```
+
+You can use `scp` to move assets and application code to the server.
+
+```
+scp -P <SSH_PORT> </PATH/TO/FILE> <USERNAME>@<SERVER_IP>:</PATH/TO/DEST>
+```
+
+Setup your application to run if necessary and ensure it restarts when the server boots, perhaps by installing a crontab.
+
+If the server does not reload automatically run `sudo nginx -s reload`.
 
 ## SSL
 
-We will use Let's Encrypt certificate authority, which provides free SSL certificates to compatible clients.
+Enable HTTPS encryption by downloading an installing a (free) certificate from the Let's Encrypt certificate authority.
 
-We will use the default client Certbot, which is included with Ubuntu and integrates well with Nginx.
+Download and install the certbot client by Let's Encrypt.
 
-Update Certbot and it's Nginx plugin.
 ```
 sudo add-apt-repository ppa:certbot/certbot
 sudo apt-get update
-
-sudo apt-get install python-certbot-nginx
+sudo apt-get install certbot
 ```
+
+### Configure Nginx
+
+Modify the server block created earlier to allow the CA to fulfil the ACME challenge.
+
+```
+...
+location /.well-known/acme-challenge {
+  try_files $uri $uri/ =404;
+}
+...
+```
+
+Ask Certbot to carry out the HTTP challenge and issue the certificate.
+
+```
+sudo certbot certonly --webroot -w /var/www/<DOMAIN> -d www.<DOMAIN> -d <DOMAIN>
+```
+
+Successful authentication results in the client creating two files:
+
+- The certficate at `/etc/letsencrypt/live/www.<DOMAIN>/fullchain.pem`
+- The key file at `/etc/letsencrypt/live/www.<DOMAIN>/privkey.pem`
+
+Point nginx to the certificate by modifying your site configuration file.
+
+```
+server {
+  listen 80 default_server;
+  listen [::]:80 default_server;
+  server_name <DOMAIN> www.<DOMAIN>;
+
+  location /.well-known/acme-challenge {
+    try_files $uri $uri/ =404;
+  }
+
+  return 301 https://$server_name$request_uri;
+}
+
+server {
+  listen 443 ssl default_server;
+  listen [::]:443 ssl default_server;
+  server_name <DOMAIN> www.<DOMAIN>;
+  ssl_certificate /etc/letsencrypt/live/<DOMAIN>/fullchain.pem;
+  ssl_certificate_key /etc/letsencrypt/live/www.<DOMAIN>/privkey.pem;
+  root /var/www/<DOMAIN>;
+  gzip on; # DO NOT use with SSL when serving sensitive data
+
+  location /static {
+    try_files $uri $uri/ =404;
+  }
+
+  location / {
+    ...
+    # As before
+    ...
+  }
+}
+```
+
+Using your browser verify that traffic is encrypted, you may also wish to check that HTTP requests are promoted to HTTPS.
+
+Install a crontab to renew the certificate at least once every three months.
+
+```
+sudo crontab -e # Use the root's crontab
+# Then add this line to the file
+0 0 1 JAN,MAR,MAY,JUL,SEP,NOV * /usr/bin/certbot renew --quiet 
+```
+
+This is another good time to backup the Droplet.
+
+### Certbot plugin for Nginx
+
+An alternative approach is to use the nginx plugin provided by certbot to automate the renewal process.
 
 Use the plugin to reconfigure Nginx and enable automatic certificate renewal.
 
 ```
+# After installing certbot
+sudo apt-get install python-certbot-nginx
 sudo certbot --nginx -d <DOMAIN> -d www.<DOMAIN>
 ```
 
-Using your browser verify that traffic is encrypted, you may also wish to check that HTTP requests are promoted to HTTPS if this is enabled.
-
-Verify that Cerbot is correctly renewing certificates.
-
-```
-sudo certbot renew --dry-run
-```
-
-If you are using Digital Ocean now would be a good time to power down the Droplet and create a snapshot.
-
-```
-sudo poweroff
-```
+You should find that your site configuration file has been modified by certbot.
 
 ## References
 
 An article by my friend, outlining very similar steps he took:
 - [Securing an Ubuntu droplet, by Adil Parvez](https://blog.adilparvez.com/post/2016/06/30/1/server-setup.html)
 
-Digital Ocean community articles:
+Vendor articles:
 - [Setting up an Ubuntu droplet](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-16-04)
-- [Setting up Nginx](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-16-04)
-- [Notes on Let's Encrypt](https://www.digitalocean.com/community/tutorials/an-introduction-to-let-s-encrypt)
-- [Securing Nginx with Let's Encrypt](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-16-04)
+- [Securing Nginx with Let's Encrypt](https://www.nginx.com/blog/free-certificates-lets-encrypt-and-nginx/)
