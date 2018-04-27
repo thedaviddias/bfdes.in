@@ -1,4 +1,4 @@
-# [bfdes.in](https://www.bfdes.in)
+# bfdes.in
 
 [![Build Status](https://travis-ci.org/bfdes/bfdes.in.svg?branch=master)](https://travis-ci.org/bfdes/bfdes.in)
 
