@@ -47,9 +47,7 @@ Run `yarn test:watch` to run the tests using Jest in watch mode. Travis CI will 
 
 #### Heroku
 
-Deployment via Heroku should be straightforward owing to the changes in the 'heroku' branch.
-
-Fork this repo and clone the aforementioned branch, setting up Heroku deployment pipelines to listen for a code push.
+Fork this repo and set up Heroku deployment pipelines to listen for a code push.
 
 #### Bare metal or VM
 
