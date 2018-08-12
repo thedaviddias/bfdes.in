@@ -11,13 +11,13 @@ const router = Router()
 
 const headerFor = (initialData: any) =>
   `
-    <meta charset="utf8" >
+    <meta charset="utf8">
     <title>bfdes.in</title>
     <link href=${require('../shared/images/favicon.png')} rel="icon">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link href="https://unpkg.com/highlight.js/styles/github.css" rel="stylesheet">
     <link href="https://unpkg.com/katex/dist/katex.min.css" rel="stylesheet">
-    <script src='/static/bundle.js' defer></script>
+    <script src='/bundle.js' defer></script>
     <script>window.__INITIAL_DATA__ = ${JSON.stringify(initialData)}</script>
   `
 

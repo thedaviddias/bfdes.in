@@ -16,7 +16,7 @@ export default function factory(posts: Posts) {
 
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json())
-  app.use(express.static(path.resolve('dist')))
+  app.use(express.static(path.resolve('dist', 'static')))
 
   app.use('/', router)
 
