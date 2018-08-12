@@ -1,4 +1,4 @@
-import { Post, Posts } from './utils'
+import { Posts } from './utils'
 
 export default (posts: Posts) => ({
   fetchPosts: (tag?: string) => {
