@@ -116,7 +116,7 @@ class PostOr404 extends React.Component<Props, State> {
   }
 }
 
-const Wrapped: React.SFC<{slug: string}> = (props) => (
+const Wrapped: React.SFC<{slug?: string}> = (props) => (
   <PostContext.Consumer>
     {(post) => <PostOr404 slug={props.slug} context={{data: post}} />}
   </PostContext.Consumer>

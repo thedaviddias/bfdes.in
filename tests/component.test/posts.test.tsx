@@ -26,6 +26,7 @@ const fixture = [{
   tags: ['Java'],
   wordCount: 5
 }]
+
 const mockPromise = Promise.resolve(fixture);
 
 // It is not possible to mock named exports, so we mock the whole module and then unmock other utilities used by the component...
@@ -36,6 +37,7 @@ jest.mock('../../src/shared/utils', () => ({
 }))
 
 import { get } from '../../src/shared/utils'
+import { PostsContext } from '../../src/shared/containers';
 
 beforeAll(() => {
   configure({adapter: new Adapter()})
@@ -50,7 +52,9 @@ describe('<Posts />', () => {
     it('displays posts', () => {
       const wrapper = mount(
         <MemoryRouter>
-          <Posts staticContext={{data: fixture}}/>
+          <PostsContext.Provider value={fixture}>
+            <Posts />
+          </PostsContext.Provider>
         </MemoryRouter>
       )
       expect(wrapper.find('.post')).toHaveLength(2)

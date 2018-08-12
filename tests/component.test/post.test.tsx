@@ -4,6 +4,7 @@ import { configure, mount } from 'enzyme'
 const Adapter = require('enzyme-adapter-react-16')
 
 import { PostOr404 } from '../../src/shared/components'
+import { PostContext } from '../../src/shared/containers';
 
 type Post = {
   title: string,
@@ -45,7 +46,9 @@ describe('<PostOr404 />', () => {
     it('displays post', () => {
       const wrapper = mount(
         <MemoryRouter>
-          <PostOr404 staticContext={{data: fixture}}/>
+          <PostContext.Provider value={fixture}>
+            <PostOr404 />
+          </PostContext.Provider>
         </MemoryRouter>
       )
       expect(wrapper.find('.post')).toHaveLength(1)
@@ -60,7 +63,7 @@ describe('<PostOr404 />', () => {
     it('fetches the correct post', () => {
       (get as jest.Mock<Promise<Post>>).mockReturnValue(mockPromise)
       
-      const wrapper = mount(
+      mount(
         <MemoryRouter>
           <PostOr404 slug='my-first-post'/>
         </MemoryRouter>
