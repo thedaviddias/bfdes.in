@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import * as React from 'react'
-import { renderToString } from 'react-dom/server'
+import { renderToNodeStream } from 'react-dom/server'
 import { StaticRouter } from 'react-router'
 import { ServerStyleSheet } from 'styled-components' 
 
@@ -9,14 +9,14 @@ import conn from '../shared/services'
 
 const router = Router()
 
-const headerFor = (styleTags: string, initialData: any) =>
+const headerFor = (initialData: any) =>
   `
+    <meta charset="utf8" >
     <title>bfdes.in</title>
     <link href=${require('../shared/images/favicon.png')} rel="icon">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link href="https://unpkg.com/highlight.js/styles/github.css" rel="stylesheet">
     <link href="https://unpkg.com/katex/dist/katex.min.css" rel="stylesheet">
-    ${styleTags}
     <script src='/static/bundle.js' defer></script>
     <script>window.__INITIAL_DATA__ = ${JSON.stringify(initialData)}</script>
   `
@@ -33,26 +33,18 @@ router.get('/posts', (req, res) => {
   const data = Post.fetchPosts(tag)
 
   const sheet = new ServerStyleSheet()
-  const markup = renderToString(sheet.collectStyles(
+  const jsx = sheet.collectStyles(
     <StaticRouter location={req.url} context={{}}>
       <PostsContext.Provider value={data}>
         <App />
       </PostsContext.Provider>
     </StaticRouter>
-  ))
-  const styleTags = sheet.getStyleTags()
+  )
+  const stream = sheet.interleaveWithNodeStream(renderToNodeStream(jsx))
 
-  res.send(`
-    <!DOCTYPE html>
-    <html>
-      <head>
-        ${headerFor(styleTags, data)}
-      </head>
-      <body>
-        <div id="root">${markup}</div>
-      </body>
-    </html>
-  `)
+  res.write(`<html><head>${headerFor(data)}</head><body><div id="root">`)
+  stream.pipe(res, {end: false})
+  stream.on('end', () => res.end('</div></body></html>'))
 })
 
 // GET /posts/<slug>
@@ -62,26 +54,18 @@ router.get('/posts/:slug', (req, res) => {
   const data = Post.fetchPost(slug)
 
   const sheet = new ServerStyleSheet()
-  const markup = renderToString(sheet.collectStyles(
+  const jsx = sheet.collectStyles(
     <StaticRouter location={req.url} context={{}}>
       <PostContext.Provider value={data}>
         <App />
       </PostContext.Provider>
     </StaticRouter>
-  ))
-  const styleTags = sheet.getStyleTags()
+  )
+  const stream = sheet.interleaveWithNodeStream(renderToNodeStream(jsx))
 
-  res.send(`
-    <!DOCTYPE html>
-    <html>
-      <head>
-        ${headerFor(styleTags, data)}
-      </head>
-      <body>
-        <div id="root">${markup}</div>
-      </body>
-    </html>
-  `)
+  res.write(`<html><head>${headerFor(data)}</head><body><div id="root">`)
+  stream.pipe(res, {end: false})
+  stream.on('end', () => res.end('</div></body></html>'))
 })
 
 // GET /api/posts?tag=<tag>
@@ -112,24 +96,16 @@ router.get('/api/posts/:slug', (req, res) => {
 // 404 handler
 router.get('*', (req, res) => {
   const sheet = new ServerStyleSheet()
-  const markup = renderToString(sheet.collectStyles(
+  const jsx = sheet.collectStyles(
     <StaticRouter location={req.url} context={{}}>
-      <App />
+        <App />
     </StaticRouter>
-  ))
-  const styleTags = sheet.getStyleTags()
+  )
+  const stream = sheet.interleaveWithNodeStream(renderToNodeStream(jsx))
 
-  res.send(`
-    <!DOCTYPE html>
-    <html>
-      <head>
-        ${headerFor(styleTags, {})}
-      </head>
-      <body>
-        <div id="root">${markup}</div>
-      </body>
-    </html>
-  `)
+  res.write(`<html><head>${headerFor({})}</head><body><div id="root">`)
+  stream.pipe(res, {end: false})
+  stream.on('end', () => res.end('</div></body></html>'))
 })
 
 export default router
