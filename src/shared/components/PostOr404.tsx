@@ -6,7 +6,7 @@ import Spinner from './Spinner';
 import { parseDate, NetworkError, get, delay } from '../utils';
 import { PostContext } from '../containers';
 
-declare const __isBrowser__: boolean  // Injected by Webpack to indicate whether we are running JS on the client
+declare const __isBrowser__: boolean
 
 const Post: React.SFC<Post>
   = ({title, body, created, tags, wordCount}) => (

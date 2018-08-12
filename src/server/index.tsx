@@ -28,7 +28,7 @@ export default function factory(posts: Posts) {
     console.error(err.stack);
     res.json({
         error: {
-            message: (err.status == 500) ? '500: Internal Server error' : err.message
+            message: (err.status == 500) ? '500: Internal Server error' : `${err.status}: ${err.message}`
         }
     });
   });
