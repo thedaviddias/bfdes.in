@@ -1,6 +1,5 @@
 import * as fs from 'fs'
 import * as path from 'path' 
-import { createInterface } from 'readline'
 import * as marked from 'marked'
 import * as hljs from 'highlight.js'
 import * as katex from 'katex'
@@ -45,16 +44,17 @@ function parseFile(path: string): Post {
   const [meta, content] = fs.readFileSync(path, 'utf8')
     .split('# ----')
     .filter((_, i) => i != 0)
-    .map(_=> _.trim())
+    .map(_ => _.trim())
 
   const rest = meta.split(/[\r\n]+/)
-    .reduce((post, l, i) => {switch(i) {
-      case 0: return {title: parseMeta(l), ...post}
-      case 1: return {tags: parseMeta(l).split(' '), ...post}
-      case 2: return {created: toTimestamp(parseMeta(l)), ...post}
-    }}, {} as Post)
 
-  return {body: parseMarkdown(content), wordCount: getWordCount(content), ...rest}
+  return {
+    title: parseMeta(rest[0]),
+    tags: parseMeta(rest[1]).split(' '),
+    created: toTimestamp(parseMeta(rest[2])),
+    body: parseMarkdown(content),
+    wordCount: getWordCount(content)
+  }
 }
 
 export function parseFiles(dirname: string): Posts {
