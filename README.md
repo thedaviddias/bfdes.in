@@ -53,7 +53,7 @@ Fork this repo and set up Heroku deployment pipelines to listen for a code push.
 
 Running `yarn build:prod` generates two built bundles i) client code ii) server-side code.
 
-- Configure your webserver to serve the client bundle under /static
-- Run the server script under a Node.js process manager with a path to the folder containing posts.
+- Configure your webserver to serve the client bundle under /static, relative to the server bundle
+- Run the server bundle under a Node.js process manager with a path to the folder containing posts.
 
   Since Webpack [cannot bundle certain server-side dependencies](https://github.com/webpack/webpack/issues/1576), you will need to install dependencies specified in package.json before running any code.
