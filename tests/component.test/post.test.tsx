@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { configure, shallow, mount } from 'enzyme'
-import * as Adapter from 'enzyme-adapter-react-16'
+import { configure, mount } from 'enzyme'
+const Adapter = require('enzyme-adapter-react-16')
 
 import { PostOr404 } from '../../src/shared/components'
 
@@ -26,7 +26,7 @@ const mockPromise = Promise.resolve(fixture)
 jest.mock('../../src/shared/utils', () => ({
   parseDate: require.requireActual('../../src/shared/utils').parseDate,
   NetworkError: require.requireActual('../../src/shared/utils').NetworkError,
-  delay: (promise: Promise<any>, interval: number) => promise,
+  delay: (promise: Promise<any>, _: number) => promise,
   get: jest.fn()
 }))
 

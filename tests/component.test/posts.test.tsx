@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { configure, mount } from 'enzyme'
-import * as Adapter from 'enzyme-adapter-react-16'
+const Adapter = require('enzyme-adapter-react-16')
 
 import { Posts } from '../../src/shared/components'
 

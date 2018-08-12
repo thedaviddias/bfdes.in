@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { configure, shallow, mount } from 'enzyme'
-import * as Adapter from 'enzyme-adapter-react-16'
+const Adapter = require('enzyme-adapter-react-16')
 
 import Tags from '../../src/shared/components/Tags'
 
