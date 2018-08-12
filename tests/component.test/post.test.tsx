@@ -4,7 +4,7 @@ import { configure, mount } from 'enzyme'
 const Adapter = require('enzyme-adapter-react-16')
 
 import { PostOr404 } from '../../src/shared/components'
-import { PostContext } from '../../src/shared/containers';
+import { Context } from '../../src/shared/containers';
 
 type Post = {
   title: string,
@@ -46,9 +46,9 @@ describe('<PostOr404 />', () => {
     it('displays post', () => {
       const wrapper = mount(
         <MemoryRouter>
-          <PostContext.Provider value={fixture}>
+          <Context.Post.Provider value={fixture}>
             <PostOr404 />
-          </PostContext.Provider>
+          </Context.Post.Provider>
         </MemoryRouter>
       )
       expect(wrapper.find('.post')).toHaveLength(1)

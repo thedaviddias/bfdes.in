@@ -4,7 +4,7 @@ import { renderToNodeStream } from 'react-dom/server'
 import { StaticRouter } from 'react-router'
 import { ServerStyleSheet } from 'styled-components' 
 
-import { App, PostsContext, PostContext } from '../shared/containers'
+import { App, Context } from '../shared/containers'
 import conn from '../shared/services'
 
 const router = Router()
@@ -35,9 +35,9 @@ router.get('/posts', (req, res) => {
   const sheet = new ServerStyleSheet()
   const jsx = sheet.collectStyles(
     <StaticRouter location={req.url} context={{}}>
-      <PostsContext.Provider value={data}>
+      <Context.PostStub.Provider value={data}>
         <App />
-      </PostsContext.Provider>
+      </Context.PostStub.Provider>
     </StaticRouter>
   )
   const stream = sheet.interleaveWithNodeStream(renderToNodeStream(jsx))
@@ -56,9 +56,9 @@ router.get('/posts/:slug', (req, res) => {
   const sheet = new ServerStyleSheet()
   const jsx = sheet.collectStyles(
     <StaticRouter location={req.url} context={{}}>
-      <PostContext.Provider value={data}>
+      <Context.Post.Provider value={data}>
         <App />
-      </PostContext.Provider>
+      </Context.Post.Provider>
     </StaticRouter>
   )
   const stream = sheet.interleaveWithNodeStream(renderToNodeStream(jsx))

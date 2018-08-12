@@ -4,6 +4,7 @@ import { configure, mount } from 'enzyme'
 const Adapter = require('enzyme-adapter-react-16')
 
 import { Posts } from '../../src/shared/components'
+import { Context } from '../../src/shared/containers';
 
 type Post = {
   title: string,
@@ -37,7 +38,6 @@ jest.mock('../../src/shared/utils', () => ({
 }))
 
 import { get } from '../../src/shared/utils'
-import { PostsContext } from '../../src/shared/containers';
 
 beforeAll(() => {
   configure({adapter: new Adapter()})
@@ -52,9 +52,9 @@ describe('<Posts />', () => {
     it('displays posts', () => {
       const wrapper = mount(
         <MemoryRouter>
-          <PostsContext.Provider value={fixture}>
+          <Context.PostStub.Provider value={fixture}>
             <Posts />
-          </PostsContext.Provider>
+          </Context.PostStub.Provider>
         </MemoryRouter>
       )
       expect(wrapper.find('.post')).toHaveLength(2)

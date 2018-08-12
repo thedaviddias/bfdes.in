@@ -3,8 +3,8 @@ import { match } from 'react-router';
 import Tags from './Tags';
 import NoMatch from './NoMatch';
 import Spinner from './Spinner';
-import { parseDate, NetworkError, get, delay } from '../utils';
-import { PostContext } from '../containers';
+import { parseDate, NetworkError, get, Post } from '../utils';
+import { Context } from '../containers';
 
 declare const __isBrowser__: boolean
 
@@ -20,14 +20,6 @@ const Post: React.SFC<Post>
       <div dangerouslySetInnerHTML={{__html: body}}/>
     </div>
   )
-
-type Post = {
-  title: string,
-  body: string,
-  created: number,
-  tags: string[],
-  wordCount: number
-}
 
 type Props = {
   slug?: string,
@@ -117,9 +109,9 @@ class PostOr404 extends React.Component<Props, State> {
 }
 
 const Wrapped: React.SFC<{slug?: string}> = (props) => (
-  <PostContext.Consumer>
+  <Context.Post.Consumer>
     {(post) => <PostOr404 slug={props.slug} context={{data: post}} />}
-  </PostContext.Consumer>
+  </Context.Post.Consumer>
 )
 
 export default Wrapped;

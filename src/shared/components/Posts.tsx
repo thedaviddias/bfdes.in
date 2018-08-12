@@ -3,18 +3,11 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Spinner from './Spinner';
 import Tags from './Tags';
-import { parseDate, parseQuery, get, delay, NetworkError } from '../utils';
-import { PostsContext } from '../containers';
+import { parseDate, parseQuery, get, delay, NetworkError, PostStub } from '../utils';
+import { Context } from '../containers';
 
 declare const __isBrowser__: boolean  // Injected by Webpack to indicate whether we are running JS on the client
 
-type Post = {
-  title: string,
-  slug: string,
-  wordCount: number,
-  tags: string[],
-  created: number
-}
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -45,17 +38,17 @@ Additionally, if the component is server rendered, then we supply posts in advan
 type Props = {
   tag?: string,
   context?: {
-    data: Post[]
+    data: PostStub[]
   }
 }
 
 type State = {
-  posts: Post[],
+  posts: PostStub[],
   loading: boolean,
   error: NetworkError
 }
 
-const PostStub: React.SFC<Post> 
+const PostStub: React.SFC<PostStub> 
   = ({ title, slug, wordCount, created, tags }) => (
     <li className='post'>
       <StyledLink to={`/posts/${slug}`}><h1>{title}</h1></StyledLink>
@@ -159,9 +152,9 @@ class Posts extends React.Component<Props, State> {
 }
 
 const Wrapped: React.SFC<{tag?: string}> = (props) => (
-  <PostsContext.Consumer>
+  <Context.PostStub.Consumer>
     {(posts) => <Posts tag={props.tag} context={{data: posts}} />}
-  </PostsContext.Consumer>
+  </Context.PostStub.Consumer>
 )
 
 export default Wrapped

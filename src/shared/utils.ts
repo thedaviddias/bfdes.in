@@ -22,6 +22,7 @@ export const parseQuery = (queryString: string) =>
     }, {} as {[s: string]: string})
 
 export type Post = {title: string, wordCount: number, body: string, tags: string[], created: number}
+export type PostStub = {title: string, wordCount: number, slug: string, tags: string[], created: number}
 export type Posts = {[s: string]: Post}
 
 export class NetworkError extends Error {
