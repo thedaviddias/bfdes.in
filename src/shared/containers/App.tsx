@@ -1,9 +1,9 @@
 import * as React from 'react';
 
 import { 
-  Redirect,
   Route,
-  Switch
+  Switch,
+  Redirect
 } from 'react-router-dom';
 
 import styled, { injectGlobal } from 'styled-components'
@@ -66,10 +66,10 @@ class App extends React.Component {
         <Route path='/' component={Sidebar} />
         <Wrapper id="content">
           <Switch>
-            <Route path='/' exact component={Posts} />
-            <Route path='/about' exact component={About} />
-            <Route path='/posts' exact component={withTag(Posts)} />
-            <Route path='/posts/:slug' exact component={withSlug(PostOr404)} />
+            <Route exact path='/' render={() => <Redirect to="/posts" />} />
+            <Route exact path='/about' component={About} />
+            <Route exact path='/posts' component={withTag(Posts)} />
+            <Route exact path='/posts/:slug' component={withSlug(PostOr404)} />
             <Route component={NoMatch} />
           </Switch>
         </Wrapper>

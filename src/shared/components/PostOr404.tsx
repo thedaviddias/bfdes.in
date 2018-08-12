@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { match } from 'react-router-dom';
+import { match } from 'react-router';
 import Tags from './Tags';
 import NoMatch from './NoMatch';
 import Spinner from './Spinner';
 import { parseDate, NetworkError, get, delay } from '../utils';
+import { PostContext } from '../containers';
 
 declare const __isBrowser__: boolean  // Injected by Webpack to indicate whether we are running JS on the client
 
@@ -30,7 +31,7 @@ type Post = {
 
 type Props = {
   slug?: string,
-  staticContext?: {
+  context?: {
     data: Post
   }
 }
@@ -41,7 +42,7 @@ type State = {
   error: NetworkError,
 }
 
-export function withSlug(Component: React.ComponentClass<{slug?: string}>) { 
+export function withSlug(Component: React.SFC<{slug?: string}>) { 
   return (props: {match: match<{slug: string}>}) => {
     const { match, ...rest } = props
     const { slug } = props.match.params
@@ -58,7 +59,7 @@ class PostOr404 extends React.Component<Props, State> {
       post = (window as any).__INITIAL_DATA__
       delete (window as any).__INITIAL_DATA__
     } else {
-      post = this.props.staticContext.data
+      post = this.props.context.data
     }
 
     this.state = {
@@ -115,4 +116,10 @@ class PostOr404 extends React.Component<Props, State> {
   }
 }
 
-export default PostOr404;
+const Wrapped: React.SFC<{slug: string}> = (props) => (
+  <PostContext.Consumer>
+    {(post) => <PostOr404 slug={props.slug} context={{data: post}} />}
+  </PostContext.Consumer>
+)
+
+export default Wrapped;

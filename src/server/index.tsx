@@ -3,11 +3,7 @@ import * as bodyParser from 'body-parser'
 import * as logger from 'morgan'
 import * as express from 'express'
 import { Request, Response, NextFunction } from 'express'
-import { renderToString } from 'react-dom/server'
-import * as React from 'react'
-import { matchPath } from 'react-router-dom'
 
-import App from '../shared/containers/App'
 import router from './router'
 import { Posts } from '../shared/utils';
 

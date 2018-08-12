@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Spinner from './Spinner';
 import Tags from './Tags';
 import { parseDate, parseQuery, get, delay, NetworkError } from '../utils';
+import { PostsContext } from '../containers';
 
 declare const __isBrowser__: boolean  // Injected by Webpack to indicate whether we are running JS on the client
 
@@ -43,7 +44,7 @@ Additionally, if the component is server rendered, then we supply posts in advan
 */
 type Props = {
   tag?: string,
-  staticContext?: {
+  context?: {
     data: Post[]
   }
 }
@@ -65,14 +66,13 @@ const PostStub: React.SFC<Post>
       </p>
     </li>
   )
+
 /** HOC to parse and supply the tag from React Router */
-export function withTag(Component: React.ComponentClass<{tag?: string}>) { 
+export function withTag(Component: React.SFC<{tag?: string}>) { 
   return (props: {location: Location}) => {
     const { location, ...rest } = props  
     const { tag } = parseQuery(location.search)
-
-    // Also pass on the rest of the parameters, which include static context
-    return tag != undefined ? <Component tag={tag} {...rest}/> : <Component {...rest}/>
+    return tag != undefined ? <Component tag={tag} {...rest} /> : <Component {...rest} />
   }
 }
 
@@ -92,7 +92,7 @@ class Posts extends React.Component<Props, State> {
       posts = (window as any).__INITIAL_DATA__
       delete (window as any).__INITIAL_DATA__   // (1)
     } else {
-      posts = this.props.staticContext.data
+      posts = this.props.context.data
     }
 
     this.state = {
@@ -158,4 +158,10 @@ class Posts extends React.Component<Props, State> {
   }
 }
 
-export default Posts;
+const Wrapped: React.SFC<{tag?: string}> = (props) => (
+  <PostsContext.Consumer>
+    {(posts) => <Posts tag={props.tag} context={{data: posts}} />}
+  </PostsContext.Consumer>
+)
+
+export default Wrapped
