@@ -9,8 +9,9 @@ Comprehensive documentation to secure a Digital Ocean Ubuntu 16.04 'Droplet', an
 ## SSH
 
 We disable root login and only allow login to a new user using SSH keys.
-- username/password logins are open to attack
-- root user can make broad changes
+
+* username/password logins are open to attack
+* root user can make broad changes
 
 ### Create a new user
 
