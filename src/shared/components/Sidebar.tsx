@@ -7,6 +7,7 @@ const Sidebar = styled.aside`
   height: 100vh;
   position: fixed;
   width: 20vw;
+  min-width: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
