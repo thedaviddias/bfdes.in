@@ -1,6 +1,7 @@
 const [client, server] = require('./base.config');
+const mode = 'production'
 
 module.exports = [
-  client,
-  server
+  {...client, mode, },
+  {...server, mode, }
 ]

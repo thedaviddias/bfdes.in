@@ -7,12 +7,12 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build:dev": "webpack -w --mode development --config webpack/dev.config.js",
+    "build:dev": "webpack -w --config=webpack/dev.config.js",
     "serve:dev": "nodemon dist/server.js ./posts",
-    "build:prod": "webpack --mode production --config webpack/prod.config.js",
+    "build:prod": "webpack --config=webpack/prod.config.js",
     "serve:prod": "node dist/server.js ./posts",
     "test": "jest",
-    "test:watch": "jest --watch",
+    "test:watch": "jest --w",
     "postinstall": "yarn run build:prod"
   },
   "dependencies": {
