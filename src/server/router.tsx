@@ -103,7 +103,7 @@ router.get('*', (req, res) => {
   )
   const stream = sheet.interleaveWithNodeStream(renderToNodeStream(jsx))
 
-  res.write(`<html><head>${headerFor({})}</head><body><div id="root">`)
+  res.write(`<html><head>${headerFor(null)}</head><body><div id="root">`)
   stream.pipe(res, {end: false})
   stream.on('end', () => res.end('</div></body></html>'))
 })
