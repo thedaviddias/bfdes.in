@@ -22,7 +22,7 @@ const headerFor = (initialData: any) =>
   `
 
 // GET / is an alias for GET /posts
-router.get('/', (req, res) => {
+router.get('/', (_, res) => {
   res.redirect('/posts')
 })
 
