@@ -10,10 +10,7 @@ import { Posts } from '../shared/utils';
 export default function factory(posts: Posts) {
   const app = express()
 
-  if(process.env.NODE_ENV == 'development') {
-    app.use(logger('dev'))
-  }
-
+  app.use(logger('dev'))
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json())
   app.use(express.static(path.resolve('dist', 'static')))
