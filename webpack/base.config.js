@@ -60,10 +60,5 @@ module.exports = [{
       __isBrowser__: 'false'
     })
   ],
-  target: 'node',
-  externals: [
-    // Every non-relative module is external
-    // abc -> require("abc")
-    /^[a-z\-0-9]+$/
-  ]
+  target: 'node'
 }]
