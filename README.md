@@ -10,8 +10,8 @@ When the server boots all the documents are parsed into an object that can be qu
 
 ### Requirements:
 
-* Node 8.10.0
-* Yarn 1.3.2 or greater
+* Node 8.x
+* Yarn 1.5.x
 
 ### Usage:
 
@@ -37,11 +37,11 @@ and the name of the markdown file should correspond to the slug of its post.
 
 Then (also) run `yarn serve:dev` to serve the app on port 8080 using Nodemon.
 
-There is no dev server with hot reload facility because the point of SSR app development is to observe the static and traditional render.
-
 #### Testing
 
-Run `yarn test:watch` to run the tests using Jest in watch mode. Travis CI will also run this test suite for every code push to master.
+Run `yarn test:watch` to run the tests using Jest in watch mode.
+
+Travis CI will also run this test suite for every code push to master.
 
 ### Deployment:
 
@@ -54,12 +54,14 @@ Fork this repo and set up Heroku deployment pipelines to listen for a code push.
 Running `yarn build:prod` generates two built bundles i) client code ii) server-side code.
 
 * Run the server bundle under a Node.js process manager with a path to the folder containing posts.
-* Optional: Configure your webserver to serve the client bundle under /bundle.js, and proxy all other requests to the Node app
+* Optional: Configure your webserver to serve dist/static under /, and proxy other requests to Express  
 
-## Known issues
+### Known issues:
 
 * Building the app will generate a couple of warnings:
-  * The client size bundle exceeds the recommended size.
+  * 'bundle.js exceeds the recommended size'
+
     Ordinarily this would be an issue, but we are streaming the first page for a fast paint, so it is not so bad.
-  * From bundling Express: 'the request of a dependency is an expression'.
+  * From bundling Express: 'the request of a dependency is an expression'
+
     Bundling server-side modules with Webpack has [always been problematic](https://github.com/webpack/webpack-dev-server/issues/212).
