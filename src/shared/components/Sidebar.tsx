@@ -8,6 +8,7 @@ const Sidebar = styled.aside`
   position: fixed;
   width: 20vw;
   min-width: 200px;
+  max-width: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,6 +30,8 @@ const Sidebar = styled.aside`
   @media only screen and (max-device-width : 640px) {
     height: 15vh;
     width: 100%;
+    min-width: 0;
+    max-width: none;
     padding: 1vh;
 
     .nav {
