@@ -68,5 +68,9 @@
     "moduleNameMapper": {
       "\\.(svg|jpeg)$": "<rootDir>/tests/setup/assetTransformer.js"
     }
+  },
+  "nodemonConfig": {
+    "watch": ["posts", "dist/server.js"],
+    "ext": "md,js"
   }
 }
