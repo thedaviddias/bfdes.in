@@ -15,17 +15,6 @@ export default function factory(posts: Posts) {
   app.use(mode == 'production' ? logger('common') : logger('dev'))
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json())
-
-  if(mode == 'production'){
-    app.use((req, res, next) => {
-      if(req.secure) {
-        next()
-      } else {
-        res.redirect(`https://${req.headers.host}${req.url}`)  // Promote to HTTPS
-      }
-    })
-  }
-
   app.use(express.static(path.resolve('dist', 'static')))
   app.use('/', router)
 
