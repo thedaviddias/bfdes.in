@@ -17,7 +17,7 @@ const headerFor = (initialData: any) =>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link href="https://unpkg.com/highlight.js/styles/github.css" rel="stylesheet">
     <link href="https://unpkg.com/katex/dist/katex.min.css" rel="stylesheet">
-    <script src='/bundle.js' defer></script>
+    <script src='/javascripts/bundle.js' defer></script>
     <script>window.__INITIAL_DATA__ = ${JSON.stringify(initialData)}</script>
   `
 

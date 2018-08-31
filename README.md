@@ -58,10 +58,6 @@ Running `yarn build:prod` generates two built bundles i) client code ii) server-
 
 ### Known issues:
 
-* Building the app will generate a couple of warnings:
-  * 'bundle.js exceeds the recommended size'
+* From bundling Express: 'the request of a dependency is an expression'
 
-    Ordinarily this would be an issue, but we are streaming the first page for a fast paint, so it is not so bad.
-  * From bundling Express: 'the request of a dependency is an expression'
-
-    Bundling server-side modules with Webpack has [always been problematic](https://github.com/webpack/webpack-dev-server/issues/212).
+  Bundling server-side modules with Webpack has [always been problematic](https://github.com/webpack/webpack-dev-server/issues/212).
