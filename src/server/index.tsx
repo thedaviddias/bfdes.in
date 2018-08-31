@@ -8,13 +8,25 @@ import router from './router'
 import { Posts } from '../shared/utils';
 
 export default function factory(posts: Posts) {
-  const app = express()
+  const mode = process.env.NODE_ENV
 
-  app.use(logger('dev'))
+  const app = express()
+  // Apply middleware stack
+  app.use(mode == 'production' ? logger('common') : logger('dev'))
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json())
-  app.use(express.static(path.resolve('dist', 'static')))
 
+  if(mode == 'production'){
+    app.use((req, res, next) => {
+      if(req.secure) {
+        next()
+      } else {
+        res.redirect(`https://${req.headers.host}${req.url}`)  // Promote to HTTPS
+      }
+    })
+  }
+
+  app.use(express.static(path.resolve('dist', 'static')))
   app.use('/', router)
 
   // Error handler
