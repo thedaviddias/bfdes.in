@@ -30,6 +30,16 @@ module.exports = [{
           limit: 8192  // Beyond this limit do not inline files, delegate processing to file-loader
         }
       }
+    }, {
+      test: /\.css$/,
+      include: path.resolve(__dirname, '../src/browser'),
+      use: {
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+          outputPath: 'styles/'
+        }
+      }
     }]
   },
   plugins: [

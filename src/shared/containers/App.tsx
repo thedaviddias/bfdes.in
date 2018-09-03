@@ -6,8 +6,6 @@ import {
   Redirect
 } from 'react-router-dom';
 
-import styled, { injectGlobal } from 'styled-components'
-
 import {
   Sidebar,
   About,
@@ -19,52 +17,12 @@ import {
 import { withTag } from '../components/Posts'
 import { withSlug } from '../components/PostOr404'
 
-injectGlobal`
-  html, body {
-    margin: 0;
-    height: 100%;
-
-    --dark: #202020;
-    --grey: #333;
-    --light: #767676;
-    --white: #fff;
-    --blue: #4078c0;
-    
-    font-family: 'Roboto', sans-serif;
-    line-height: 1.375em;
-    font-size: 1em;
-    color: var(--grey);
-  }
-
-  #root {
-    height: 100%;
-  }
-`
-
-const Wrapper = styled.div`
-  padding: 4em;
-  display: grid;
-  grid-template-columns: 20vw auto;
-  div, ul {
-    grid-column-start: 2;
-  }
-
-  @media only screen and (max-device-width : 640px) {
-    grid-template-columns: auto
-    grid-template-rows: 15vh auto;
-    div, ul {
-      grid-column-start: 1;
-      grid-row-start: 2;
-    }
-  }
-`
-
 class App extends React.Component {
   render() {
     return (
       <>
         <Route path='/' component={Sidebar} />
-        <Wrapper id="content">
+        <div id="content">
           <Switch>
             <Route exact path='/' render={() => <Redirect to="/posts" />} />
             <Route exact path='/about' component={About} />
@@ -72,7 +30,7 @@ class App extends React.Component {
             <Route exact path='/posts/:slug' component={withSlug(PostOr404)} />
             <Route component={NoMatch} />
           </Switch>
-        </Wrapper>
+        </div>
       </>
     )
   }

@@ -1,35 +1,11 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import Spinner from './Spinner';
 import Tags from './Tags';
 import { parseDate, parseQuery, get, delay, NetworkError, PostStub } from '../utils';
 import { Context } from '../containers';
 
 declare const __isBrowser__: boolean  // Injected by Webpack to indicate whether we are running JS on the client
-
-
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: var(--dark);
-  &:hover, &:focus {
-    text-decoration: bold
-  }
-  &:after {
-    text-decoration: none
-  }
-`
-
-const Ul = styled.ul`
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-
-  li {
-    padding: 0;
-    margin: 0;
-  }
-`
 
 /*
 A tag may be supplied (by React Router) if the user has chosen to filter posts by tag.
@@ -51,7 +27,7 @@ type State = {
 const PostStub: React.SFC<PostStub> 
   = ({ title, slug, wordCount, created, tags }) => (
     <li className='post'>
-      <StyledLink to={`/posts/${slug}`}><h1>{title}</h1></StyledLink>
+      <Link to={`/posts/${slug}`}><h1>{title}</h1></Link>
       <p>
         {parseDate(created)}
         {' · '}<Tags tags={tags}/>
@@ -144,9 +120,9 @@ class Posts extends React.Component<Props, State> {
     }
 
     return (
-      <Ul>
+      <ul>
         {posts.map((post, i) => <PostStub key={i} {...post}/>)}
-      </Ul>
+      </ul>
     )
   }
 }

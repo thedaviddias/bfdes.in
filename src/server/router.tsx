@@ -2,7 +2,6 @@ import { Router } from 'express'
 import * as React from 'react'
 import { renderToNodeStream } from 'react-dom/server'
 import { StaticRouter } from 'react-router'
-import { ServerStyleSheet } from 'styled-components' 
 
 import { App, Context } from '../shared/containers'
 import conn from '../shared/services'
@@ -17,6 +16,7 @@ const headerFor = (initialData: any) =>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link href="https://unpkg.com/highlight.js/styles/github.css" rel="stylesheet">
     <link href="https://unpkg.com/katex/dist/katex.min.css" rel="stylesheet">
+    <link href="/styles/main.css" rel="stylesheet">
     <script src='/javascripts/bundle.js' defer></script>
     <script>window.__INITIAL_DATA__ = ${JSON.stringify(initialData)}</script>
   `
@@ -32,15 +32,14 @@ router.get('/posts', (req, res) => {
   const { tag } = req.query
   const data = Post.fetchPosts(tag)
 
-  const sheet = new ServerStyleSheet()
-  const jsx = sheet.collectStyles(
+  const jsx = 
     <StaticRouter location={req.url} context={{}}>
       <Context.PostStub.Provider value={data}>
         <App />
       </Context.PostStub.Provider>
     </StaticRouter>
-  )
-  const stream = sheet.interleaveWithNodeStream(renderToNodeStream(jsx))
+  
+  const stream = renderToNodeStream(jsx)
 
   res.write(`<html><head>${headerFor(data)}</head><body><div id="root">`)
   stream.pipe(res, {end: false})
@@ -53,15 +52,14 @@ router.get('/posts/:slug', (req, res) => {
   const { slug } = req.params
   const data = Post.fetchPost(slug)
 
-  const sheet = new ServerStyleSheet()
-  const jsx = sheet.collectStyles(
+  const jsx = (
     <StaticRouter location={req.url} context={{}}>
       <Context.Post.Provider value={data}>
         <App />
       </Context.Post.Provider>
     </StaticRouter>
   )
-  const stream = sheet.interleaveWithNodeStream(renderToNodeStream(jsx))
+  const stream = renderToNodeStream(jsx)
 
   res.write(`<html><head>${headerFor(data)}</head><body><div id="root">`)
   stream.pipe(res, {end: false})
@@ -95,13 +93,12 @@ router.get('/api/posts/:slug', (req, res) => {
 
 // 404 handler
 router.get('*', (req, res) => {
-  const sheet = new ServerStyleSheet()
-  const jsx = sheet.collectStyles(
+  const jsx = (
     <StaticRouter location={req.url} context={{}}>
         <App />
     </StaticRouter>
   )
-  const stream = sheet.interleaveWithNodeStream(renderToNodeStream(jsx))
+  const stream = renderToNodeStream(jsx)
 
   res.write(`<html><head>${headerFor(null)}</head><body><div id="root">`)
   stream.pipe(res, {end: false})

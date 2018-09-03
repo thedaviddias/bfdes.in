@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export default () => (
-  <div>
+  <div className='about'>
     <h1>About</h1>
 
     <p>Hello, my name is Bruno Fernandes and I work as a software developer.</p>
