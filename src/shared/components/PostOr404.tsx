@@ -12,7 +12,7 @@ const Post: React.SFC<Post>
   = ({title, body, created, tags, wordCount}) => (
     <div className='post'>
       <h1>{title}</h1>
-      <p>
+      <p className='meta'>
         {parseDate(created)}
         {' · '}<Tags tags={tags}/>
         {' · '}{wordCount} {wordCount != 1 ? ' words' : ' word'}

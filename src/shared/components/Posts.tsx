@@ -9,7 +9,7 @@ declare const __isBrowser__: boolean  // Injected by Webpack to indicate whether
 
 /*
 A tag may be supplied (by React Router) if the user has chosen to filter posts by tag.
-Additionally, if the component is server rendered, then we supply posts in advance through static context.
+Additionally, if the component is server rendered, then we supply posts in advance React's context API.
 */
 type Props = {
   tag?: string,
@@ -27,8 +27,8 @@ type State = {
 const PostStub: React.SFC<PostStub> 
   = ({ title, slug, wordCount, created, tags }) => (
     <li className='post'>
-      <Link to={`/posts/${slug}`}><h1>{title}</h1></Link>
-      <p>
+      <Link to={`/posts/${slug}`} className='nav-item'><h1>{title}</h1></Link>
+      <p className='meta'>
         {parseDate(created)}
         {' · '}<Tags tags={tags}/>
         {' · '}{wordCount} {wordCount != 1 ? 'words' : 'word'}
@@ -50,7 +50,7 @@ class Posts extends React.Component<Props, State> {
     super(props)
 
     /*
-    On the server posts are supplied through static context,
+    On the server posts are supplied using React's Context API,
     but on the client a deferred render occurs and this DOM must match that rendered on the server.
     To ensure this happens we need to supply the data through the window too.
 
@@ -120,7 +120,7 @@ class Posts extends React.Component<Props, State> {
     }
 
     return (
-      <ul>
+      <ul id='posts'>
         {posts.map((post, i) => <PostStub key={i} {...post}/>)}
       </ul>
     )

@@ -30,16 +30,15 @@ router.get('/', (_, res) => {
 router.get('/posts', (req, res) => {
   const Post = conn(req.app.get('posts'))
   const { tag } = req.query
-  const data = Post.fetchPosts(tag)
-
-  const jsx = 
+  const data = Post.fetchPosts(tag)    
+  
+  const stream = renderToNodeStream(
     <StaticRouter location={req.url} context={{}}>
       <Context.PostStub.Provider value={data}>
         <App />
       </Context.PostStub.Provider>
     </StaticRouter>
-  
-  const stream = renderToNodeStream(jsx)
+  )
 
   res.write(`<html><head>${headerFor(data)}</head><body><div id="root">`)
   stream.pipe(res, {end: false})
@@ -52,14 +51,13 @@ router.get('/posts/:slug', (req, res) => {
   const { slug } = req.params
   const data = Post.fetchPost(slug)
 
-  const jsx = (
+  const stream = renderToNodeStream(
     <StaticRouter location={req.url} context={{}}>
       <Context.Post.Provider value={data}>
         <App />
       </Context.Post.Provider>
     </StaticRouter>
   )
-  const stream = renderToNodeStream(jsx)
 
   res.write(`<html><head>${headerFor(data)}</head><body><div id="root">`)
   stream.pipe(res, {end: false})
@@ -93,12 +91,11 @@ router.get('/api/posts/:slug', (req, res) => {
 
 // 404 handler
 router.get('*', (req, res) => {
-  const jsx = (
+  const stream = renderToNodeStream(
     <StaticRouter location={req.url} context={{}}>
         <App />
     </StaticRouter>
   )
-  const stream = renderToNodeStream(jsx)
 
   res.write(`<html><head>${headerFor(null)}</head><body><div id="root">`)
   stream.pipe(res, {end: false})
