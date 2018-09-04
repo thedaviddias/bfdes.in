@@ -14,10 +14,9 @@ const headerFor = (initialData: any) =>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
     <title>bfdes.in</title>
     <link href=${require('../shared/images/favicon.png')} rel="icon">
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link href="https://unpkg.com/highlight.js/styles/github.css" rel="stylesheet">
-    <link href="https://unpkg.com/katex/dist/katex.min.css" rel="stylesheet">
     <link href="/styles/main.css" rel="stylesheet">
+    <link href="https://unpkg.com/highlight.js/styles/github.css" rel="stylesheet" defer>
+    <link href="https://unpkg.com/katex/dist/katex.min.css" rel="stylesheet" defer>
     <script src='/javascripts/bundle.js' defer></script>
     <script>window.__INITIAL_DATA__ = ${JSON.stringify(initialData)}</script>
   `
