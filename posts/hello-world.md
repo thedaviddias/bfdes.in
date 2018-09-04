@@ -47,17 +47,15 @@ This is the backend code responsible for generating the current page:
 // router.tsx
 router.get('/posts/:slug', (req, res) => {
   // ... //
-  const jsx = sheet.collectStyles(
-    // Use of a static router to inform App.tsx which cpt. to render
+  const stream = renderToNodeStream(
+    // Use of a static router to inform App.tsx which cpt. to render,
+    // and use of React's Context API to provide the post data
     <StaticRouter location={req.url} context={{}}>
-      // Use of React's Context API to provide view data
       <Context.Post.Provider value={data}>
         <App />
       </Context.Post.Provider>
     </StaticRouter>
   )
-  const stream =
-    sheet.interleaveWithNodeStream(renderToNodeStream(jsx))
   // Write the header, which includes the path to client JS
   res.write(
     `<html>
