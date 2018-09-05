@@ -11,7 +11,7 @@ const router = Router()
 const headerFor = (initialData: any) =>
   `
     <meta charset="utf8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>bfdes.in</title>
     <link href=${require('../shared/images/favicon.png')} rel="icon">
     <link href="/styles/main.css" rel="stylesheet">
@@ -40,7 +40,7 @@ router.get('/posts', (req, res) => {
     </StaticRouter>
   )
 
-  res.write(`<html><head>${headerFor(data)}</head><body><div id="root">`)
+  res.write(`<!DOCTYPE html><html lang="en"><head>${headerFor(data)}</head><body><div id="root">`)
   stream.pipe(res, {end: false})
   stream.on('end', () => res.end('</div></body></html>'))
 })
@@ -59,7 +59,7 @@ router.get('/posts/:slug', (req, res) => {
     </StaticRouter>
   )
 
-  res.write(`<html><head>${headerFor(data)}</head><body><div id="root">`)
+  res.write(`<!DOCTYPE html><html lang="en"><head>${headerFor(data)}</head><body><div id="root">`)
   stream.pipe(res, {end: false})
   stream.on('end', () => res.end('</div></body></html>'))
 })
@@ -97,7 +97,7 @@ router.get('*', (req, res) => {
     </StaticRouter>
   )
 
-  res.write(`<html><head>${headerFor(null)}</head><body><div id="root">`)
+  res.write(`<!DOCTYPE html><html lang="en"><head>${headerFor(null)}</head><body><div id="root">`)
   stream.pipe(res, {end: false})
   stream.on('end', () => res.end('</div></body></html>'))
 })
