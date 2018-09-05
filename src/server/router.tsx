@@ -12,6 +12,8 @@ const headerFor = (initialData: any) =>
   `
     <meta charset="utf8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Personal blog">
+    <meta name="author" content="Bruno Fernandes">
     <title>bfdes.in</title>
     <link href=${require('../shared/images/favicon.png')} rel="icon">
     <link href="/styles/main.css" rel="stylesheet">
