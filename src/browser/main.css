@@ -13,7 +13,7 @@
  * https://github.com/poole/hyde.
  */
  
- @import url('https://fonts.googleapis.com/css?family=Roboto');
+ @import url('https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono');
 
 * {
   -webkit-box-sizing: border-box;
@@ -128,7 +128,7 @@ hr {
 /* Code */
 code,
 pre {
-  font-family: Menlo, Monaco, "Courier New", monospace;
+  font-family: "Roboto Mono", monospace;
 }
 code {
   padding: .25em .5em;
