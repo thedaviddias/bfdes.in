@@ -6,7 +6,6 @@ import { StaticRouter } from 'react-router'
 import { App, Context } from '../shared/containers'
 import conn from '../shared/services'
 
-const mode = process.env.NODE_ENV
 const router = Router()
 
 const headerFor = (initialData: any) =>
@@ -17,7 +16,7 @@ const headerFor = (initialData: any) =>
     <meta name="author" content="Bruno Fernandes">
     <title>bfdes.in</title>
     <link href=${require('../shared/images/favicon.png')} rel="icon">
-    ${mode == 'production' ? '<link href="/styles/main.css" rel="stylesheet">' : ''}
+    <link href="/styles/main.css" rel="stylesheet">
     <script src='/javascripts/bundle.js' defer></script>
     <script>window.__INITIAL_DATA__ = ${JSON.stringify(initialData)}</script>
   `
