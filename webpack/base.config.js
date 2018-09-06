@@ -9,7 +9,7 @@ module.exports = [{
     path: path.resolve(__dirname, '../dist/static'),
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js']
+    extensions: ['.ts', '.tsx', '.js', '.css']
   },
   module: {
     rules: [{
@@ -28,16 +28,6 @@ module.exports = [{
           name: '[name].[ext]',
           outputPath: 'images/',
           limit: 8192  // Beyond this limit do not inline files, delegate processing to file-loader
-        }
-      }
-    }, {
-      test: /\.css$/,
-      include: path.resolve(__dirname, '../src/browser'),
-      use: {
-        loader: 'file-loader',
-        options: {
-          name: '[name].[ext]',
-          outputPath: 'styles/'
         }
       }
     }]
