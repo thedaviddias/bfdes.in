@@ -12,7 +12,8 @@
     "build:prod": "webpack --config=webpack/prod.config.js",
     "serve:prod": "node dist/server.js ./posts",
     "test": "jest",
-    "test:watch": "jest --w"
+    "test:watch": "jest --w",
+    "postinstall": "yarn run build:prod"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
