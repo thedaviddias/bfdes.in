@@ -3,7 +3,6 @@ import { hydrate } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom'
 import App from '../shared/containers/App';
 
-import '../shared/images/favicon.png'
 import './main.css'
 
 hydrate(
