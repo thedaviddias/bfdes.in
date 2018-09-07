@@ -13,7 +13,9 @@
  * https://github.com/poole/hyde.
  */
  
- @import url('https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono');
+ @import 'https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono';
+ @import 'https://unpkg.com/highlight.js/styles/github.css';
+ @import 'https://unpkg.com/katex/dist/katex.min.css';
 
 * {
   -webkit-box-sizing: border-box;

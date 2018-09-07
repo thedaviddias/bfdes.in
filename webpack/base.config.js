@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const path  = require('path');
-const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = [{
   entry: path.resolve(__dirname, '../src/browser', 'index.tsx'),
@@ -34,23 +33,18 @@ module.exports = [{
     }, {
       test: /\.css$/,
       include: path.resolve(__dirname, '../src/browser'),
-      use: [
-        MiniCSSExtractPlugin.loader,
-        {
-          loader: 'css-loader',
-          options: {
-            sourceMap: true
-          }
+      use: {
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+          outputPath: 'styles/'
         }
-      ]
+      }
     }]
   },
   plugins: [
     new webpack.DefinePlugin({
       __isBrowser__: 'true'
-    }),
-    new MiniCSSExtractPlugin({
-      filename: "styles/[name].css",
     })
   ],
   target: 'web'

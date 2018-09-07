@@ -1,4 +1,4 @@
-const [ client, server ] = require('./base.config');
+const [client, server] = require('./base.config');
 const mode = 'development'
 
 module.exports = [
