@@ -5,7 +5,7 @@ module.exports = [{
   entry: path.resolve(__dirname, '../src/browser', 'index.tsx'),
   output: {
     filename: 'javascripts/bundle.js',
-    publicPath: '/', // public URL of the output directory when referenced in a browser
+    publicPath: '/static/', // public URL of the output directory when referenced in a browser
     path: path.resolve(__dirname, '../dist/static'),
   },
   resolve: {
@@ -73,7 +73,7 @@ module.exports = [{
         loader: 'url-loader',
         options: {
           limit: 8192,
-          outputPath: 'images/',
+          outputPath: path.join('static', 'images'),
           name: '[name].[ext]',
           emitFile: false  // On the server we do not write the files to disk
         }

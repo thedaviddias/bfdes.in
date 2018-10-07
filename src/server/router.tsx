@@ -16,8 +16,8 @@ const headerFor = (initialData: any) =>
     <meta name="author" content="Bruno Fernandes">
     <title>bfdes.in</title>
     <link href=${require('../shared/images/favicon.png')} rel="icon">
-    <link href="/styles/main.css" rel="stylesheet">
-    <script src='/javascripts/bundle.js' defer></script>
+    <link href="/static/styles/main.css" rel="stylesheet">
+    <script src='/static/javascripts/bundle.js' defer></script>
     <script>window.__INITIAL_DATA__ = ${JSON.stringify(initialData)}</script>
   `
 
@@ -96,7 +96,7 @@ router.get('*', (req, res) => {
         <App />
     </StaticRouter>
   )
-
+  res.status(404)
   res.write(`<!DOCTYPE html><html lang="en"><head>${headerFor(null)}</head><body><div id="root">`)
   stream.pipe(res, {end: false})
   stream.on('end', () => res.end('</div></body></html>'))
