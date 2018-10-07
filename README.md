@@ -10,8 +10,8 @@ When the server boots all the documents are parsed into an object that can be qu
 
 ### Requirements:
 
-* Node 8.x
-* Yarn 1.5.x
+* Node 10.x
+* Yarn 1.10.x
 
 ### Usage:
 
