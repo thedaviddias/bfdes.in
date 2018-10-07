@@ -11,6 +11,7 @@
     "serve:dev": "nodemon dist/server.js ./posts",
     "build:prod": "webpack --config=webpack/prod.config.js",
     "serve:prod": "node dist/server.js ./posts",
+    "postinstall": "yarn build:prod",
     "test": "jest",
     "test:watch": "jest --w"
   },
