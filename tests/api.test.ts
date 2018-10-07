@@ -1,7 +1,8 @@
+import { Express } from 'express'
 import * as request from 'supertest'
 import factory from '../src/server'
 
-let app
+let app: Express
 
 beforeAll(() => {
   const fixture = {
