@@ -51,10 +51,13 @@ Fork this repo and set up Heroku deployment pipelines to listen for a code push.
 
 #### Bare metal or VM
 
-Running `yarn build:prod` generates two built bundles i) client code ii) server-side code.
+Running `yarn build:prod` generates two bundles
+* Client code under the /static folder
+* A single file of server-side code
 
-* Run the server bundle under a Node.js process manager with a path to the folder containing posts.
-* Optional: Configure your webserver to serve dist/static under /, and proxy other requests to Express  
+Run the server-side code with a path to the folder containing posts, and optionally configure a webserver to serve assets under /static.
+
+You may also wish to run multiple instances of the app and use your webserver as a load balancer.
 
 ### Known issues:
 
