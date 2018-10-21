@@ -8,7 +8,7 @@ import conn from '../shared/services'
 
 const router = Router()
 
-const headerFor = (initialData: any) =>
+const header = (initialData: any) =>
   `
     <meta charset="utf8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,7 +40,7 @@ router.get('/posts', (req, res) => {
     </StaticRouter>
   )
 
-  res.write(`<!DOCTYPE html><html lang="en"><head>${headerFor(data)}</head><body><div id="root">`)
+  res.write(`<!DOCTYPE html><html lang="en"><head>${header(data)}</head><body><div id="root">`)
   stream.pipe(res, {end: false})
   stream.on('end', () => res.end('</div></body></html>'))
 })
@@ -59,7 +59,7 @@ router.get('/posts/:slug', (req, res) => {
     </StaticRouter>
   )
 
-  res.write(`<!DOCTYPE html><html lang="en"><head>${headerFor(data)}</head><body><div id="root">`)
+  res.write(`<!DOCTYPE html><html lang="en"><head>${header(data)}</head><body><div id="root">`)
   stream.pipe(res, {end: false})
   stream.on('end', () => res.end('</div></body></html>'))
 })
@@ -97,7 +97,7 @@ router.get('*', (req, res) => {
     </StaticRouter>
   )
   res.status(404)
-  res.write(`<!DOCTYPE html><html lang="en"><head>${headerFor(null)}</head><body><div id="root">`)
+  res.write(`<!DOCTYPE html><html lang="en"><head>${header(null)}</head><body><div id="root">`)
   stream.pipe(res, {end: false})
   stream.on('end', () => res.end('</div></body></html>'))
 })
