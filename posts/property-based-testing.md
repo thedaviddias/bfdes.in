@@ -186,11 +186,9 @@ class SortingTest extends FlatSpec {
   // Context manager to give tests access to sample arrays
   def withFixture(testCode: Array[Int] => Boolean): Unit = {
     val maybeFailed = arrays.find(a => !testCode(a))
-    maybeFailed match {
-      case Some(a) =>
-        fail(a.mkString("[", ", ", "]"))
-      case _ => // Passed, do nothing
-    }
+    maybeFailed.foreach(a =>
+      fail(a.mkString("[", ", ", "]"))
+    )  // An `Option` is a container!
   }
 
   "mergeSort" should "produce a sorted array" in withFixture { array =>
