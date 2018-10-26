@@ -180,7 +180,7 @@ Using [ScalaTest](http://www.scalatest.org) as the test runner, the test-code en
 
 ```scala
 class SortingTest extends FlatSpec {
-  val rnd = new Random()
+  lazy val rnd = new Random()
   val maxSize = 20
 
   // Context manager to give tests access to sample arrays
