@@ -152,14 +152,14 @@ Here is one strategy to programmatically generate samples to verify the above:
 
 ```
 def arrays: Stream[Array[Int]] = {
-    def sample(size: Int): Array[Int] =
-      Array.fill(size)(rnd.nextInt())
+  def sample(size: Int): Array[Int] =
+    Array.fill(size)(rnd.nextInt())
 
-    def samples(size: Int): Stream[Array[Int]] =
-      Stream.fill(Math.max(1, size))(sample(size))
+  def samples(size: Int): Stream[Array[Int]] =
+    Stream.fill(Math.max(1, size))(sample(size))
 
-    Stream.range(0, maxSize).flatMap(samples)
-  }  // `maxSize` and `rnd` are set on the class
+  Stream.range(0, maxSize).flatMap(samples)
+}  // `maxSize` and `rnd` are set on the class
 ```
 
 Note:
@@ -169,11 +169,11 @@ Note:
 We also need a utility to put the keys of an array in a histogram to verify property (2):
 
 ```
-def histogram(a: Array[Int]): Map[Int, Int] =
-    a.foldLeft(Map.empty[Int, Int]) { (m, key) =>
-      val count = m.getOrElse(key, 1)
-      m + (key -> count)
-    }
+def histogram(a: Array[Int]): Map[Int, Int] = 
+  a.foldLeft(Map.empty[Int, Int]) { (m, key) =>
+    val count = m.getOrElse(key, 1)
+    m + (key -> count)
+  }
 ```
 
 Using [ScalaTest](http://www.scalatest.org) as the test runner, the test-code ends up being quite lean.
@@ -223,7 +223,7 @@ Here is the (naïve) strategy for sample generation, re-written to support Scala
 
 ```
 def unsaturated: Gen[Array[Int]] =
-    Gen.containerOf[Array, Int](Gen.posNum)
+  Gen.containerOf[Array, Int](Gen.posNum)
 ```
 
 Note that ScalaCheck will decide the maximum sample size to use when running the test.
@@ -232,10 +232,10 @@ To test cases where duplicate keys are common we modify the generator that creat
 
 ```
 def saturated: Gen[Array[Int]] = {
-    // One possible way of saturating the array with duplicate keys
-    val sized = Gen.sized(s => Gen.choose(0, Math.sqrt(s).toInt))
-    Gen.containerOf[Array, Int](sized)
-  }
+  // One possible way of saturating the array with duplicate keys
+  val sized = Gen.sized(s => Gen.choose(0, Math.sqrt(s).toInt))
+  Gen.containerOf[Array, Int](sized)
+}
 ```
 
 A stable sorting algorithm is one that ensures that any two keys which compare equally maintain their relative positions in the array. To test `mergeSort` is stable we create arrays loaded with tuples, sorting them by the second element in the tuple *and then* the first. We should find that the mutated array should be sorted with respect to a compound order which orders the tuples by comparing first elements and, if necessary, breaks ties on the second element. (Actually, this is the default ordering for tuples in Scala.)
