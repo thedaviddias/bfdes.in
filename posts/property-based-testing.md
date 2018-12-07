@@ -180,7 +180,7 @@ Using [ScalaTest](http://www.scalatest.org) as the test runner, the test-code en
 
 ```scala
 class SortingTest extends FlatSpec {
-  lazy val rnd = new Random()
+  val rnd = new Random()
   val maxSize = 20
 
   // Context manager to give tests access to sample arrays
@@ -188,7 +188,7 @@ class SortingTest extends FlatSpec {
     val maybeFailed = arrays.find(a => !testCode(a))
     maybeFailed.foreach(a =>
       fail(a.mkString("[", ", ", "]"))
-    )  // An `Option` is a container!
+    )
   }
 
   "mergeSort" should "produce a sorted array" in withFixture { array =>
@@ -206,7 +206,7 @@ class SortingTest extends FlatSpec {
 ```
 
 Again, a couple of language-specific features are employed that we should be aware of:
-* The `lazy` modifier means the random object is created once, and only at runtime
+* We exploit the fact `Option` is a container type to write succinct code to fail the test
 * `withFixture` is invoked in such a way that the method call looks like a control abstraction
 
 The strategy in use to generate samples does not adequately cover the situation where arrays to sort are saturated with duplicate keys. Additionally, the tests fail to verify that our implementation of MergeSort is stable. Both shortcomings can be addressed with extra code, but it is cleaner to do so with ScalaCheck.
