@@ -63,4 +63,4 @@ You may also wish to run multiple instances of the app and use your webserver as
 
 * From bundling Express: 'the request of a dependency is an expression'
 
-  Bundling server-side modules with Webpack has [always been problematic](https://github.com/webpack/webpack-dev-server/issues/212).
+  Bundling server-side modules with Webpack has [always been problematic](https://github.com/expressjs/express/issues/2832).
