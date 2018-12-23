@@ -42,10 +42,9 @@ export class NetworkError extends Error {
  */
 const client = (req: Request) => 
   fetch(req).then(res => 
-    res.json().then(data => {
-      const { status } = res
-      return (status >= 200 && status < 300) ? data : Promise.reject(new NetworkError(status, data.error.message))
-    })
+    res.json().then(data =>
+      res.ok ? data : Promise.reject(new NetworkError(res.status, data.error.message))
+    )
   )
 
 export const get = (url: string) => 
