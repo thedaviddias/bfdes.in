@@ -32,7 +32,7 @@ Consider the addition operation on integers. What conditions does it meet?
 * Associativity:
 
   ```math
-  \left( i + j \right) + k = i + \left( j + k \right) \space \forall \space i, j, k \in \mathbb{Z}
+  \( i + j \) + k = i + \( j + k \) \space \forall \space i, j, k \in \mathbb{Z}
   ```
 * Identity:
 
@@ -134,7 +134,7 @@ A sorting funciton can be fully descibed by two properties:
 1. it must permute its **input** to form its **output**,
 
    ```math
-   \left(a_i \mid i \in I \right) = \left(a'_i \mid i \in I \right)
+   \(a_i \mid i \in I \) = \(a'_i \mid i \in I \)
    ```
 
 2. it must totally-order its input to form its output (the comparer defines the total-ordering)
