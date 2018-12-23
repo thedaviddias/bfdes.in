@@ -19,7 +19,7 @@
     "express": "^4.16.4",
     "highlight.js": "^9.13.1",
     "katex": "^0.10.0",
-    "marked": "^0.5.2",
+    "marked": "0.3.18",
     "morgan": "^1.9.1",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
