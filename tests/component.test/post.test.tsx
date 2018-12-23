@@ -3,16 +3,9 @@ import { MemoryRouter } from 'react-router-dom'
 import { configure, mount } from 'enzyme'
 const Adapter = require('enzyme-adapter-react-16')
 
+import { Post } from '../../src/shared/utils'
 import { PostOr404 } from '../../src/shared/components'
 import { Context } from '../../src/shared/containers';
-
-type Post = {
-  title: string,
-  body: string,
-  wordCount: number,
-  tags: string[],
-  created: number
-}
 
 const fixture = {
   title: 'My first post',

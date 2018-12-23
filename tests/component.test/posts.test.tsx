@@ -3,16 +3,9 @@ import { MemoryRouter } from 'react-router-dom'
 import { configure, mount } from 'enzyme'
 const Adapter = require('enzyme-adapter-react-16')
 
+import { PostStub } from '../../src/shared/utils'
 import { Posts } from '../../src/shared/components'
 import { Context } from '../../src/shared/containers';
-
-type Post = {
-  title: string,
-  slug: string,
-  wordCount: number,
-  tags: string[]
-  created: number
-}
 
 const fixture = [{
   title: 'My first post',
@@ -68,7 +61,7 @@ describe('<Posts />', () => {
 
     it('displays posts', () => {
       // n.b. Slightly concerned about race conditions here
-      (get as jest.Mock<Promise<Post[]>>).mockReturnValue(mockPromise)
+      (get as jest.Mock<Promise<PostStub[]>>).mockReturnValue(mockPromise)
     
       const wrapper = mount(
         <MemoryRouter>
@@ -81,7 +74,7 @@ describe('<Posts />', () => {
     })
 
     it('fetches posts with the correct tag', () => {
-      (get as jest.Mock<Promise<Post[]>>).mockReturnValue(mockPromise)
+      (get as jest.Mock<Promise<PostStub[]>>).mockReturnValue(mockPromise)
 
       const wrapper = mount(
         <MemoryRouter>
@@ -97,7 +90,7 @@ describe('<Posts />', () => {
 
     it('displays error message for failed request', () => {
       const mockPromise = Promise.reject(new Error);  // In reality we would get an instance of NetworkError but it doesn't matter here.
-      (get as jest.Mock<Promise<Post[]>>).mockReturnValue(mockPromise)
+      (get as jest.Mock<Promise<PostStub[]>>).mockReturnValue(mockPromise)
 
       const wrapper = mount(
         <MemoryRouter>
