@@ -25,13 +25,13 @@ export type Post = {title: string, wordCount: number, body: string, tags: string
 export type PostStub = {title: string, wordCount: number, slug: string, tags: string[], created: number}
 export type Posts = {[s: string]: Post}
 
-export class NetworkError extends Error {
+export class RequestError extends Error {
   status: number
 
   constructor(status: number, message: string) {
     super(message)
     this.status = status
-    Error.captureStackTrace(this, NetworkError)
+    Error.captureStackTrace(this, RequestError)
   }
 }
 
@@ -43,7 +43,7 @@ export class NetworkError extends Error {
 const client = (req: Request) => 
   fetch(req).then(res => 
     res.json().then(data =>
-      res.ok ? data : Promise.reject(new NetworkError(res.status, data.error.message))
+      res.ok ? data : Promise.reject(new RequestError(res.status, data.error.message))
     )
   )
 

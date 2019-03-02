@@ -3,7 +3,7 @@ import { match } from 'react-router';
 import Tags from './Tags';
 import NoMatch from './NoMatch';
 import Spinner from './Spinner';
-import { parseDate, NetworkError, get, Post } from '../utils';
+import { parseDate, RequestError, get, Post } from '../utils';
 import { Context } from '../containers';
 
 declare const __isBrowser__: boolean
@@ -31,7 +31,7 @@ type Props = {
 type State = {
   post: Post,
   loading: boolean,
-  error: NetworkError,
+  error: RequestError,
 }
 
 export function withSlug(Component: React.SFC<{slug?: string}>) { 

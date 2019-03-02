@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import Spinner from './Spinner';
 import Tags from './Tags';
-import { parseDate, parseQuery, get, delay, NetworkError, PostStub } from '../utils';
+import { parseDate, parseQuery, get, delay, RequestError, PostStub } from '../utils';
 import { Context } from '../containers';
 
 declare const __isBrowser__: boolean  // Injected by Webpack to indicate whether we are running JS on the client
@@ -21,7 +21,7 @@ type Props = {
 type State = {
   posts: PostStub[],
   loading: boolean,
-  error: NetworkError
+  error: RequestError
 }
 
 const PostStub: React.SFC<PostStub> 
