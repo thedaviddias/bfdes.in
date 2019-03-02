@@ -121,7 +121,7 @@ class Posts extends React.Component<Props, State> {
 
     return (
       <ul id='posts'>
-        {posts.map((post, i) => <PostStub key={i} {...post}/>)}
+        {posts.map(post => <PostStub key={post.slug} {...post}/>)}
       </ul>
     )
   }
