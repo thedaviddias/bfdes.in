@@ -24,7 +24,7 @@ jest.mock('../../src/shared/utils', () => ({
   get: jest.fn()
 }))
 
-import { get, NetworkError } from '../../src/shared/utils'
+import { get, RequestError } from '../../src/shared/utils'
 
 beforeAll(() => {
   configure({adapter: new Adapter()})
@@ -80,7 +80,7 @@ describe('<PostOr404 />', () => {
     })
 
     it('displays <NoMatch /> when post does not exist', () => {
-      const mockPromise = Promise.reject(new NetworkError(404, "404: No post with that slug"));
+      const mockPromise = Promise.reject(new RequestError(404, "404: No post with that slug"));
       (get as jest.Mock<Promise<Post>>).mockReturnValue(mockPromise)
 
       const wrapper = mount(
