@@ -3,10 +3,14 @@ import { NavLink } from 'react-router-dom';
 
 export default () => (
   <aside id='sidebar'>
-    <img className='avatar' src={require('../images/avatar.jpg')} alt='Profile photo'></img>
+    <img className='avatar' src={require('../images/avatar.jpg')} alt='Profile photo' />
     <div id='nav'>
-      <NavLink to='/posts' className='nav-item' activeClassName='active'><h2>Blog</h2></NavLink>
-      <NavLink to='/about' className='nav-item' activeClassName='active'><h2>About</h2></NavLink>
+      <NavLink to='/posts' className='nav-item' activeClassName='active'>
+        <h2>Blog</h2>
+      </NavLink>
+      <NavLink to='/about' className='nav-item' activeClassName='active'>
+        <h2>About</h2>
+      </NavLink>
     </div>
   </aside>
 )
