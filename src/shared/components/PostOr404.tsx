@@ -3,7 +3,8 @@ import { match } from 'react-router';
 import Tags from './Tags';
 import NoMatch from './NoMatch';
 import Spinner from './Spinner';
-import { parseDate, RequestError, get, Post } from '../utils';
+import { get, RequestError } from '../http';
+import { parseDate, Post } from '../utils';
 import { Context } from '../containers';
 
 declare const __isBrowser__: boolean

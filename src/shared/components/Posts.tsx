@@ -2,14 +2,15 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import Spinner from './Spinner';
 import Tags from './Tags';
-import { parseDate, parseQuery, get, delay, RequestError, PostStub } from '../utils';
+import { get, RequestError } from '../http'
+import { parseDate, parseQuery, PostStub } from '../utils';
 import { Context } from '../containers';
 
 declare const __isBrowser__: boolean  // Injected by Webpack to indicate whether we are running JS on the client
 
 /*
 A tag may be supplied (by React Router) if the user has chosen to filter posts by tag.
-Additionally, if the component is server rendered, then we supply posts in advance React's context API.
+Additionally, if the component is server rendered, then we supply posts in advance ysing React's context API.
 */
 type Props = {
   tag?: string,
@@ -97,7 +98,7 @@ class Posts extends React.Component<Props, State> {
   private fetchPosts(tag: string): void {
     const url = tag == undefined ? '/api/posts' : `/api/posts?tag=${tag}`
     this.setState({loading: true}, () => 
-      delay(get(url), 250).then(posts =>
+      get(url).then(posts =>
         this.setState({posts, loading: false})
       ).catch(error =>
         this.setState({error, loading: false})
