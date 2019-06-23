@@ -25,11 +25,6 @@ beforeAll(() => {
   app = factory(fixture)
 })
 
-afterAll(() => {
-  // Let the app be garbage collected
-  app = null
-})
-
 describe('GET /posts', () => {
   test('all posts returned for GET /posts', () => 
     request(app)
