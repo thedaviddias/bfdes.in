@@ -2,20 +2,6 @@ import * as http from 'http'
 import factory from './index'
 import { parseFiles } from './utils'
 
-// Create an app given the path to its posts
-const posts = parseFiles(process.argv.pop())
-const app = factory(posts)
-
-// Attempt to normalize the port and store it on the app for reference
-const port = normalizePort(process.env.PORT || 8080)
-app.set('port', port)
-
-// Listen on provided port, on all network interfaces
-const server = http.createServer(app);
-server.listen(port)
-server.on('error', onError)
-server.on('listening', onListening)
-
 function normalizePort(val: number | string): number | string | boolean {
   const port = (typeof val === 'string') ? parseInt(val, 10) : val
   if(isNaN(port)) {
@@ -55,3 +41,16 @@ function onListening(): void {
   const bind = (typeof addr === 'string') ? `pipe ${addr}` : `port ${addr.port}`
   console.debug(`Express server listening on ${bind}`)
 }
+
+// Create an app given the path to its posts
+const posts = parseFiles(process.argv.pop())
+const app = factory(posts)
+
+// Attempt to normalize the port
+const port = normalizePort(process.env.PORT || 8080)
+
+// Listen on provided port, on all network interfaces
+const server = http.createServer(app);
+server.listen(port)
+server.on('error', onError)
+server.on('listening', onListening)
