@@ -15,10 +15,12 @@ export default function factory(posts: Posts) {
 
   // Apply middleware stack:
   // i) logger
-  app.use(mode == 'production' ? logger('common') : logger('dev'))
+  if(mode == 'production') {
+    app.use(logger('common'))
+  }
 
   // ii) request parser
-  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.urlencoded({ extended: false }))
   app.use(bodyParser.json())
 
   // ii) static server w/ gzip compression. Used in dev or on Heroku.
@@ -29,14 +31,17 @@ export default function factory(posts: Posts) {
   app.use('/', router)
 
   // Error handler
-  type NetworkError = {status?: number} & Error;
+  type RequestError = {status?: number} & Error;
 
-  app.use((err: NetworkError, req: Request, res: Response, next: NextFunction) => {
+  app.use((err: RequestError, req: Request, res: Response, next: NextFunction) => {
     res.status(err.status || 500);  // Server error if no status
     console.error(err.stack);
+    const message = (err.status == 500)
+      ? '500: Internal Server error'
+      : `${err.status}: ${err.message}`
     res.json({
         error: {
-            message: (err.status == 500) ? '500: Internal Server error' : `${err.status}: ${err.message}`
+            message,
         }
     });
   });
