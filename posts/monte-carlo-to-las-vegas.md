@@ -8,7 +8,7 @@ created: 2019-06-15
 
 The Monte Carlo class of algorithms are those which we can guarantee terminate in finite time but which may produce an incorrect result now and then. A Las Vegas algorithm on the other hand is guaranteed to produce a correct result, but we might only be able to obtain a probabilistic measure of its runtime.
 
-In certain cases it is possible to formulate a Las Vegas variant from the Monte Carlo variant of an algorithm. (It is not possible to go the other way -- can you see why?)
+In certain cases it is possible to formulate a Las Vegas variant from the Monte Carlo variant of an algorithm.
 
 The Rabin Karp substring search algorithm has this property. Suppose substring search algorithms are exposed as functions `f` that accept substrings `p` and return search functions for the text `t`:
 
@@ -87,7 +87,7 @@ def las_vegas(pattern):
 
 There are a couple of perfomance and memory usage penalties to be mindful of:
 
-* When working in a language that does not come with a tail-call optimizing compiler, an (iterative) implementation written from scratch could stop the algorithm consuming too many stack frames.
+* When working in a language that does not come with a tail-call optimizing compiler an (iterative) implementation written from scratch could stop the algorithm consuming too many stack frames.
 * Calling the original search function repeatedly will force recomputation of the factor responsible for removing the leading digit. This can be avoided by writing the implementation from scratch, as above.
 
 ## Further reading
