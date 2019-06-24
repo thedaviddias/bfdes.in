@@ -20,7 +20,3 @@ export const parseQuery = (queryString: string) =>
       params[key] = value ? decodeURIComponent(value.replace(/\+/g, ' ')) : '';
       return params;
     }, {} as {[s: string]: string})
-
-export type Post = {title: string, wordCount: number, body: string, tags: string[], created: number}
-export type PostStub = {title: string, wordCount: number, slug: string, tags: string[], created: number}
-export type Posts = {[s: string]: Post}

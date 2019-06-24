@@ -4,7 +4,6 @@ import { renderToNodeStream } from 'react-dom/server'
 import { StaticRouter } from 'react-router'
 
 import { App, Context } from '../shared/containers'
-import conn from '../shared/services'
 
 const router = Router()
 
@@ -28,9 +27,8 @@ router.get('/', (_, res) => {
 
 // GET /posts?tag=<tag>
 router.get('/posts', (req, res) => {
-  const Post = conn(req.app.get('posts'))
   const { tag } = req.query
-  const data = Post.fetchPosts(tag)    
+  const data = req.app.get('DB').all(tag)    
   
   const stream = renderToNodeStream(
     <StaticRouter location={req.url} context={{}}>
@@ -47,9 +45,8 @@ router.get('/posts', (req, res) => {
 
 // GET /posts/<slug>
 router.get('/posts/:slug', (req, res) => {
-  const Post = conn(req.app.get('posts'))
   const { slug } = req.params
-  const data = Post.fetchPost(slug)
+  const data = req.app.get('DB').get(slug)
 
   const stream = renderToNodeStream(
     <StaticRouter location={req.url} context={{}}>
@@ -68,16 +65,14 @@ router.get('/posts/:slug', (req, res) => {
 // Fetch all the posts in chronological order and filter by tag if supplied
 router.get('/api/posts', (req, res) => {
   const { tag } = req.query
-  const Post = conn(req.app.get('posts'))
-  res.status(200).json(Post.fetchPosts(tag))
+  res.status(200).json(req.app.get('DB').all(tag))
 })
 
 // GET /api/posts/<slug>
 // Fetch a single post; these are uniquely identfied by their slugs
 router.get('/api/posts/:slug', (req, res) => {
   const { slug } = req.params
-  const Post = conn(req.app.get('posts'))
-  const postOrNone = Post.fetchPost(slug)
+  const postOrNone = req.app.get('DB').get(slug)
   if(postOrNone != null) {
     res.status(200).json(postOrNone)
   } else {

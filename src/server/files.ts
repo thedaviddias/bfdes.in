@@ -4,8 +4,6 @@ import * as marked from 'marked'
 import * as hljs from 'highlight.js'
 import * as katex from 'katex'
 
-import { Post, Posts } from '../shared/utils'
-
 marked.setOptions({
   renderer: new marked.Renderer(),
   gfm: true,
@@ -26,7 +24,7 @@ marked.setOptions({
   }
 })
 
-function parseFile(path: string): Post {
+function parseFile(path: string) {
   const parseMeta = (meta: string) => meta.split(':').pop().trim()
 
   const toTimestamp = (date: string) => {
@@ -57,12 +55,11 @@ function parseFile(path: string): Post {
   }
 }
 
-export function parseFiles(dirname: string): Posts {
+export function parse(dirname: string): Post[] {
   const filenames = fs.readdirSync(dirname).filter(f => /\.md$/.test(f))
   return filenames.map(filename => {
     const [slug, _] = filename.split('.')
-    return {[slug]: parseFile(path.resolve(dirname, filename))}
-  }).reduce((others, post) => {
-    return {...post, ...others}
-  }, {})
+    const post = parseFile(path.resolve(dirname, filename))
+    return {slug, ...post }
+  })
 }

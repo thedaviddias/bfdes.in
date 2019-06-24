@@ -1,6 +1,6 @@
 import * as http from 'http'
 import factory from './index'
-import { parseFiles } from './utils'
+import { parse } from './files'
 
 function normalizePort(val: number | string): number | string | boolean {
   const port = (typeof val === 'string') ? parseInt(val, 10) : val
@@ -43,7 +43,7 @@ function onListening(): void {
 }
 
 // Create an app given the path to its posts
-const posts = parseFiles(process.argv.pop())
+const posts = parse(process.argv.pop())
 const app = factory(posts)
 
 // Attempt to normalize the port

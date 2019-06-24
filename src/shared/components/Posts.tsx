@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Spinner from './Spinner';
 import Tags from './Tags';
 import { get, RequestError } from '../http'
-import { parseDate, parseQuery, PostStub } from '../utils';
+import { parseDate, parseQuery } from '../utils';
 import { Context } from '../containers';
 
 declare const __isBrowser__: boolean  // Injected by Webpack to indicate whether we are running JS on the client

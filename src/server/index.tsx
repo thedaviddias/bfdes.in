@@ -6,9 +6,9 @@ import * as compression from 'compression'
 import { Request, Response, NextFunction } from 'express'
 
 import router from './router'
-import { Posts } from '../shared/utils';
+import DB from '../shared/db'
 
-export default function factory(posts: Posts) {
+export default function factory(posts: Post[]) {
   const mode = process.env.NODE_ENV
 
   const app = express()
@@ -46,6 +46,8 @@ export default function factory(posts: Posts) {
     });
   });
 
-  app.set('posts', posts)
+  // Spin-up the db
+  app.set('DB', new DB(posts))
+
   return app
 }

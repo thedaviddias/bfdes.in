@@ -4,7 +4,7 @@ import Tags from './Tags';
 import NoMatch from './NoMatch';
 import Spinner from './Spinner';
 import { get, RequestError } from '../http';
-import { parseDate, Post } from '../utils';
+import { parseDate } from '../utils';
 import { Context } from '../containers';
 
 declare const __isBrowser__: boolean
