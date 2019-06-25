@@ -14,8 +14,7 @@ export function get(url: string) {
     headers: {'Content-Type': 'application/json'}
   }).then(res =>
     res.json().then(data => {
-      const error = new RequestError(res.status, data.error.message)
-      return res.ok ? data : Promise.reject(error)
+      return res.ok ? data : Promise.reject(new RequestError(res.status, data.error.message))
     })
   )
 }

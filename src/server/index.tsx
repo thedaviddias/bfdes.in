@@ -17,6 +17,8 @@ export default function factory(posts: Post[]) {
   // i) logger
   if(mode == 'production') {
     app.use(logger('common'))
+  } else {
+    app.use(logger('dev'))
   }
 
   // ii) request parser
