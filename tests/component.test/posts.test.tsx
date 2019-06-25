@@ -3,7 +3,6 @@ import { MemoryRouter } from 'react-router-dom'
 import { configure, mount } from 'enzyme'
 const Adapter = require('enzyme-adapter-react-16')
 
-import { PostStub } from '../../src/shared/utils'
 import { Posts } from '../../src/shared/components'
 import { Context } from '../../src/shared/containers';
 
@@ -22,15 +21,7 @@ const fixture = [{
 }]
 
 const mockPromise = Promise.resolve(fixture);
-
-// It is not possible to mock named exports, so we mock the whole module and then unmock other utilities used by the component...
-jest.mock('../../src/shared/utils', () => ({
-  parseDate: require.requireActual('../../src/shared/utils').parseDate,
-  delay: (promise: Promise<any>, interval: number) => promise,
-  get: jest.fn()
-}))
-
-import { get } from '../../src/shared/utils'
+const get = jest.fn(_ => mockPromise)
 
 beforeAll(() => {
   configure({adapter: new Adapter()})
@@ -46,7 +37,7 @@ describe('<Posts />', () => {
       const wrapper = mount(
         <MemoryRouter>
           <Context.PostStub.Provider value={fixture}>
-            <Posts />
+            <Posts get={jest.fn()} />
           </Context.PostStub.Provider>
         </MemoryRouter>
       )
@@ -59,13 +50,10 @@ describe('<Posts />', () => {
       (global as any).__isBrowser__ = true
     })
 
-    it('displays posts', () => {
-      // n.b. Slightly concerned about race conditions here
-      (get as jest.Mock<Promise<PostStub[]>>).mockReturnValue(mockPromise)
-    
+    it('displays posts', () => {    
       const wrapper = mount(
         <MemoryRouter>
-          <Posts />
+          <Posts get={get} />
         </MemoryRouter>
       )
       return mockPromise.then(() => {
@@ -74,15 +62,11 @@ describe('<Posts />', () => {
     })
 
     it('fetches posts with the correct tag', () => {
-      (get as jest.Mock<Promise<PostStub[]>>).mockReturnValue(mockPromise)
-
-      const wrapper = mount(
+      mount(
         <MemoryRouter>
-          <Posts tag='Algorithms' />
+          <Posts tag='Algorithms' get={get} />
         </MemoryRouter>
       )
-      // Unfortunately we have no option but to share the mock function across tests because of the way mocks are hoisted in Jest.
-      // Hence this test is only accurate if no other test attempts to prime Posts with a tag of "Algorithms".
       return mockPromise.then(() => {
         expect(get).toHaveBeenCalledWith('/api/posts?tag=Algorithms')
       })
@@ -90,11 +74,11 @@ describe('<Posts />', () => {
 
     it('displays error message for failed request', () => {
       const mockPromise = Promise.reject(new Error);  // In reality we would get an instance of NetworkError but it doesn't matter here.
-      (get as jest.Mock<Promise<PostStub[]>>).mockReturnValue(mockPromise)
+      const get = jest.fn(_ => mockPromise)
 
       const wrapper = mount(
         <MemoryRouter>
-          <Posts />
+          <Posts get={get} />
         </MemoryRouter>
       )
       return mockPromise

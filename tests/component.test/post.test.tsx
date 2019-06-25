@@ -3,12 +3,13 @@ import { MemoryRouter } from 'react-router-dom'
 import { configure, mount } from 'enzyme'
 const Adapter = require('enzyme-adapter-react-16')
 
-import { Post } from '../../src/shared/utils'
 import { PostOr404 } from '../../src/shared/components'
 import { Context } from '../../src/shared/containers';
+import { RequestError } from '../../src/shared/http';
 
 const fixture = {
   title: 'My first post',
+  slug: 'my-first-post',
   body: 'Lorem ipsum delorum sit amet',
   wordCount: 5,
   tags: ['Algorithms', 'Java'],
@@ -16,15 +17,7 @@ const fixture = {
 }
 
 const mockPromise = Promise.resolve(fixture)
-
-jest.mock('../../src/shared/utils', () => ({
-  parseDate: require.requireActual('../../src/shared/utils').parseDate,
-  NetworkError: require.requireActual('../../src/shared/utils').NetworkError,
-  delay: (promise: Promise<any>, _: number) => promise,
-  get: jest.fn()
-}))
-
-import { get, RequestError } from '../../src/shared/utils'
+const get = jest.fn(_ => mockPromise)
 
 beforeAll(() => {
   configure({adapter: new Adapter()})
@@ -40,7 +33,7 @@ describe('<PostOr404 />', () => {
       const wrapper = mount(
         <MemoryRouter>
           <Context.Post.Provider value={fixture}>
-            <PostOr404 />
+            <PostOr404 get={jest.fn()} />
           </Context.Post.Provider>
         </MemoryRouter>
       )
@@ -54,24 +47,21 @@ describe('<PostOr404 />', () => {
     })
 
     it('fetches the correct post', () => {
-      (get as jest.Mock<Promise<Post>>).mockReturnValue(mockPromise)
-      
+      const { slug } = fixture
       mount(
         <MemoryRouter>
-          <PostOr404 slug='my-first-post'/>
+          <PostOr404 slug={slug} get={get} />
         </MemoryRouter>
       )
       return mockPromise.then(() => {
-        expect(get).toHaveBeenCalledWith('/api/posts/my-first-post')
+        expect(get).toHaveBeenCalledWith(`/api/posts/${slug}`)
       })
     })
 
     it('displays post', () => {
-      (get as jest.Mock<Promise<Post>>).mockReturnValue(mockPromise)
-
       const wrapper = mount(
         <MemoryRouter>
-          <PostOr404 />
+          <PostOr404 get={get} />
         </MemoryRouter>
       )
       return mockPromise.then(() => {
@@ -81,11 +71,11 @@ describe('<PostOr404 />', () => {
 
     it('displays <NoMatch /> when post does not exist', () => {
       const mockPromise = Promise.reject(new RequestError(404, "404: No post with that slug"));
-      (get as jest.Mock<Promise<Post>>).mockReturnValue(mockPromise)
+      const get = jest.fn(_ => mockPromise)
 
       const wrapper = mount(
         <MemoryRouter>
-          <PostOr404 />
+          <PostOr404 get={get}/>
         </MemoryRouter>
       )
       return mockPromise
@@ -97,11 +87,11 @@ describe('<PostOr404 />', () => {
     
     it('displays error message for failed request', () => {
       const mockPromise = Promise.reject(new Error);
-      (get as jest.Mock<Promise<Post>>).mockReturnValue(mockPromise)
+      const get = jest.fn(_ => mockPromise)
 
       const wrapper = mount(
         <MemoryRouter>
-          <PostOr404 />
+          <PostOr404 get={get} />
         </MemoryRouter>
       )
       return mockPromise

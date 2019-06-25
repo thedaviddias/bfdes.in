@@ -1,29 +1,23 @@
-import { Express } from 'express'
 import * as request from 'supertest'
 import factory from '../src/server'
 
-let app: Express
+const posts = [{
+  title: 'My first post',
+  slug: 'my-first-post',
+  body: 'Lorem ipsum delorum sit amet',
+  created: 1523401200000,
+  tags: ['Algorithms', 'Java'],
+  wordCount: 5
+}, {
+  title: 'My second post',
+  slug: 'my-second-post',
+  body: 'Lorem ipsum delorum sit amet',
+  created: 1523487600000,
+  tags: ['Java'],
+  wordCount: 5
+}]
 
-beforeAll(() => {
-  const fixture = {
-    'my-first-post': {
-      title: 'My first post',
-      body: 'Lorem ipsum delorum sit amet',
-      created: 1523401200000,
-      tags: ['Algorithms', 'Java'],
-      wordCount: 5
-    },
-    'my-second-post': {
-      title: 'My second post',
-      body: 'Lorem ipsum delorum sit amet',
-      created: 1523487600000,
-      tags: ['Java'],
-      wordCount: 5
-    }
-  }
-
-  app = factory(fixture)
-})
+const app = factory(posts)
 
 describe('GET /posts', () => {
   test('all posts returned for GET /posts', () => 
@@ -46,20 +40,15 @@ describe('GET /posts', () => {
 })
 
 describe('GET /posts/:slug', () => {
-  test('post can be fetched by slug', () =>
-    request(app)
-      .get('/api/posts/my-first-post')
+  test('post can be fetched by slug', () => {
+    const first = posts[0]
+    return request(app)
+      .get(`/api/posts/${first.slug}`)
       .expect(200)
       .then(res =>
-        expect(res.body).toEqual({
-          title: 'My first post',
-          body: 'Lorem ipsum delorum sit amet',
-          created: 1523401200000,
-          tags: ['Algorithms', 'Java'],
-          wordCount: 5
-        })
-      )
-  )
+        expect(res.body).toEqual(first)
+      );
+  })
 
   test('404 response returned for non-existent post', () => 
     request(app)

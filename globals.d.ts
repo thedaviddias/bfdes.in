@@ -14,3 +14,5 @@ declare type PostStub = {
   tags: string[],
   created: number
 }
+
+declare const __isBrowser__: boolean  // Injected by Webpack to indicate whether we are running JS on the client or server

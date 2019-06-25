@@ -1,13 +1,10 @@
 import * as React from 'react';
-import { match } from 'react-router';
 import Tags from './Tags';
 import NoMatch from './NoMatch';
 import Spinner from './Spinner';
 import { get, RequestError } from '../http';
 import { parseDate } from '../utils';
 import { Context } from '../containers';
-
-declare const __isBrowser__: boolean
 
 const Post: React.SFC<Post>
   = ({title, body, created, tags, wordCount}) => (
@@ -24,6 +21,7 @@ const Post: React.SFC<Post>
 
 type Props = {
   slug?: string,
+  get(url: string): Promise<Post>,
   context?: {
     data: Post
   }
@@ -33,14 +31,6 @@ type State = {
   post: Post,
   loading: boolean,
   error: RequestError,
-}
-
-export function withSlug(Component: React.SFC<{slug?: string}>) { 
-  return (props: {match: match<{slug: string}>}) => {
-    const { match, ...rest } = props
-    const { slug } = props.match.params
-    return <Component slug={slug} {...rest}/>
-  }
 }
 
 class PostOr404 extends React.Component<Props, State> {
@@ -81,7 +71,7 @@ class PostOr404 extends React.Component<Props, State> {
   private fetchPost(slug: string): void {
     const url = `/api/posts/${slug}`
     this.setState({loading: true}, () =>
-      get(url).then(post => 
+      this.props.get(url).then(post => 
         this.setState({post, loading: false})
       ).catch(error => 
         this.setState({error, loading: false})
@@ -109,9 +99,9 @@ class PostOr404 extends React.Component<Props, State> {
   }
 }
 
-const Wrapped: React.SFC<{slug?: string}> = (props) => (
+const Wrapped: React.SFC<{slug?: string, get(url: string): Promise<Post>}> = props => (
   <Context.Post.Consumer>
-    {(post) => <PostOr404 slug={props.slug} context={{data: post}} />}
+    {post => <PostOr404 {...props} context={{data: post}} />}
   </Context.Post.Consumer>
 )
 
