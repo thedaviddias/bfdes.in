@@ -19,7 +19,7 @@ marked.setOptions({
     } else if(lang == 'math') {
       return katex.renderToString(code)
     } else {
-      return hljs.highlightAuto(code).value
+      return hljs.highlight(lang, code).value
     }
   }
 })

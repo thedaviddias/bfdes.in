@@ -113,7 +113,7 @@ There are a few idiosyncrasies of Scala in the above code that merit explanation
 
 We also provide a (pure) function to verify an array is sorted with respect to an `Ordering`:
 
-```
+```scala
 def isSorted[T](a: Array[T])(implicit o: Ordering[T]): Boolean = {
   val indices = 0 until a.length-1
   val shifted = 1 until a.length
@@ -150,7 +150,7 @@ Here is one strategy to programmatically generate samples to verify the above:
 * Progressively generate arrays of increasing size (up to a maximum)
 * Large arrays can encode more states (have high entropy), so we generate proportionately more
 
-```
+```scala
 def arrays: Stream[Array[Int]] = {
   def sample(size: Int): Array[Int] =
     Array.fill(size)(rnd.nextInt())
@@ -168,7 +168,7 @@ Note:
 
 We also need a utility to put the keys of an array in a histogram to verify property (2):
 
-```
+```scala
 def histogram(a: Array[Int]): Map[Int, Int] = 
   a.foldLeft(Map.empty[Int, Int]) { (m, key) =>
     val count = m.getOrElse(key, 1)
@@ -221,7 +221,7 @@ To use ScalaCheck we need to be aware of abstract data types it exports:
 
 Here is the (naïve) strategy for sample generation, re-written to support ScalaCheck:
 
-```
+```scala
 def unsaturated: Gen[Array[Int]] =
   Gen.containerOf[Array, Int](Gen.posNum)
 ```
@@ -230,7 +230,7 @@ Note that ScalaCheck will decide the maximum sample size to use when running the
 
 To test cases where duplicate keys are common we modify the generator that creates keys to limit itself to choose from the range `[0, sqrt(size))`, where the `size` is that of the array being filled. 
 
-```
+```scala
 def saturated: Gen[Array[Int]] = {
   // One possible way of saturating the array with duplicate keys
   val sized = Gen.sized(s => Gen.choose(0, Math.sqrt(s).toInt))

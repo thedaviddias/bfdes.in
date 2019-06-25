@@ -43,12 +43,12 @@ It is also a form of SEO: webcrawlers find it easier to parse and index plain HT
 
 This is the backend code responsible for generating the current page:
 
-```tsx
-// router.tsx
+```jsx
+// router.jsx
 router.get('/posts/:slug', (req, res) => {
   // ... //
   const stream = renderToNodeStream(
-    // Use of a static router to inform App.tsx which cpt. to render,
+    // Use of a static router to inform App.jsx which cpt. to render,
     // and use of React's Context API to provide the post data
     <StaticRouter location={req.url} context={{}}>
       <Context.Post.Provider value={data}>
@@ -57,12 +57,7 @@ router.get('/posts/:slug', (req, res) => {
     </StaticRouter>
   )
   // Write the header, which includes the path to client JS
-  res.write(
-    `<html>
-      <head>${headerFor(data)}</head>
-      <body>
-        <div id="root">
-    `)
+  res.write(`<!DOCTYPE html><html lang="en"><head>${header(data)}</head><body><div id="root">`)
   stream.pipe(res, {end: false})
   // Terminate the response with the rest of the HTML
   stream.on('end', () => res.end('</div></body></html>'))
@@ -74,8 +69,8 @@ Note that streaming markup reduces the actual time for first paint.
 Then client JS takes over, enabling rapid navigation between various ‘pages’ of the website.
 [React Router](https://github.com/ReactTraining/react-router) is responsible for the transitions between these views:
 
-```tsx
-// App.tsx
+```jsx
+// App.jsx
 class App extends React.Component {
   render() {
     return (
@@ -100,8 +95,8 @@ class App extends React.Component {
 Recall that we use a static router in the controllers to inform App which component it should render.
 But on the browser the router reads from and writes to the History API to enable navigation:
 
-```tsx
-// browser/index.tsx
+```jsx
+// browser/index.jsx
 hydrate(
   <BrowserRouter>
     <App />
@@ -153,7 +148,7 @@ marked.setOptions({
     } else if(lang == 'math') {
       return katex.renderToString(code)
     } else {
-      return hljs.highlightAuto(code).value
+      return hljs.highlight(lang, code).value
     }
   }
 })
