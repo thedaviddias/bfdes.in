@@ -7,7 +7,7 @@ import { PostOr404 } from '../../src/shared/components'
 import { Context } from '../../src/shared/containers';
 import { RequestError } from '../../src/shared/http';
 
-const fixture = {
+const post = {
   title: 'My first post',
   slug: 'my-first-post',
   body: 'Lorem ipsum delorum sit amet',
@@ -16,7 +16,7 @@ const fixture = {
   created: 1523401200000
 }
 
-const mockPromise = Promise.resolve(fixture)
+const mockPromise = Promise.resolve(post)
 const get = jest.fn(_ => mockPromise)
 
 beforeAll(() => {
@@ -32,7 +32,7 @@ describe('<PostOr404 />', () => {
     it('displays post', () => {
       const wrapper = mount(
         <MemoryRouter>
-          <Context.Post.Provider value={fixture}>
+          <Context.Post.Provider value={post}>
             <PostOr404 get={jest.fn()} />
           </Context.Post.Provider>
         </MemoryRouter>
@@ -47,7 +47,7 @@ describe('<PostOr404 />', () => {
     })
 
     it('fetches the correct post', () => {
-      const { slug } = fixture
+      const { slug } = post
       mount(
         <MemoryRouter>
           <PostOr404 slug={slug} get={get} />

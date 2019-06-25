@@ -6,7 +6,7 @@ const Adapter = require('enzyme-adapter-react-16')
 import { Posts } from '../../src/shared/components'
 import { Context } from '../../src/shared/containers';
 
-const fixture = [{
+const posts = [{
   title: 'My first post',
   slug: 'my-first-post',
   created: 1523401200000,
@@ -20,7 +20,7 @@ const fixture = [{
   wordCount: 5
 }]
 
-const mockPromise = Promise.resolve(fixture);
+const mockPromise = Promise.resolve(posts);
 const get = jest.fn(_ => mockPromise)
 
 beforeAll(() => {
@@ -36,12 +36,12 @@ describe('<Posts />', () => {
     it('displays posts', () => {
       const wrapper = mount(
         <MemoryRouter>
-          <Context.PostStub.Provider value={fixture}>
+          <Context.PostStub.Provider value={posts}>
             <Posts get={jest.fn()} />
           </Context.PostStub.Provider>
         </MemoryRouter>
       )
-      expect(wrapper.find('.post')).toHaveLength(2)
+      expect(wrapper.find('.post')).toHaveLength(posts.length)
     })
   })
 
@@ -57,18 +57,19 @@ describe('<Posts />', () => {
         </MemoryRouter>
       )
       return mockPromise.then(() => {
-        expect(wrapper.update().find('.post')).toHaveLength(2)
+        expect(wrapper.update().find('.post')).toHaveLength(posts.length)
       })
     })
 
     it('fetches posts with the correct tag', () => {
+      const tag = 'Algorithms'
       mount(
         <MemoryRouter>
-          <Posts tag='Algorithms' get={get} />
+          <Posts tag={tag} get={get} />
         </MemoryRouter>
       )
       return mockPromise.then(() => {
-        expect(get).toHaveBeenCalledWith('/api/posts?tag=Algorithms')
+        expect(get).toHaveBeenCalledWith(`/api/posts?tag=${tag}`)
       })
     })
 

@@ -28,15 +28,16 @@ describe('<Tags />', () => {
   })
 
   test('<Tag /> navigates to correct route when clicked', () => {
+    const tags = ['Algorithms', 'Python']
     const wrapper = mount(
       <MemoryRouter>
-        <Tags tags={['Algorithms', 'Python']}/>
+        <Tags tags={tags}/>
       </MemoryRouter>
     );
     expect(wrapper
       .find('Link')
       .first()
       .props().to
-    ).toBe('/posts?tag=Algorithms')
+    ).toBe(`/posts?tag=${tags[0]}`)
   })
 })
