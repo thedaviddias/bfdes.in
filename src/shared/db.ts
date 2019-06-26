@@ -15,10 +15,12 @@ export default class DB {
     , {})
   }
 
-  all(tag?: string) {
-    return this.posts.filter(post =>
-      tag == undefined || post.tags.includes(tag)
-    )
+  all(tag?: string, offset: number = 0, limit: number = 10) {
+    const start = Math.max(offset, 0)
+    const end = start + Math.max(limit, 0)
+    return this.posts
+      .filter(p => tag == undefined || p.tags.includes(tag))
+      .slice(start, end)
   }
   
   get(slug: string) {

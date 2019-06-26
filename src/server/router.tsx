@@ -25,10 +25,16 @@ router.get('/', (_, res) => {
   res.redirect('/posts')
 })
 
-// GET /posts?tag=<tag>
+// GET /posts?tag=<tag>&offset=<offset>&limit=<limit>
 router.get('/posts', (req, res) => {
-  const { tag } = req.query
-  const data = req.app.get('DB').all(tag)    
+  let { tag, offset, limit } = req.query
+  if(offset !== undefined){
+    offset = parseInt(offset)
+  }
+  if(limit !== undefined) {
+    limit = parseInt(limit)
+  }
+  const data = req.app.get('DB').all(tag, offset, limit)    
   
   const stream = renderToNodeStream(
     <StaticRouter location={req.url} context={{}}>
@@ -61,11 +67,18 @@ router.get('/posts/:slug', (req, res) => {
   stream.on('end', () => res.end('</div></body></html>'))
 })
 
-// GET /api/posts?tag=<tag>
-// Fetch all the posts in chronological order and filter by tag if supplied
+// GET /api/posts?tag=<tag>&offset=<offset>&limit=<limit>
+// Fetch the posts in chronological order and filter by tag if supplied
 router.get('/api/posts', (req, res) => {
-  const { tag } = req.query
-  res.status(200).json(req.app.get('DB').all(tag))
+  let { tag, offset, limit } = req.query
+  if(offset !== undefined){
+    offset = parseInt(offset)
+  }
+  if(limit !== undefined) {
+    limit = parseInt(limit)
+  }
+  const posts = req.app.get('DB').all(tag, offset, limit)
+  res.status(200).json(posts)
 })
 
 // GET /api/posts/<slug>
