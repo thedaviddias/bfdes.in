@@ -13,8 +13,8 @@ export function get(url: string) {
     method: 'get',
     headers: {'Content-Type': 'application/json'}
   }).then(res =>
-    res.json().then(data => {
-      return res.ok ? data : Promise.reject(new RequestError(res.status, data.error.message))
-    })
+    res.json().then(data =>
+      res.ok ? data : Promise.reject(new RequestError(res.status, data.error.message))
+    )
   )
 }

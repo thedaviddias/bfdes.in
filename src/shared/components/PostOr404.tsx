@@ -2,7 +2,7 @@ import * as React from 'react';
 import Tags from './Tags';
 import NoMatch from './NoMatch';
 import Spinner from './Spinner';
-import { get, RequestError } from '../http';
+import { RequestError } from '../http';
 import { parseDate } from '../utils';
 import { Context } from '../containers';
 
@@ -20,8 +20,8 @@ const Post: React.SFC<Post>
   )
 
 type Props = {
-  slug?: string,
   get(url: string): Promise<Post>,
+  slug?: string,
   context?: {
     data: Post
   }
@@ -99,7 +99,7 @@ class PostOr404 extends React.Component<Props, State> {
   }
 }
 
-const Wrapped: React.SFC<{slug?: string, get(url: string): Promise<Post>}> = props => (
+const Wrapped: React.SFC<Props> = props => (
   <Context.Post.Consumer>
     {post => <PostOr404 {...props} context={{data: post}} />}
   </Context.Post.Consumer>
