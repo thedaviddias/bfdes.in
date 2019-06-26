@@ -16,7 +16,7 @@ import {
 
 import {
   withSlug,
-  withTag,
+  withQueryParams,
   withHTTPClient
 } from '../hocs';
 
@@ -27,7 +27,7 @@ export default () => (
       <Switch>
         <Route exact path='/' render={() => <Redirect to="/posts" />} />
         <Route exact path='/about' component={About} />
-        <Route exact path='/posts' component={withTag(withHTTPClient(Posts))} />
+        <Route exact path='/posts' component={withQueryParams(withHTTPClient(Posts))} />
         <Route exact path='/posts/:slug' component={withSlug(withHTTPClient(PostOr404))} />
         <Route component={NoMatch} />
       </Switch>

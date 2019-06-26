@@ -296,3 +296,24 @@ tbody tr:nth-child(odd) th {
   margin-bottom: 1rem;
   color: var(--slate);
 }
+
+/* Pagingation */
+
+.pagination {
+  overflow: hidden;
+  margin-left: -1rem;
+  margin-right: -1rem;
+  font-family: "PT Sans", Helvetica, Arial, sans-serif;
+  color: #ccc;
+  text-align: center;
+}
+
+.pagination-item:first-child {
+  margin-bottom: -1px;
+}
+
+.pagination-item {
+  display: block;
+  padding: 1rem;
+  border: 1px solid #eee;
+}
