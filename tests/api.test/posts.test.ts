@@ -1,5 +1,5 @@
 import * as request from 'supertest'
-import factory from '../src/server'
+import factory from '../../src/server'
 
 const body = 'Lorem ipsum delorum sit amet'
 const wordCount = 5
@@ -80,30 +80,11 @@ describe('GET /posts', () => {
       .then(res =>
         expect(res.body.length).toBe(2)
       )
+      request(app)
+        .get('/api/posts?offset=5&limit=2')
+        .expect(200)
+        .then(res =>
+          expect(res.body.length).toBe(0)
+        )
   })
-})
-
-describe('GET /posts/:slug', () => {
-  test('post can be fetched by slug', () => {
-    const first = posts[0]
-    request(app)
-      .get(`/api/posts/${first.slug}`)
-      .expect(200)
-      .then(res =>
-        expect(res.body).toEqual(first)
-      );
-  })
-
-  test('404 response returned for non-existent post', () => 
-    request(app)
-      .get('/api/posts/my-fifth-post')
-      .expect(404)
-      .then(res => 
-        expect(res.body).toEqual({
-          error: {
-            message: "404: No post with that slug"
-          }
-        })
-      )
-  )
 })
