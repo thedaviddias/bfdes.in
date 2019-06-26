@@ -2,17 +2,20 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import Spinner from './Spinner';
 import Tags from './Tags';
-import { get, RequestError } from '../http'
-import { parseDate, parseQuery } from '../utils';
+import { RequestError } from '../http'
+import { parseDate } from '../utils';
 import { Context } from '../containers';
+import Pagination from './Pagination';
 
 /*
 A tag may be supplied (by React Router) if the user has chosen to filter posts by tag.
 Additionally, if the component is server rendered, then we supply posts in advance ysing React's context API.
 */
 type Props = {
-  tag?: string,
   get(url: string): Promise<Post[]>,
+  tag?: string,
+  offset?: number,
+  limit?: number,
   context?: {
     data: PostStub[]
   }
@@ -23,6 +26,8 @@ type State = {
   loading: boolean,
   error: RequestError
 }
+
+const pagingRate = 5
 
 const PostStub: React.SFC<PostStub> 
   = ({ title, slug, wordCount, created, tags }) => (
@@ -35,6 +40,12 @@ const PostStub: React.SFC<PostStub>
       </p>
     </li>
   )
+
+const PaginationLink: React.SFC<{to: string}> = props => (
+  <span className='pagination-item'>
+    <Link to={props.to}>{props.children}</Link> 
+  </span>
+)
 
 class Posts extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -70,8 +81,8 @@ class Posts extends React.Component<Props, State> {
   */
   componentDidMount() {
     if(this.state.posts == null) {
-      const { tag } = this.props
-      this.fetchPosts(tag)
+      const { tag, offset, limit } = this.props
+      this.fetchPosts(tag, offset, limit)
     }
   }
 
@@ -80,13 +91,13 @@ class Posts extends React.Component<Props, State> {
   */
   componentDidUpdate(prevProps: Props, _: State) {
     if(prevProps.tag != this.props.tag) {
-      const { tag } = this.props
-      this.fetchPosts(tag)
+      const { tag, offset, limit } = this.props
+      this.fetchPosts(tag, offset, limit)
     }
   }
 
-  private fetchPosts(tag: string): void {
-    const url = tag == undefined ? '/api/posts' : `/api/posts?tag=${tag}`
+  private fetchPosts(tag?: string, offset: number = 0, limit: number = 10): void {
+    const url = `/api/posts?offset=${offset}&limit=${limit}${tag && `&tag=${tag}`}`
     this.setState({loading: true}, () => 
       this.props.get(url).then(posts =>
         this.setState({posts, loading: false})
@@ -109,16 +120,24 @@ class Posts extends React.Component<Props, State> {
     if(loading || posts == null) {
       return <Spinner />
     }
-
+    const { tag, offset, limit } = this.props
     return (
-      <ul id='posts'>
-        {posts.map(post => <PostStub key={post.slug} {...post}/>)}
-      </ul>
+      <>
+        <ul id='posts'>
+          {posts.map(post => <PostStub key={post.slug} {...post}/>)}
+        </ul>
+        {offset >= pagingRate && (
+          <PaginationLink to={`/posts?offset=${offset-pagingRate}&limit=${limit}${tag && `&tag=${tag}`}`}/> 
+        )}
+        {posts.length == limit && (
+          <PaginationLink to={`/posts?offset=${offset+limit}&limit=${limit}${tag && `&tag=${tag}`}`} />
+        )}
+      </>
     )
   }
 }
 
-const Wrapped: React.SFC<{tag?: string, get(url: string): Promise<Post[]>}> = props => (
+const Wrapped: React.SFC<Props> = props => (
   <Context.PostStub.Consumer>
     {posts => <Posts {...props} context={{data: posts}} />}
   </Context.PostStub.Consumer>
