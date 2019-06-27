@@ -24,6 +24,10 @@ beforeAll(() => {
 })
 
 describe('<PostOr404 />', () => {
+  beforeAll(() => {
+    (global as any).__pagingRate__ = 5
+  })
+
   describe('<PostOr404 /> on server', () => {
     beforeAll(() => {
       (global as any).__isBrowser__ = false
