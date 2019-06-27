@@ -80,11 +80,11 @@ describe('GET /posts', () => {
       .then(res =>
         expect(res.body.length).toBe(2)
       )
-      request(app)
-        .get('/api/posts?offset=5&limit=2')
-        .expect(200)
-        .then(res =>
-          expect(res.body.length).toBe(0)
-        )
+    request(app)
+      .get('/api/posts?offset=5&limit=2')
+      .expect(200)
+      .then(res =>
+        expect(res.body.length).toBe(0)
+      )
   })
 })

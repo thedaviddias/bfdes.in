@@ -1,23 +1,9 @@
 import * as React from 'react';
-import Tags from './Tags';
-import NoMatch from './NoMatch';
-import Spinner from './Spinner';
-import { RequestError } from '../http';
-import { parseDate } from '../utils';
-import { Context } from '../containers';
-
-const Post: React.SFC<Post>
-  = ({title, body, created, tags, wordCount}) => (
-    <div className='post'>
-      <h1>{title}</h1>
-      <p className='meta'>
-        {parseDate(created)}
-        {' · '}<Tags tags={tags}/>
-        {' · '}{wordCount} {wordCount != 1 ? ' words' : ' word'}
-      </p>
-      <div dangerouslySetInnerHTML={{__html: body}}/>
-    </div>
-  )
+import Post from './Post';
+import NoMatch from '../NoMatch';
+import Spinner from '../Spinner';
+import { RequestError } from '../../http';
+import { Context } from '../../containers';
 
 type Props = {
   get(url: string): Promise<Post>,

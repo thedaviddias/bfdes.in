@@ -7,9 +7,9 @@ type QueryParams = {
   limit?: number
 }
 
-function tryParse(number: string): number {
+function tryParse(number: string, defaultValue: number): number {
   if(number == undefined) {
-    return undefined
+    return defaultValue
   }
   return parseInt(number)
 }
@@ -20,8 +20,8 @@ export default function(Component: React.SFC<QueryParams>) {
     const { tag, offset, limit } = parseQuery(location.search)
     return <Component
       tag={tag}
-      offset={tryParse(offset)}
-      limit={tryParse(limit)}
+      offset={tryParse(offset, 0)}
+      limit={tryParse(limit, __pagingRate__)}
       {...rest}
     />
   }

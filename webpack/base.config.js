@@ -1,6 +1,8 @@
 const webpack = require('webpack');
 const path  = require('path');
 
+const __pagingRate__ = 5
+
 module.exports = [{
   entry: path.resolve(__dirname, '../src/browser', 'index.tsx'),
   output: {
@@ -44,7 +46,8 @@ module.exports = [{
   },
   plugins: [
     new webpack.DefinePlugin({
-      __isBrowser__: 'true'
+      __isBrowser__: 'true',
+      __pagingRate__
     })
   ],
   target: 'web'
@@ -82,7 +85,8 @@ module.exports = [{
   },
   plugins: [
     new webpack.DefinePlugin({
-      __isBrowser__: 'false'
+      __isBrowser__: 'false',
+      __pagingRate__
     })
   ],
   target: 'node'

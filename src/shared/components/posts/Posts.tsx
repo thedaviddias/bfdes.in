@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
-import Spinner from './Spinner';
-import Tags from './Tags';
-import { RequestError } from '../http'
-import { parseDate } from '../utils';
-import { Context } from '../containers';
-import Pagination from './Pagination';
+import Error from './Error'
+import PostStub from './PostStub'
+import PaginationLink from './PaginationLink'
+import Spinner from '../Spinner';
+import { RequestError } from '../../http'
+import { Context } from '../../containers';
+import { Redirect } from 'react-router';
 
 /*
 A tag may be supplied (by React Router) if the user has chosen to filter posts by tag.
@@ -27,25 +27,11 @@ type State = {
   error: RequestError
 }
 
-const pagingRate = 5
+const pagingRate = __pagingRate__
 
-const PostStub: React.SFC<PostStub> 
-  = ({ title, slug, wordCount, created, tags }) => (
-    <li className='post'>
-      <Link to={`/posts/${slug}`} className='nav-item'><h1>{title}</h1></Link>
-      <p className='meta'>
-        {parseDate(created)}
-        {' · '}<Tags tags={tags}/>
-        {' · '}{wordCount} {wordCount != 1 ? 'words' : 'word'}
-      </p>
-    </li>
-  )
-
-const PaginationLink: React.SFC<{to: string}> = props => (
-  <span className='pagination-item'>
-    <Link to={props.to}>{props.children}</Link> 
-  </span>
-)
+function url(tag: string, offset: number, limit: number): string {
+  return `/api/posts?offset=${offset}&limit=${limit}${tag == undefined ? '' : `&tag=${tag}`}`
+}
 
 class Posts extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -96,10 +82,14 @@ class Posts extends React.Component<Props, State> {
     }
   }
 
-  private fetchPosts(tag?: string, offset: number = 0, limit: number = 10): void {
-    const url = `/api/posts?offset=${offset}&limit=${limit}${tag && `&tag=${tag}`}`
+  private fetchPosts(
+    tag?: string,
+    offset: number = 0,
+    limit: number = pagingRate
+  ): void {
+    const endpoint = url(tag, offset, limit)
     this.setState({loading: true}, () => 
-      this.props.get(url).then(posts =>
+      this.props.get(endpoint).then(posts =>
         this.setState({posts, loading: false})
       ).catch(error =>
         this.setState({error, loading: false})
@@ -110,28 +100,37 @@ class Posts extends React.Component<Props, State> {
   render() {
     const { posts, loading, error } = this.state
     if(error) {
-      return (
-        <div className='error'>
-          <h1>Error</h1>
-          <div>There was an error fetching the posts.</div>
-        </div>
-      )
+      return <Error />
     }
     if(loading || posts == null) {
       return <Spinner />
     }
+    // Tag might not be defined at this point, but the offset and limit will be
     const { tag, offset, limit } = this.props
+
+    if(posts.length == 0) {
+      return <Redirect to={url(tag, 0, pagingRate)}/>
+    }
+
     return (
       <>
         <ul id='posts'>
           {posts.map(post => <PostStub key={post.slug} {...post}/>)}
         </ul>
-        {offset >= pagingRate && (
-          <PaginationLink to={`/posts?offset=${offset-pagingRate}&limit=${limit}${tag && `&tag=${tag}`}`}/> 
-        )}
-        {posts.length == limit && (
-          <PaginationLink to={`/posts?offset=${offset+limit}&limit=${limit}${tag && `&tag=${tag}`}`} />
-        )}
+        <div className='pagination'>
+          <PaginationLink
+            disabled={offset < limit}
+            to={url(tag, offset-limit, limit)}
+          >
+            Previous
+          </PaginationLink>
+          <PaginationLink
+            disabled={posts.length < limit}
+            to={url(tag, offset+limit, limit)}
+          >
+            Next
+          </PaginationLink>
+        </div>
       </>
     )
   }

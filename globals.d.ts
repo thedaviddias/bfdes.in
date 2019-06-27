@@ -10,4 +10,6 @@ declare interface Post extends PostStub {
   body: string
 }
 
-declare const __isBrowser__: boolean  // Injected by Webpack to indicate whether we are running JS on the client or server
+// Injected by Webpack
+declare const __isBrowser__: boolean
+declare const __pagingRate__: number
