@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Post from './Post';
+import Error from '../Error';
 import NoMatch from '../NoMatch';
 import Spinner from '../Spinner';
 import { RequestError } from '../../http';
@@ -72,10 +73,9 @@ class PostOr404 extends React.Component<Props, State> {
     }
     if(error) {
       return (
-        <div className='error'>
-          <h1>Error</h1>
-          <div>There was an error fetching the post.</div>
-        </div>
+        <Error>
+          There was an error fetching the post. Please try again later.
+        </Error>
       )
     }
     if(loading || post == null) {

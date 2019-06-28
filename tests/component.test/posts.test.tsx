@@ -5,6 +5,7 @@ const Adapter = require('enzyme-adapter-react-16')
 
 import { Posts } from '../../src/shared/components'
 import { Context } from '../../src/shared/containers';
+import { RequestError } from '../../src/shared/http'
 
 const posts = [{
   title: 'My first post',
@@ -43,6 +44,17 @@ describe('<Posts />', () => {
       )
       expect(wrapper.find('.post')).toHaveLength(posts.length)
     })
+
+    it('asks the reader to return', () => {
+      const wrapper = mount(
+        <MemoryRouter>
+          <Context.PostStub.Provider value={[]}>
+            <Posts get={jest.fn()} />
+          </Context.PostStub.Provider>
+        </MemoryRouter>
+      )
+      expect(wrapper.find('.error')).toHaveLength(1)
+    })
   })
 
   describe('<Posts /> on client', () => {
@@ -61,6 +73,19 @@ describe('<Posts />', () => {
       })
     })
 
+    it('asks the reader to return', () => {
+      const mockPromise = Promise.resolve([])
+      const get = jest.fn(_ => mockPromise)
+      const wrapper = mount(
+        <MemoryRouter>
+          <Posts get={get} />
+        </MemoryRouter>
+      )
+      return mockPromise.then(() => {
+        expect(wrapper.update().find('.error')).toHaveLength(1)
+      })
+    })
+
     it('fetches posts with the correct tag', () => {
       const tag = 'Algorithms'
       mount(
@@ -74,7 +99,7 @@ describe('<Posts />', () => {
     })
 
     it('displays error message for failed request', () => {
-      const mockPromise = Promise.reject(new Error);  // In reality we would get an instance of NetworkError but it doesn't matter here.
+      const mockPromise = Promise.reject(new RequestError(500, 'Server Error'));
       const get = jest.fn(_ => mockPromise)
 
       const wrapper = mount(

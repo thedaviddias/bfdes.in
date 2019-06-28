@@ -85,11 +85,23 @@ class Posts extends React.Component<Props, State> {
 
   render() {
     const { posts, loading, error } = this.state
+    const { tag } = this.props
     if(error) {
-      return <Error />
+      return(
+        <Error>
+          There was an error fetching the posts. Please try again later.
+        </Error>
+      )
     }
     if(loading || posts == null) {
       return <Spinner />
+    }
+    if(posts.length == 0) {
+      return(
+        <Error>
+          {`There aren't any posts ${tag ? `under ${tag}` : 'yet'}. Please come back later.`}
+        </Error>
+      )
     }
     
     return (
