@@ -28,9 +28,6 @@ beforeAll(() => {
 })
 
 describe('<Posts />', () => {
-  beforeAll(() => {
-    (global as any).__pagingRate__ = 5
-  })
   describe('<Posts /> on server', () => {
     beforeAll(() => {
       (global as any).__isBrowser__ = false

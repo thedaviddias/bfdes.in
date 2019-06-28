@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Tags from '../Tags'
-import { parseDate } from '../../utils'
+import { parseDate } from '../../parsers'
 
 const Post: React.SFC<Post>
   = ({title, body, created, tags, wordCount}) => (

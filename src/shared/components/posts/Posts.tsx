@@ -1,11 +1,9 @@
 import * as React from 'react';
-import Error from './Error'
+import Error from '../Error'
 import PostStub from './PostStub'
-import PaginationLink from './PaginationLink'
 import Spinner from '../Spinner';
 import { RequestError } from '../../http'
 import { Context } from '../../containers';
-import { Redirect } from 'react-router';
 
 /*
 A tag may be supplied (by React Router) if the user has chosen to filter posts by tag.
@@ -14,8 +12,6 @@ Additionally, if the component is server rendered, then we supply posts in advan
 type Props = {
   get(url: string): Promise<Post[]>,
   tag?: string,
-  offset?: number,
-  limit?: number,
   context?: {
     data: PostStub[]
   }
@@ -25,12 +21,6 @@ type State = {
   posts: PostStub[],
   loading: boolean,
   error: RequestError
-}
-
-const pagingRate = __pagingRate__
-
-function url(tag: string, offset: number, limit: number): string {
-  return `/api/posts?offset=${offset}&limit=${limit}${tag == undefined ? '' : `&tag=${tag}`}`
 }
 
 class Posts extends React.Component<Props, State> {
@@ -67,8 +57,8 @@ class Posts extends React.Component<Props, State> {
   */
   componentDidMount() {
     if(this.state.posts == null) {
-      const { tag, offset, limit } = this.props
-      this.fetchPosts(tag, offset, limit)
+      const { tag } = this.props
+      this.fetchPosts(tag)
     }
   }
 
@@ -77,19 +67,15 @@ class Posts extends React.Component<Props, State> {
   */
   componentDidUpdate(prevProps: Props, _: State) {
     if(prevProps.tag != this.props.tag) {
-      const { tag, offset, limit } = this.props
-      this.fetchPosts(tag, offset, limit)
+      const { tag } = this.props
+      this.fetchPosts(tag)
     }
   }
 
-  private fetchPosts(
-    tag?: string,
-    offset: number = 0,
-    limit: number = pagingRate
-  ): void {
-    const endpoint = url(tag, offset, limit)
+  private fetchPosts(tag?: string): void {
+    const url = `/api/posts${tag == undefined ? '' : `?tag=${tag}`}`
     this.setState({loading: true}, () => 
-      this.props.get(endpoint).then(posts =>
+      this.props.get(url).then(posts =>
         this.setState({posts, loading: false})
       ).catch(error =>
         this.setState({error, loading: false})
@@ -105,33 +91,11 @@ class Posts extends React.Component<Props, State> {
     if(loading || posts == null) {
       return <Spinner />
     }
-    // Tag might not be defined at this point, but the offset and limit will be
-    const { tag, offset, limit } = this.props
-
-    if(posts.length == 0) {
-      return <Redirect to={url(tag, 0, pagingRate)}/>
-    }
-
+    
     return (
-      <>
-        <ul id='posts'>
-          {posts.map(post => <PostStub key={post.slug} {...post}/>)}
-        </ul>
-        <div className='pagination'>
-          <PaginationLink
-            disabled={offset < limit}
-            to={url(tag, offset-limit, limit)}
-          >
-            Previous
-          </PaginationLink>
-          <PaginationLink
-            disabled={posts.length < limit}
-            to={url(tag, offset+limit, limit)}
-          >
-            Next
-          </PaginationLink>
-        </div>
-      </>
+      <ul id='posts'>
+        {posts.map(post => <PostStub key={post.slug} {...post}/>)}
+      </ul>
     )
   }
 }

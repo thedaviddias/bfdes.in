@@ -12,4 +12,3 @@ declare interface Post extends PostStub {
 
 // Injected by Webpack
 declare const __isBrowser__: boolean
-declare const __pagingRate__: number

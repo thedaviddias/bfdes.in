@@ -15,12 +15,9 @@ export default class DB {
     , {})
   }
 
-  all(tag?: string, offset: number = 0, limit: number = __pagingRate__) {
-    const start = Math.max(offset, 0)
-    const end = start + Math.max(limit, 0)
+  all(tag?: string) {
     return this.posts
       .filter(p => tag == undefined || p.tags.includes(tag))
-      .slice(start, end)
   }
   
   get(slug: string) {

@@ -25,26 +25,20 @@ router.get('/', (_, res) => {
   res.redirect('/posts')
 })
 
-// GET /posts?tag=<tag>&offset=<offset>&limit=<limit>
+// GET /posts?tag=<tag>
 router.get('/posts', (req, res) => {
-  let { tag, offset, limit } = req.query
-  if(offset !== undefined){
-    offset = parseInt(offset)
-  }
-  if(limit !== undefined) {
-    limit = parseInt(limit)
-  }
-  const data = req.app.get('DB').all(tag, offset, limit)    
+  const { tag } = req.query
+  const posts = req.app.get('DB').all(tag)    
   
   const stream = renderToNodeStream(
     <StaticRouter location={req.url} context={{}}>
-      <Context.PostStub.Provider value={data}>
+      <Context.PostStub.Provider value={posts}>
         <App />
       </Context.PostStub.Provider>
     </StaticRouter>
   )
 
-  res.write(`<!DOCTYPE html><html lang="en"><head>${header(data)}</head><body><div id="root">`)
+  res.write(`<!DOCTYPE html><html lang="en"><head>${header(posts)}</head><body><div id="root">`)
   stream.pipe(res, {end: false})
   stream.on('end', () => res.end('</div></body></html>'))
 })
@@ -52,32 +46,26 @@ router.get('/posts', (req, res) => {
 // GET /posts/<slug>
 router.get('/posts/:slug', (req, res) => {
   const { slug } = req.params
-  const data = req.app.get('DB').get(slug)
+  const postOrNone = req.app.get('DB').get(slug)
 
   const stream = renderToNodeStream(
     <StaticRouter location={req.url} context={{}}>
-      <Context.Post.Provider value={data}>
+      <Context.Post.Provider value={postOrNone}>
         <App />
       </Context.Post.Provider>
     </StaticRouter>
   )
 
-  res.write(`<!DOCTYPE html><html lang="en"><head>${header(data)}</head><body><div id="root">`)
+  res.write(`<!DOCTYPE html><html lang="en"><head>${header(postOrNone)}</head><body><div id="root">`)
   stream.pipe(res, {end: false})
   stream.on('end', () => res.end('</div></body></html>'))
 })
 
-// GET /api/posts?tag=<tag>&offset=<offset>&limit=<limit>
+// GET /api/posts?tag=<tag>
 // Fetch the posts in chronological order and filter by tag if supplied
 router.get('/api/posts', (req, res) => {
-  let { tag, offset, limit } = req.query
-  if(offset !== undefined){
-    offset = parseInt(offset)
-  }
-  if(limit !== undefined) {
-    limit = parseInt(limit)
-  }
-  const posts = req.app.get('DB').all(tag, offset, limit)
+  const { tag } = req.query
+  const posts = req.app.get('DB').all(tag)
   res.status(200).json(posts)
 })
 

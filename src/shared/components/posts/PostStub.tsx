@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import Tags from '../Tags'
-import { parseDate } from '../../utils'
+import { parseDate } from '../../parsers'
 
 const PostStub: React.SFC<PostStub> 
   = ({ title, slug, wordCount, created, tags }) => (
