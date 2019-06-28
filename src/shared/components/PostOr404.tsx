@@ -1,10 +1,11 @@
 import * as React from 'react';
-import Post from './Post';
-import Error from '../Error';
-import NoMatch from '../NoMatch';
-import Spinner from '../Spinner';
-import { RequestError } from '../../http';
-import { Context } from '../../containers';
+import Error from './Error';
+import NoMatch from './NoMatch';
+import Spinner from './Spinner';
+import Tags from './Tags';
+import { RequestError } from '../http';
+import { parseDate } from '../parsers';
+import { Context } from '../containers';
 
 type Props = {
   get(url: string): Promise<Post>,
@@ -19,6 +20,19 @@ type State = {
   loading: boolean,
   error: RequestError,
 }
+
+const Post: React.SFC<Post>
+  = ({title, body, created, tags, wordCount}) => (
+    <div className='post'>
+      <h1>{title}</h1>
+      <p className='meta'>
+        {parseDate(created)}
+        {' · '}<Tags tags={tags}/>
+        {' · '}{wordCount} {wordCount != 1 ? ' words' : ' word'}
+      </p>
+      <div dangerouslySetInnerHTML={{__html: body}}/>
+    </div>
+  )
 
 class PostOr404 extends React.Component<Props, State> {
   constructor(props: Props) {
