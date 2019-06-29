@@ -74,7 +74,7 @@ router.get('/api/posts', (req, res) => {
 router.get('/api/posts/:slug', (req, res) => {
   const { slug } = req.params
   const postOrNone = req.app.get('DB').get(slug)
-  if(postOrNone != null) {
+  if(postOrNone) {
     res.status(200).json(postOrNone)
   } else {
     res.status(404).json({

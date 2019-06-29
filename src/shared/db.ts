@@ -22,6 +22,9 @@ export default class DB {
   
   get(slug: string): Post {
     const index = this.index[slug]
+    if(index == undefined) {
+      return null  // Not found
+    }
     let previous, next
     if(index > 0) {
       previous = this.posts[index-1].slug
