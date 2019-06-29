@@ -15,13 +15,24 @@ export default class DB {
     , {})
   }
 
-  all(tag?: string) {
+  all(tag?: string): Post[] {
     return this.posts
       .filter(p => tag == undefined || p.tags.includes(tag))
   }
   
-  get(slug: string) {
-    const i = this.index[slug]
-    return this.posts[i]
+  get(slug: string): Post {
+    const index = this.index[slug]
+    let previous, next
+    if(index > 0) {
+      previous = this.posts[index-1].slug
+    }
+    if(index < this.posts.length-1) {
+      next = this.posts[index+1].slug
+    }
+    return {
+      previous,
+      next,
+      ...this.posts[index]
+    }
   }
 }

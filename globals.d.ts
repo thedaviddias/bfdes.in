@@ -7,7 +7,9 @@ declare interface PostStub {
 }
 
 declare interface Post extends PostStub {
-  body: string
+  body: string,
+  previous?: string,
+  next?: string
 }
 
 // Injected by Webpack
