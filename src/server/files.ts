@@ -30,7 +30,7 @@ function parseFile(path: string) {
 
   const toTimestamp = (date: string) => {
     const [year, month, day] = date.split('-').map(s => parseInt(s))
-    return (new Date(year, month, day)).valueOf()
+    return (new Date(year, month-1, day)).valueOf()
   }
 
   const parseMarkdown = (content: string) =>
@@ -75,22 +75,21 @@ export function writeFeed(recentPosts: Post[]): void {
         <title>bfdes.in</title>
         <link>https://www.bfdes.in</link>
         <description>Programming and technology blog</description>
-      </channel>
       ${recentPosts
           .map(post => {
             const date = new Date(post.created)
+            const url = `https://www.bfdes.in/posts/${post.slug}`
             return(`
               <item>
                 <title>${post.title}</title>
-                <link>https://www.bfdes.in/posts/${post.slug}</link>
-                <guid>${post.slug}</guid>
-                <description></description>
+                <link>${url}</link>
+                <guid>${url}</guid>
                 <pubDate>${date.toUTCString()}</pubDate>
-              </item>
-            `)
+              </item>`)
           })
           .reduce((str, item) => str + item, '')
       }
+      </channel>
     </rss>`
   )
 }
