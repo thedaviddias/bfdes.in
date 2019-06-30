@@ -25,14 +25,16 @@ marked.setOptions({
 })
 
 function parseFile(path: string) {
-  const parseMeta = (meta: string) => meta.split(':').pop().trim()
+  const parseMeta = (meta: string) =>
+    meta.split(':').pop().trim()
 
   const toTimestamp = (date: string) => {
     const [year, month, day] = date.split('-').map(s => parseInt(s))
     return (new Date(year, month, day)).valueOf()
   }
 
-  const parseMarkdown = (content: string) => marked(content)
+  const parseMarkdown = (content: string) =>
+    marked(content)
 
   const getWordCount = (content: string) =>
     content.split("```")
@@ -62,4 +64,33 @@ export function parse(dirname: string): Post[] {
     const post = parseFile(path.resolve(dirname, filename))
     return {slug, ...post }
   })
+}
+
+export function writeFeed(recentPosts: Post[]): void {
+  const filename = './dist/static/feed.rss'
+  fs.writeFileSync(filename,
+    `<?xml version="1.0" encoding="utf-8"?>
+    <rss version="2.0">
+      <channel>
+        <title>bfdes.in</title>
+        <link>https://www.bfdes.in</link>
+        <description>Programming and technology blog</description>
+      </channel>
+      ${recentPosts
+          .map(post => {
+            const date = new Date(post.created)
+            return(`
+              <item>
+                <title>${post.title}</title>
+                <link>https://www.bfdes.in/posts/${post.slug}</link>
+                <guid>${post.slug}</guid>
+                <description></description>
+                <pubDate>${date.toUTCString()}</pubDate>
+              </item>
+            `)
+          })
+          .reduce((str, item) => str + item, '')
+      }
+    </rss>`
+  )
 }

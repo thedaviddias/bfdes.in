@@ -1,6 +1,6 @@
 import * as http from 'http'
 import factory from './index'
-import { parse } from './files'
+import { parse, writeFeed } from './files'
 
 function normalizePort(val: number | string): number | string | boolean {
   const port = (typeof val === 'string') ? parseInt(val, 10) : val
@@ -45,6 +45,12 @@ function onListening(): void {
 // Create an app given the path to its posts
 const posts = parse(process.argv.pop())
 const app = factory(posts)
+
+// Generate an RSS feed for the most recent posts
+const recentPosts = posts
+  .sort((a, b) => b.created - a.created)
+  .slice(0, 10)
+writeFeed(recentPosts)
 
 // Attempt to normalize the port
 const port = normalizePort(process.env.PORT || 8080)
