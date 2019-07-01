@@ -84,6 +84,10 @@ export function writeFeed(recentPosts: Post[]): void {
                 <title>${post.title}</title>
                 <link>${url}</link>
                 <guid>${url}</guid>
+                <author>
+                  <name>Bruno Fernandes</name>
+                  <uri>https://www.bfdes.in/about</uri>
+                </author>
                 <pubDate>${date.toUTCString()}</pubDate>
               </item>`)
           })
