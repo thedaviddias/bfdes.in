@@ -37,21 +37,6 @@ const PostStub: React.SFC<PostStub>
     </li>
   )
 
-const Social : React.SFC<any> = () => (
-  <div id="social">
-    <span className='github'>
-      <a href="https://github.com/bfdes">
-        <img  src={require('../images/github.png')} alt='GitHub link' />
-      </a>
-    </span>
-    <span className='rss'>
-      <a href="https://bfdes.in/static/feed.rss">
-        <img src={require('../images/rss.png')} alt='RSS link' />
-      </a>
-    </span>
-  </div>
-)
-
 class Posts extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
@@ -135,7 +120,6 @@ class Posts extends React.Component<Props, State> {
     
     return (
       <>
-        <Social />
         <ul id='posts'>
           {posts.map(post => <PostStub key={post.slug} {...post}/>)}
         </ul> 
