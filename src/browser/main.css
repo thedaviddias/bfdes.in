@@ -200,7 +200,6 @@ tbody tr:nth-child(odd) th {
   background-color: var(--white);
 }
 
-
 /* Sidebar */
 #sidebar {
   /* Center the contents of the sidebar */
@@ -247,6 +246,15 @@ tbody tr:nth-child(odd) th {
 
 .nav-item.active {
   font-weight: bold; 
+}
+
+#social {
+  display: flex;
+}
+
+#social .badge {
+  max-width: 2rem;
+  margin: 1rem 0.25rem 0 0.25rem;
 }
 
 /* Content */
