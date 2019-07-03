@@ -15,10 +15,11 @@ export default function factory(posts: Post[]) {
 
   // Apply middleware stack:
   // i) logger
-  if (mode === "production") {
-    app.use(logger("common"));
-  } else {
-    app.use(logger("dev"));
+  switch (mode) {
+    case "production":
+      app.use(logger("common"));
+    case "development":
+      app.use(logger("dev"));
   }
 
   // ii) request parser
