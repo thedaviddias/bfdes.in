@@ -27,7 +27,7 @@ describe("GET /posts", () => {
     request(app)
       .get("/api/posts")
       .expect(200)
-      .then((res) => {
+      .then(res => {
         expect(res.body.length).toBe(posts.length);
       }),
   );
@@ -35,20 +35,20 @@ describe("GET /posts", () => {
   test("posts filtered by tag correctly", () => {
     const tag = "Algorithms";
     const filtered = posts.filter((p) => p.tags.includes(tag));
-    request(app)
+    return request(app)
       .get(`/api/posts?tag=${tag}`)
       .expect(200)
-      .then((res) =>
+      .then(res =>
         expect(res.body.length).toBe(filtered.length),
       );
   });
 
   test("posts returned in sorted order", () => {
     const sorted = posts.sort((a, b) => b.created - a.created);
-    request(app)
+    return request(app)
       .get("/api/posts")
       .expect(200)
-      .then((res) =>
+      .then(res =>
         expect(res.body).toEqual(sorted),
       );
   });

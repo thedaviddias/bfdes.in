@@ -29,7 +29,7 @@ const app = factory(posts);
 describe("GET /posts/:slug", () => {
   test("post can be fetched by slug", () => {
     const post = posts[0];
-    request(app)
+    return request(app)
       .get(`/api/posts/${post.slug}`)
       .expect(200);
   });
@@ -38,7 +38,7 @@ describe("GET /posts/:slug", () => {
     request(app)
       .get("/api/posts/my-fourth-post")
       .expect(404)
-      .then((res) =>
+      .then(res =>
         expect(res.body).toEqual({
           error: {
             message: "404: No post with that slug",
@@ -49,33 +49,35 @@ describe("GET /posts/:slug", () => {
 
   test("posts are paged", () => {
     const [first, second, third] = posts;
-    request(app)
-      .get(`/api/posts/${first.slug}`)
-      .expect(200)
-      .then((res) =>
-        expect(res.body).toEqual({
-          ...first,
-          next: second.slug,
-        }),
-      );
-    request(app)
-      .get(`/api/posts/${second.slug}`)
-      .expect(200)
-      .then((res) =>
-        expect(res.body).toEqual({
-          ...second,
-          previous: first.slug,
-          next: third.slug,
-        }),
-      );
-    request(app)
-      .get(`/api/posts/${third.slug}`)
-      .expect(200)
-      .then((res) =>
-        expect(res.body).toEqual({
-          ...third,
-          previous: second.slug,
-        }),
-      );
+    return Promise.all([
+      request(app)
+        .get(`/api/posts/${first.slug}`)
+        .expect(200)
+        .then(res =>
+          expect(res.body).toEqual({
+            ...first,
+            next: second.slug,
+          }),
+        ),
+      request(app)
+        .get(`/api/posts/${second.slug}`)
+        .expect(200)
+        .then(res =>
+          expect(res.body).toEqual({
+            ...second,
+            previous: first.slug,
+            next: third.slug,
+          }),
+        ),
+      request(app)
+        .get(`/api/posts/${third.slug}`)
+        .expect(200)
+        .then(res =>
+          expect(res.body).toEqual({
+            ...third,
+            previous: second.slug,
+          }),
+        ),
+    ]);
   });
 });
