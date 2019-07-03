@@ -1,36 +1,36 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { 
+import {
+  Redirect,
   Route,
   Switch,
-  Redirect
-} from 'react-router-dom';
+} from "react-router-dom";
 
 import {
-  Sidebar,
   About,
+  NoMatch,
   PostOr404,
   Posts,
-  NoMatch
-} from '../components/';
+  Sidebar,
+} from "../components/";
 
 import {
+  withHTTPClient,
   withSlug,
   withTag,
-  withHTTPClient
-} from '../hocs';
+} from "../hocs";
 
 export default () => (
   <>
-    <Route path='/' component={Sidebar} />
+    <Route path="/" component={Sidebar} />
     <div id="content">
       <Switch>
-        <Route exact path='/' render={() => <Redirect to="/posts" />} />
-        <Route exact path='/about' component={About} />
-        <Route exact path='/posts' component={withTag(withHTTPClient(Posts))} />
-        <Route exact path='/posts/:slug' component={withSlug(withHTTPClient(PostOr404))} />
+        <Route exact={true} path="/" render={() => <Redirect to="/posts" />} />
+        <Route exact={true} path="/about" component={About} />
+        <Route exact={true} path="/posts" component={withTag(withHTTPClient(Posts))} />
+        <Route exact={true} path="/posts/:slug" component={withSlug(withHTTPClient(PostOr404))} />
         <Route component={NoMatch} />
       </Switch>
     </div>
   </>
-)
+);

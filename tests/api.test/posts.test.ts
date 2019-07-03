@@ -1,55 +1,55 @@
-import * as request from 'supertest'
-import factory from '../../src/server'
+import * as request from "supertest";
+import factory from "../../src/server";
 
-const body = 'Lorem ipsum delorum sit amet'
-const wordCount = 5
+const body = "Lorem ipsum delorum sit amet";
+const wordCount = 5;
 
 const posts = [{
-  title: 'My first post',
-  slug: 'my-first-post',
+  title: "My first post",
+  slug: "my-first-post",
   body,
   created: 1523401300000,
-  tags: ['Algorithms', 'Java'],
-  wordCount
+  tags: ["Algorithms", "Java"],
+  wordCount,
 }, {
-  title: 'My second post',
-  slug: 'my-second-post',
+  title: "My second post",
+  slug: "my-second-post",
   body,
   created: 1523487600000,
-  tags: ['Java'],
-  wordCount
-}]
+  tags: ["Java"],
+  wordCount,
+}];
 
-const app = factory(posts)
+const app = factory(posts);
 
-describe('GET /posts', () => {
-  test('all posts returned for GET /posts', () => 
+describe("GET /posts", () => {
+  test("all posts returned for GET /posts", () =>
     request(app)
-      .get('/api/posts')
+      .get("/api/posts")
       .expect(200)
-      .then(res => {
-        expect(res.body.length).toBe(posts.length)
-      })
-  )
+      .then((res) => {
+        expect(res.body.length).toBe(posts.length);
+      }),
+  );
 
-  test('posts filtered by tag correctly', () => {
-    const tag = 'Algorithms'
-    const filtered = posts.filter(p => p.tags.includes(tag))
+  test("posts filtered by tag correctly", () => {
+    const tag = "Algorithms";
+    const filtered = posts.filter((p) => p.tags.includes(tag));
     request(app)
       .get(`/api/posts?tag=${tag}`)
       .expect(200)
-      .then(res =>
-        expect(res.body.length).toBe(filtered.length)
-      )
-  })
+      .then((res) =>
+        expect(res.body.length).toBe(filtered.length),
+      );
+  });
 
-  test('posts returned in sorted order', () => {
-    const sorted = posts.sort((a, b) => b.created-a.created)
+  test("posts returned in sorted order", () => {
+    const sorted = posts.sort((a, b) => b.created - a.created);
     request(app)
-      .get('/api/posts')
+      .get("/api/posts")
       .expect(200)
-      .then(res =>
-        expect(res.body).toEqual(sorted)
-      )
-  })
-})
+      .then((res) =>
+        expect(res.body).toEqual(sorted),
+      );
+  });
+});

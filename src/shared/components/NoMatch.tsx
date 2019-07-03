@@ -1,8 +1,8 @@
-import * as React from 'react';
+import * as React from "react";
 
 export default () => (
-  <div className='fourOhFour'>
+  <div className="fourOhFour">
     <h1>404: Not Found</h1>
     <p>Hmm it looks like you're in the wrong place.</p>
   </div>
-)
+);

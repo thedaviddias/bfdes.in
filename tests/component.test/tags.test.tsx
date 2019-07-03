@@ -1,43 +1,43 @@
-import * as React from 'react'
-import { MemoryRouter } from 'react-router-dom'
-import { configure, shallow, mount } from 'enzyme'
-const Adapter = require('enzyme-adapter-react-16')
+import { configure, mount, shallow } from "enzyme";
+import * as React from "react";
+import { MemoryRouter } from "react-router-dom";
+const Adapter = require("enzyme-adapter-react-16");
 
-import Tags from '../../src/shared/components/Tags'
+import Tags from "../../src/shared/components/Tags";
 
 beforeAll(() => {
-  configure({adapter: new Adapter()})
-})
+  configure({adapter: new Adapter()});
+});
 
-describe('<Tags />', () => {
-  it('renders empty span for a post with no tags', () => {
+describe("<Tags />", () => {
+  it("renders empty span for a post with no tags", () => {
     // Edge case
-    const wrapper = shallow(<Tags tags={[]} />)
-    expect(wrapper.find('Tag')).toHaveLength(0)
-  })
+    const wrapper = shallow(<Tags tags={[]} />);
+    expect(wrapper.find("Tag")).toHaveLength(0);
+  });
 
-  it('renders a single tag', () => {
+  it("renders a single tag", () => {
     // Edge case
-    const wrapper = shallow(<Tags tags={['Algorithms']} />)
-    expect(wrapper.find('Tag')).toHaveLength(1)
-  })
+    const wrapper = shallow(<Tags tags={["Algorithms"]} />);
+    expect(wrapper.find("Tag")).toHaveLength(1);
+  });
 
-  it('renders multiple tags', () => {
-    const wrapper = shallow(<Tags tags={['Algorithms', 'Python']} />)
-    expect(wrapper.find('Tag')).toHaveLength(2)
-  })
+  it("renders multiple tags", () => {
+    const wrapper = shallow(<Tags tags={["Algorithms", "Python"]} />);
+    expect(wrapper.find("Tag")).toHaveLength(2);
+  });
 
-  test('<Tag /> navigates to correct route when clicked', () => {
-    const tags = ['Algorithms', 'Python']
+  test("<Tag /> navigates to correct route when clicked", () => {
+    const tags = ["Algorithms", "Python"];
     const wrapper = mount(
       <MemoryRouter>
         <Tags tags={tags}/>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     expect(wrapper
-      .find('Link')
+      .find("Link")
       .first()
-      .props().to
-    ).toBe(`/posts?tag=${tags[0]}`)
-  })
-})
+      .props().to,
+    ).toBe(`/posts?tag=${tags[0]}`);
+  });
+});
