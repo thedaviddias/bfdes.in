@@ -8,7 +8,7 @@ if [ $TRAVIS_BRANCH == 'master' ] ; then
   cd dist
   git init
 
-  git remote add deploy "travis@bfdes.in:/opt/blog"
+  git remote add deploy "travis@bfdes.in:/opt/blog/dist"
   git config user.name "Travis CI"
   git config user.email "bfdes@users.noreply.github.com"
 
