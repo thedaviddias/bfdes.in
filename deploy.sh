@@ -8,7 +8,7 @@ if [ $TRAVIS_BRANCH == 'master' ] ; then
   cd dist
   git init
 
-  git remote add deploy "ssh://travis@bfdes.in:$PORT/opt/blog"
+  git remote add deploy "ssh://travis@bfdes.in:$SSH_PORT/opt/blog"
   git add .
   git commit -m "Deploy"
   git push --force deploy master
