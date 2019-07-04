@@ -8,11 +8,11 @@ if [ $TRAVIS_BRANCH == 'master' ] ; then
   cd dist
   git init
 
-  git remote add deploy "ssh://travis@bfdes.in:$SSH_PORT/opt/blog"
+  git remote add deploy "travis@bfdes.in:$SSH_PORT/opt/blog"
   git config user.name "travis"
-  git config user.email "bfdes@users.noreply.github.com"
+  git config user.email "travis@travis.org"
 
   git add .
-  git commit -m "Deploy"
+  git commit -m "deploy"
   git push --force deploy master
 fi
