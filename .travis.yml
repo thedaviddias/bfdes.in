@@ -1,8 +1,18 @@
 language: node_js
 sudo: false
 node_js:
-  - "10"
+  - '10'
 install:
   - yarn install
 script:
   - yarn test
+addons:
+  ssh_known_hosts: bfdes.in
+
+before_install:
+  - openssl aes-256-cbc -K $encrypted_ab7192516e53_key -iv $encrypted_ab7192516e53_iv -in travis_rsa.enc -out travis_rsa -d
+  - chmod 600 travis_rsa
+  - mv travis_rsa ~/.ssh/id_rsa
+
+after_success:
+  - bash ./deploy.sh
