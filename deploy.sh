@@ -5,7 +5,7 @@ if [ $TRAVIS_BRANCH == 'master' ] ; then
   eval "$(ssh-agent -s)"
   ssh-add ~/.ssh/id_rsa
 
-  cd public
+  cd dist
   git init
 
   git remote add deploy "travis@bfdes.in:/opt/blog"
