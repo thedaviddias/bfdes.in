@@ -10,7 +10,7 @@ if [ $TRAVIS_BRANCH == 'master' ] ; then
 
   git remote add deploy "ssh://travis@bfdes.in:$SSH_PORT/opt/blog"
   git config user.name "travis"
-  git config user.password "bfdes@users.noreply.github.com"
+  git config user.email "bfdes@users.noreply.github.com"
 
   git add .
   git commit -m "Deploy"
