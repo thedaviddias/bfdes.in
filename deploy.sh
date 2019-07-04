@@ -8,13 +8,7 @@ if [ $TRAVIS_BRANCH == 'master' ] ; then
   cd dist
   git init
 
-  git remote add deploy "travis@bfdes.in:/opt/blog/dist"
-  git config user.name "Travis CI"
-  git config user.email "bfdes@users.noreply.github.com"
-
+  git remote add deploy "ssh://travis@bfdes.in:$PORT/opt/blog"
   git add .
   git commit -m "Deploy"
   git push --force deploy master
-else
-  echo "Not deploying, since this branch isn't master."
-fi
