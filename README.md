@@ -1,6 +1,6 @@
 # bfdes.in
 
-[![Build Status](https://travis-ci.org/bfdes/bfdes.in.svg?branch=master)](https://travis-ci.org/bfdes/bfdes.in)
+[![CircleCI](https://circleci.com/gh/bfdes/bfdes.in.svg?style=svg)](https://circleci.com/gh/bfdes/bfdes.in)
 
 Source for my personal blog, built using React SSR and written in TypeScript.
 
