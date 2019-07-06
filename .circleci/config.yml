@@ -23,4 +23,4 @@ jobs:
           name: Run tests
           command: yarn test --coverage
       - codecov/upload:
-          file: "coverage/*.json"
+          file: "coverage/coverage-final.json"
