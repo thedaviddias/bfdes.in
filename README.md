@@ -45,12 +45,6 @@ Circle CI will also run this test suite for every code push to master.
 
 ### Deployment:
 
-#### Heroku
-
-Fork this repo and set up Heroku deployment pipelines to listen for a code push.
-
-#### Bare metal or VM
-
 Running `yarn build:prod` generates two bundles
 * Client code under the /static folder
 * A single file of server-side code
