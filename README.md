@@ -41,7 +41,7 @@ Then (also) run `yarn serve:dev` to serve the app on port 8080 using Nodemon.
 
 Run `yarn test:watch` to run the tests using Jest in watch mode.
 
-Travis CI will also run this test suite for every code push to master.
+Circle CI will also run this test suite for every code push to master.
 
 ### Deployment:
 
