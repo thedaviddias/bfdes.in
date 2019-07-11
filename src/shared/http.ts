@@ -12,8 +12,8 @@ export function get(url: string) {
   return fetch(url, {
     method: "get",
     headers: {"Content-Type": "application/json"},
-  }).then((res) =>
-    res.json().then((data) =>
+  }).then(res =>
+    res.json().then(data =>
       res.ok ? data : Promise.reject(new RequestError(res.status, data.error.message)),
     ),
   );

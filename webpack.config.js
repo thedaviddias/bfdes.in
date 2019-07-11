@@ -1,12 +1,16 @@
 const webpack = require('webpack');
 const path  = require('path');
+const files = require('./files');
+
+const posts = files.readPosts("./posts")
+files.writeFeed(posts)
 
 module.exports = [{
-  entry: path.resolve(__dirname, '../src/browser', 'index.tsx'),
+  entry: path.resolve(__dirname, './src/browser', 'index.tsx'),
   output: {
     filename: 'javascripts/bundle.js',
     publicPath: '/static/', // public URL of the output directory when referenced in a browser
-    path: path.resolve(__dirname, '../dist/static'),
+    path: path.resolve(__dirname, './dist/static'),
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.css']
@@ -15,13 +19,13 @@ module.exports = [{
     rules: [{
       test: /\.tsx?$/,
       include: [
-        path.resolve(__dirname, '../src/browser'),
-        path.resolve(__dirname, '../src/shared')
+        path.resolve(__dirname, './src/browser'),
+        path.resolve(__dirname, './src/shared')
       ],
       use: 'ts-loader'
     }, {
       test: /\.(jpg|png|svg)$/,
-      include: path.resolve(__dirname, '../src/shared'),
+      include: path.resolve(__dirname, './src/shared'),
       use: {
         loader: 'url-loader',
         options: {
@@ -32,7 +36,7 @@ module.exports = [{
       }
     }, {
       test: /\.css$/,
-      include: path.resolve(__dirname, '../src/browser'),
+      include: path.resolve(__dirname, './src/browser'),
       use: {
         loader: 'file-loader',
         options: {
@@ -49,10 +53,10 @@ module.exports = [{
   ],
   target: 'web'
 }, {
-  entry: path.resolve(__dirname, '../src/server', 'server.ts'),
+  entry: path.resolve(__dirname, './src/server', 'server.ts'),
   output: {
     filename: 'server.js',
-    path: path.resolve(__dirname, '../dist'),
+    path: path.resolve(__dirname, './dist'),
     publicPath: '/',
   },
   resolve: {
@@ -62,13 +66,13 @@ module.exports = [{
     rules: [{
       test: /\.tsx?$/,
       include: [
-        path.resolve(__dirname, '../src/server'),
-        path.resolve(__dirname, '../src/shared')
+        path.resolve(__dirname, './src/server'),
+        path.resolve(__dirname, './src/shared')
       ],
       loader: 'ts-loader'
     }, {
       test: /\.(jpg|png|svg)$/,
-      include: path.resolve(__dirname, '../src/shared'),
+      include: path.resolve(__dirname, './src/shared'),
       use: {
         loader: 'url-loader',
         options: {
@@ -82,7 +86,8 @@ module.exports = [{
   },
   plugins: [
     new webpack.DefinePlugin({
-      __isBrowser__: 'false'
+      __isBrowser__: 'false',
+      __posts__: JSON.stringify(posts)
     })
   ],
   target: 'node'

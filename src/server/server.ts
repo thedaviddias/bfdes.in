@@ -1,5 +1,4 @@
 import * as http from "http";
-import { parse, writeFeed } from "./files";
 import factory from "./index";
 
 function normalizePort(val: number | string): number | string | boolean {
@@ -42,15 +41,9 @@ function onListening(): void {
   console.debug(`Express server listening on ${bind}`);
 }
 
-// Create an app given the path to its posts
-const posts = parse(process.argv.pop());
-const app = factory(posts);
-
-// Generate an RSS feed for the most recent posts
-const recentPosts = posts
-  .sort((a, b) => b.created - a.created)
-  .slice(0, 10);
-writeFeed(recentPosts);
+// Create an app given its posts
+const app = factory(__posts__);
+delete (global as any).__posts__;
 
 // Attempt to normalize the port
 const port = normalizePort(process.env.PORT || 8080);

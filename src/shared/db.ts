@@ -6,8 +6,9 @@ type Index = {
  * In-memory database to query the posts.
  */
 export default class DB {
-  public posts: Post[]; // Posts in sorted order
-  public index: Index;  // Index to query the posts by slug
+  private posts: Post[]; // Posts in sorted order
+  private index: Index;  // Index to query the posts by slug
+
   constructor(posts: Post[]) {
     this.posts = posts.sort((a, b) =>
       b.created - a.created,
@@ -19,7 +20,7 @@ export default class DB {
 
   public all(tag?: string): Post[] {
     return this.posts
-      .filter((p) => tag === undefined || p.tags.includes(tag));
+      .filter(p => tag === undefined || p.tags.includes(tag));
   }
 
   public get(slug: string): Post {
