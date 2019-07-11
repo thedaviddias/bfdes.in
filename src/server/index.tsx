@@ -8,9 +8,7 @@ import * as path from "path";
 import DB from "../shared/db";
 import router from "./router";
 
-export default function factory(posts: Post[]) {
-  const mode = process.env.NODE_ENV;
-
+export default function factory(posts: Post[], mode: string = "test") {
   const app = express();
 
   // Apply middleware stack:

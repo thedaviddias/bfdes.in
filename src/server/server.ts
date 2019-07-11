@@ -42,7 +42,8 @@ function onListening(): void {
 }
 
 // Create an app given its posts
-const app = factory(__posts__);
+const mode = process.env.NODE_ENV;
+const app = factory(__posts__, mode);
 delete (global as any).__posts__;
 
 // Attempt to normalize the port
