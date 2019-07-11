@@ -26,7 +26,7 @@ export default function factory(posts: Post[]) {
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
 
-  // ii) static server w/ gzip compression. Used in dev or on Heroku.
+  // ii) static server w/ gzip compression
   app.use(compression());
   app.use("/static", express.static(path.resolve("dist", "static")));
 
