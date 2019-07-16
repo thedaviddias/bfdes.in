@@ -50,7 +50,7 @@ Running `yarn build:prod` generates two bundles
 * Client code under the /static folder
 * A single file of server-side code
 
-Run the server-side code with a path to the folder containing posts, and optionally configure a webserver to serve assets under /static.
+Run the server-side code using Node.js, and optionally configure a webserver to serve assets under /static.
 
 You may also wish to run multiple instances of the app and use your webserver as a load balancer.
 
