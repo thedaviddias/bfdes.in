@@ -1,9 +1,5 @@
 const webpack = require('webpack');
 const path  = require('path');
-const files = require('./files');
-
-const posts = files.readPosts("./posts")
-files.writeFeed(posts)
 
 module.exports = [{
   entry: path.resolve(__dirname, './src/browser', 'index.tsx'),
@@ -60,7 +56,7 @@ module.exports = [{
     publicPath: '/',
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js']
+    extensions: ['.ts', '.tsx', '.js', '.md']
   },
   module: {
     rules: [{
@@ -82,12 +78,14 @@ module.exports = [{
           emitFile: false  // On the server we do not write the files to disk
         }
       }
+    }, {
+      test: /\.md$/,
+      use: path.resolve(__dirname, './webpack', 'mdLoader.js')
     }]
   },
   plugins: [
     new webpack.DefinePlugin({
       __isBrowser__: 'false',
-      __posts__: JSON.stringify(posts)
     })
   ],
   target: 'node'

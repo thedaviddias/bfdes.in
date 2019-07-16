@@ -101,18 +101,18 @@ class PostOr404 extends React.Component<Props, State> {
   private fetchPost(slug: string): void {
     const url = `/api/posts/${slug}`;
     this.setState({loading: true}, () =>
-      this.props.get(url).then((post) =>
+      this.props.get(url).then(post =>
         this.setState({post, loading: false}),
-      ).catch((error) =>
+      ).catch(error =>
         this.setState({error, loading: false}),
       ),
     );
   }
 }
 
-const Wrapped: React.SFC<Props> = (props) => (
+const Wrapped: React.SFC<Props> = props => (
   <Context.Post.Consumer>
-    {(post) => <PostOr404 {...props} context={{data: post}} />}
+    {post => <PostOr404 {...props} context={{data: post}} />}
   </Context.Post.Consumer>
 );
 

@@ -8,7 +8,7 @@ type Props = {
 export default function(Component: React.SFC<Props>) {
   return (props: {match: match<{slug: string}>}) => {
     const { match, ...rest } = props;
-    const { slug } = props.match.params;
+    const { slug } = match.params;
     return <Component slug={slug} {...rest}/>;
   };
 }

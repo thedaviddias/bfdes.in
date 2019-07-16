@@ -109,7 +109,7 @@ class Posts extends React.Component<Props, State> {
 
     return (
       <ul id="posts">
-        {posts.map((post) => <PostStub key={post.slug} {...post}/>)}
+        {posts.map(post => <PostStub key={post.slug} {...post}/>)}
       </ul>
     );
   }
@@ -117,18 +117,18 @@ class Posts extends React.Component<Props, State> {
   private fetchPosts(tag?: string): void {
     const url = `/api/posts${tag === undefined ? "" : `?tag=${tag}`}`;
     this.setState({loading: true}, () =>
-      this.props.get(url).then((posts) =>
+      this.props.get(url).then(posts =>
         this.setState({posts, loading: false}),
-      ).catch((error) =>
+      ).catch(error =>
         this.setState({error, loading: false}),
       ),
     );
   }
 }
 
-const Wrapped: React.SFC<Props> = (props) => (
+const Wrapped: React.SFC<Props> = props => (
   <Context.PostStub.Consumer>
-    {(posts) => <Posts {...props} context={{data: posts}} />}
+    {posts => <Posts {...props} context={{data: posts}} />}
   </Context.PostStub.Consumer>
 );
 

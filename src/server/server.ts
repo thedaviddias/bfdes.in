@@ -1,4 +1,5 @@
 import * as http from "http";
+import * as path from "path";
 import factory from "./index";
 
 function normalizePort(val: number | string): number | string | boolean {
@@ -19,15 +20,15 @@ function onError(error: NodeJS.ErrnoException): void {
   if (error.syscall !== "listen") {
     throw error;
   }
-  const bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
+  const bind = typeof port === "string" ? `Pipe ${port}` : `Port ${port}`;
   // Handle specific listen errors with friendly messages
   switch (error.code) {
     case "EACCES":
-      console.error(bind + " requires elevated privileges");
+      console.error(`${bind} requires elevated privileges`);
       process.exit(1);
       break;
     case "EADDRINUSE":
-      console.error(bind + " is already in use");
+      console.error(`${bind} is already in use`);
       process.exit(1);
       break;
     default:
@@ -42,9 +43,16 @@ function onListening(): void {
 }
 
 // Create an app given its posts
+const context = require.context("../../posts", false, /\.md$/);
+const posts: Post[] = context
+  .keys()
+  .map(filePath => {
+    const slug = path.parse(filePath).name;
+    const post = context(filePath);
+    return { ...post, slug };
+  });
 const mode = process.env.NODE_ENV;
-const app = factory(__posts__, mode);
-delete (global as any).__posts__;
+const app = factory(posts, mode);
 
 // Attempt to normalize the port
 const port = normalizePort(process.env.PORT || 8080);
