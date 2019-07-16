@@ -85,6 +85,35 @@ router.get("/api/posts/:slug", (req, res) => {
   }
 });
 
+// GET /feed.rss
+router.get("/feed.rss", (req, res) => {
+  const recentPosts: Post[] = req.app.get("DB").all().slice(0, 10);
+  const markup =
+    `<?xml version="1.0" encoding="utf-8"?>
+    <rss version="2.0">
+    <channel>
+      <title>bfdes.in</title>
+      <link>https://www.bfdes.in</link>
+      <description>Programming and Technology blog</description>
+      ${recentPosts.map(post => {
+        const date = new Date(post.created);
+        const url = `https://www.bfdes.in/posts/${post.slug}`;
+        return (
+          `<item>
+            <title>${post.title}</title>
+            <link>${url}</link>
+            <guid>${url}</guid>
+            <pubDate>${date.toUTCString()}</pubDate>
+          </item>`
+        );
+      }).join("")}
+    </channel>
+  </rss>`.replace(/\>\s+\</g, "><");  // Get rid of newlines between sets of tags
+  res.status(200);
+  res.type("application/xml");
+  res.send(markup);
+});
+
 // 404 handler
 router.get("*", (req, res) => {
   const stream = renderToNodeStream(

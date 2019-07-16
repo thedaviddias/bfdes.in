@@ -20,7 +20,7 @@ const Social = () => (
     <a className="nav-item" href="https://www.github.com/bfdes" >
       <img className="badge" src={require("../images/github.png")} alt="GitHub link" />
     </a>
-    <a className="nav-item" href="/static/feed.rss" >
+    <a className="nav-item" href="/feed.rss" >
       <img className="badge" src={require("../images/rss.png")} alt="RSS link" />
     </a>
   </div>
