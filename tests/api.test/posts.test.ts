@@ -1,5 +1,5 @@
 import * as request from "supertest";
-import factory from "../../src/server";
+import express from "../../src/server";
 
 const body = "Lorem ipsum delorum sit amet";
 const wordCount = 5;
@@ -20,7 +20,7 @@ const posts = [{
   wordCount,
 }];
 
-const app = factory(posts);
+const app = express(posts, "test");
 
 describe("GET /posts", () => {
   test("all posts returned for GET /posts", () =>

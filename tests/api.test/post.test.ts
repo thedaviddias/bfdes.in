@@ -1,5 +1,5 @@
 import * as request from "supertest";
-import factory from "../../src/server";
+import express from "../../src/server";
 
 const posts = [{
   title: "My first post",
@@ -24,7 +24,7 @@ const posts = [{
   wordCount: 5,
 }];
 
-const app = factory(posts);
+const app = express(posts, "test");
 
 describe("GET /posts/:slug", () => {
   test("post can be fetched by slug", () => {

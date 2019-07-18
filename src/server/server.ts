@@ -1,6 +1,6 @@
 import * as http from "http";
 import * as path from "path";
-import factory from "./index";
+import express from "./index";
 
 function normalizePort(val: number | string): number | string | boolean {
   const port = (typeof val === "string") ? parseInt(val, 10) : val;
@@ -52,7 +52,7 @@ const posts: Post[] = context
     return { ...post, slug };
   });
 const mode = process.env.NODE_ENV;
-const app = factory(posts, mode);
+const app = express(posts, mode);
 
 // Attempt to normalize the port
 const port = normalizePort(process.env.PORT || 8080);
