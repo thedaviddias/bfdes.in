@@ -26,4 +26,4 @@ jobs:
           file: "coverage/coverage-final.json"
       - run:
           name: Deploy artifacts
-          command: scp -r /dist/* circleci@bfdes.in:/Repositories/Blog/
+          command: scp -P $SSH_PORT -r /dist/* circleci@bfdes.in:/Repositories/Blog/
