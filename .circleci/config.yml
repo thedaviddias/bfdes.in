@@ -24,6 +24,9 @@ jobs:
           command: yarn test --coverage
       - codecov/upload:
           file: "coverage/coverage-final.json"
+      - add_ssh_keys:
+          fingerprints:
+            - d8:53:73:86:76:97:89:21:12:60:d8:d1:a4:3e:e4:a7
       - run:
           name: Deploy artifacts
           command: scp -P $SSH_PORT -r /dist/* circleci@bfdes.in:/Repositories/Blog/
