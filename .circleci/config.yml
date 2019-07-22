@@ -23,6 +23,8 @@ jobs:
           name: Build artifacts
           command: yarn build:prod
   test:
+    machine:
+      enabled: true
     steps:
       - run:
           name: Run tests
@@ -30,6 +32,8 @@ jobs:
       - codecov/upload:
           file: "coverage/coverage-final.json"
   deploy:
+    machine:
+      enabled: true
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -40,7 +44,7 @@ jobs:
 workflows:
   build-test-deploy:
     jobs:
-      - build:
+      - build
       - test:
           requires:
             - build
