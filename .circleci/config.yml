@@ -31,4 +31,4 @@ jobs:
           command: ssh-keyscan bfdes.in >> ~/.ssh/known_hosts
       - run:
           name: Deploy artifacts
-          command: scp -v -P $SSH_PORT -r ./dist/* circleci@bfdes.in:~/Repositories/Blog
+          command: scp -vvv -P $SSH_PORT -r ./dist/* circleci@bfdes.in:~/Repositories/Blog
