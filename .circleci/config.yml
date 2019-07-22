@@ -29,4 +29,4 @@ jobs:
             - "d8:53:73:86:76:97:89:21:12:60:d8:d1:a4:3e:e4:a7"
       - run:
           name: Deploy artifacts
-          command: scp -vvv -P $SSH_PORT -r ./dist/* circleci@bfdes.in:~/Repositories/Blog
+          command: scp -vvv -P $SSH_PORT -r ./dist/* circleci@$SERVER_IP:~/Repositories/Blog
