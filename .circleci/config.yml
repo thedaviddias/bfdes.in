@@ -2,10 +2,11 @@ version: 2.1
 orbs:
   codecov: codecov/codecov@1.0.5
 jobs:
-  build:
+  deploy:
     docker:
       - image: circleci/node:12
     steps:
+      # Build
       - checkout
       - restore_cache:
           name: Restore Yarn package cache
@@ -22,15 +23,13 @@ jobs:
       - run:
           name: Build artifacts
           command: yarn build:prod
+      # Test
       - run:
           name: Run tests
           command: yarn test --coverage
       - codecov/upload:
           file: "coverage/coverage-final.json"
-  deploy:
-    docker:
-      - image: circleci/node:12
-    steps:
+      # Deploy
       - add_ssh_keys:
           fingerprints:
             - "d8:53:73:86:76:97:89:21:12:60:d8:d1:a4:3e:e4:a7"
