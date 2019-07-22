@@ -29,4 +29,4 @@ jobs:
             - "d8:53:73:86:76:97:89:21:12:60:d8:d1:a4:3e:e4:a7"
       - run:
           name: Deploy artifacts
-          command: scp -o StrictHostKeyChecking=no -P $SSH_PORT -r ~/project/dist/* circleci@$SERVER_IP:~/Repositories/Blog
+          command: scp -o StrictHostKeyChecking=no -P $SSH_PORT -r $CIRCLE_WORKING_DIRECTORY/dist/* circleci@$SERVER_IP:~/Repositories/Blog
