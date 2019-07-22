@@ -22,10 +22,6 @@ jobs:
       - run:
           name: Build artifacts
           command: yarn build:prod
-  test:
-    docker:
-      - image: circleci/node:12
-    steps:
       - run:
           name: Run tests
           command: yarn test --coverage
@@ -41,13 +37,3 @@ jobs:
       - run:
           name: Deploy artifacts
           command: scp -o StrictHostKeyChecking=no -P $SSH_PORT -r dist/* circleci@$SERVER_IP:~/Repositories/Blog
-workflows:
-  build-test-deploy:
-    jobs:
-      - build
-      - test:
-          requires:
-            - build
-      - deploy:
-          requires:
-            - test
