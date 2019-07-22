@@ -2,42 +2,42 @@ version: 2.1
 orbs:
   codecov: codecov/codecov@1.0.5
 jobs:
-  build:
-    docker:
-      - image: circleci/node:12
-    steps:
-      - checkout
-      - restore_cache:
-          name: Restore Yarn package cache
-          keys:
-            - yarn-packages-{{ checksum "yarn.lock" }}
-      - run:
-          name: Install dependencies
-          command: yarn install --frozen-lockfile
-      - save_cache:
-          name: Save Yarn package cache
-          key: yarn-packages-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
-      - run:
-          name: Build artifacts
-          command: yarn build:prod
-  test:
-    requires:
-      - build
-    steps:
-      - run:
-          name: Run tests
-          command: yarn test --coverage
-      - codecov/upload:
-          file: "coverage/coverage-final.json"
-  deploy:
-    requires:
-      - test
-    steps:
-      - add_ssh_keys:
-          fingerprints:
-            - "d8:53:73:86:76:97:89:21:12:60:d8:d1:a4:3e:e4:a7"
-      - run:
-          name: Deploy artifacts
-          command: scp -o StrictHostKeyChecking=no -P $SSH_PORT -r dist/* circleci@$SERVER_IP:~/Repositories/Blog
+  - build:
+      docker:
+        - image: circleci/node:12
+      steps:
+        - checkout
+        - restore_cache:
+            name: Restore Yarn package cache
+            keys:
+              - yarn-packages-{{ checksum "yarn.lock" }}
+        - run:
+            name: Install dependencies
+            command: yarn install --frozen-lockfile
+        - save_cache:
+            name: Save Yarn package cache
+            key: yarn-packages-{{ checksum "yarn.lock" }}
+            paths:
+              - ~/.cache/yarn
+        - run:
+            name: Build artifacts
+            command: yarn build:prod
+  - test:
+      requires:
+        - build
+      steps:
+        - run:
+            name: Run tests
+            command: yarn test --coverage
+        - codecov/upload:
+            file: "coverage/coverage-final.json"
+  - deploy:
+      requires:
+        - test
+      steps:
+        - add_ssh_keys:
+            fingerprints:
+              - "d8:53:73:86:76:97:89:21:12:60:d8:d1:a4:3e:e4:a7"
+        - run:
+            name: Deploy artifacts
+            command: scp -o StrictHostKeyChecking=no -P $SSH_PORT -r dist/* circleci@$SERVER_IP:~/Repositories/Blog
