@@ -34,6 +34,8 @@ jobs:
           fingerprints:
             - "d8:53:73:86:76:97:89:21:12:60:d8:d1:a4:3e:e4:a7"
       - run:
+          command: ssh-keygen bfdes.in >> ~/.ssh/known_hosts
+      - run:
           name: Deploy artifacts
           command: |
             cd dist
