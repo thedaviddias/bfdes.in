@@ -39,6 +39,8 @@ jobs:
             cd dist
             git init
             git remote add origin "circleci@$SERVER_IP:~/Respositories/Blog"
+            git config user.name "Circle CI"
+            git config user.email "<>"
             git add .
-            git commit -m "pass"
+            git commit --allow-empty-message -m ""
             git push --force origin master
