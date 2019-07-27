@@ -38,7 +38,7 @@ jobs:
           command: |
             cd dist
             git init
-            git remote add origin "ssh://circleci@$SERVER_IP:$SSH_PORT/home/circleci/Respositories/Blog"
+            git remote add origin "ssh://circleci@$SERVER_IP:$SSH_PORT/home/circleci/Respositories/Blog/.git"
             git config user.name "Circle CI"
             git config user.email "<>"
             git config core.sshCommand "ssh -o StrictHostKeyChecking=no"
