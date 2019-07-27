@@ -33,7 +33,6 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "d8:53:73:86:76:97:89:21:12:60:d8:d1:a4:3e:e4:a7"
-      - run: ssh-keyscan bfdes.in >> ~/.ssh/config
       - run:
           name: Deploy artifacts
           command: |
@@ -42,6 +41,7 @@ jobs:
             git remote add origin "ssh://circleci@$SERVER_IP:$SSH_PORT/home/circleci/Respositories/Blog"
             git config user.name "Circle CI"
             git config user.email "<>"
+            git config core.sshCommand "ssh -o StrictHostKeyChecking=no"
             git add .
             git commit --allow-empty-message -m ""
             git push --force origin master
