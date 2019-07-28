@@ -38,10 +38,10 @@ jobs:
           command: |
             cd dist
             git init
-            git remote add origin "ssh://circleci@$SERVER_IP:$SSH_PORT/home/circleci/respositories/blog.git/"
             git config user.name "Circle CI"
             git config user.email "<>"
             git config core.sshCommand "ssh -o StrictHostKeyChecking=no"
+            git remote add origin "ssh://circleci@$SERVER_IP:$SSH_PORT/home/circleci/respositories/blog/.git"
             git add .
             git commit --allow-empty-message -m ""
             git push --force origin master
