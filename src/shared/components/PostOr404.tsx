@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Context } from "../containers";
 import { RequestError } from "../http";
-import { parseDate } from "../parsers";
+import Date from "./Date";
 import Error from "./Error";
 import NoMatch from "./NoMatch";
 import PaginationLink from "./PaginationLink";
@@ -14,7 +14,7 @@ const Post: React.SFC<Post>
       <div className="post">
         <h1>{title}</h1>
         <p className="meta">
-          {parseDate(created)}
+          <Date timestamp={created} />
           {" · "}<Tags tags={tags}/>
           {" · "}{wordCount} {wordCount !== 1 ? " words" : " word"}
         </p>

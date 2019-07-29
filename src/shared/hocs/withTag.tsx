@@ -1,5 +1,14 @@
 import * as React from "react";
-import { parseQuery } from "../parsers";
+
+/** Method to parse query compatible with client and server. Ref: https://stackoverflow.com/a/3855394/4981237 */
+const parseQuery = (queryString: string) =>
+  (/^[?#]/.test(queryString) ? queryString.slice(1) : queryString)
+    .split("&")
+    .reduce((params, param) => {
+      const [ key, value ] = param.split("=");
+      params[key] = value ? decodeURIComponent(value.replace(/\+/g, " ")) : "";
+      return params;
+    }, {} as {[s: string]: string});
 
 type Props = {
   tag?: string;

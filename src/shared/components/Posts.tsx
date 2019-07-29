@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../containers";
 import { RequestError } from "../http";
-import { parseDate } from "../parsers";
+import Date from "./Date";
 import Error from "./Error";
 import Spinner from "./Spinner";
 import Tags from "./Tags";
@@ -28,9 +28,11 @@ type State = {
 const PostStub: React.SFC<PostStub>
   = ({ title, slug, wordCount, created, tags }) => (
     <li className="post">
-      <Link to={`/posts/${slug}`} className="nav-item"><h1>{title}</h1></Link>
+      <Link to={`/posts/${slug}`} className="nav-item">
+        <h1>{title}</h1>
+      </Link>
       <p className="meta">
-        {parseDate(created)}
+        <Date timestamp={created} />
         {" · "}<Tags tags={tags}/>
         {" · "}{wordCount} {wordCount !== 1 ? "words" : "word"}
       </p>
