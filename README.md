@@ -7,11 +7,11 @@ Source for my personal blog, built using React SSR and written in TypeScript.
 
 The Blog is edited by supplying Jekyll-like Markdown documents in a posts directory beneath the root.
 
-When the server boots all the documents are parsed into an object that can be queried.
+When the server-side code is built the posts are bundled using a custom Webpack loader.
 
 ### Requirements:
 
-* Node 10.x
+* Node 12.x
 * Yarn 1.10.x
 
 ### Usage:
@@ -24,7 +24,7 @@ Run `yarn install` within the root directory.
 
 Run `yarn build:dev`. Uses Webpack in watch mode to compile the TS source for both the frontend and the backend.
 
-Write any posts you wish to display in a 'posts' folder under the root directory. The format is
+Write posts in a 'posts' folder under the root directory. The format is
 
 ```
 # ----
@@ -51,8 +51,6 @@ Running `yarn build:prod` generates two bundles
 * A single file of server-side code
 
 Run the server-side code using Node.js, and optionally configure a webserver to serve assets under /static.
-
-You may also wish to run multiple instances of the app and use your webserver as a load balancer.
 
 ### Known issues:
 

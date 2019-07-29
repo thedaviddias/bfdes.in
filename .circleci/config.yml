@@ -6,7 +6,6 @@ jobs:
     docker:
       - image: circleci/node:12
     steps:
-      # Build
       - checkout
       - restore_cache:
           name: Restore Yarn package cache
@@ -21,27 +20,7 @@ jobs:
           paths:
             - ~/.cache/yarn
       - run:
-          name: Build artifacts
-          command: yarn build:prod
-      # Test
-      - run:
           name: Run tests
           command: yarn test --coverage
       - codecov/upload:
           file: "coverage/coverage-final.json"
-      # Deploy
-      - add_ssh_keys:
-          fingerprints:
-            - "d8:53:73:86:76:97:89:21:12:60:d8:d1:a4:3e:e4:a7"
-      - run:
-          name: Deploy artifacts
-          command: |
-            cd dist
-            git init
-            git config user.name "Circle CI"
-            git config user.email "<>"
-            git config core.sshCommand "ssh -o StrictHostKeyChecking=no"
-            git remote add origin "ssh://circleci@$SERVER_IP:$SSH_PORT/home/circleci/respositories/blog/.git"
-            git add .
-            git commit --allow-empty-message -m ""
-            git push --force origin master
