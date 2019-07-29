@@ -12,7 +12,7 @@ export default function(props: Props) {
     "September", "October", "November", "December",
   ];
   const day = date.getDate();
-  const month = monthNames[date.getMonth() - 1];
+  const month = monthNames[date.getMonth()];
   const year = date.getFullYear();
   return <>{`${day} ${month} ${year}`}</>;
 }

@@ -23,14 +23,6 @@ marked.setOptions({
 });
 
 module.exports = function(source) {
-  const toTimestamp = dateString => {
-    const [year, month, day] = dateString
-      .split("-")
-      .map(s => parseInt(s, 10));
-    const date = new Date(year, month - 1, day);
-    return date.valueOf();
-  };
-
   const wordCount = content =>
     content.split("```")
       .filter((_, i) => i % 2 === 0)
@@ -49,7 +41,7 @@ module.exports = function(source) {
   return `module.exports = ${JSON.stringify({
     title,
     tags: tags.split(" "),
-    created: toTimestamp(created),
+    created: Date.parse(created),
     wordCount: wordCount(content),
     body: marked(content),
   })}`;
