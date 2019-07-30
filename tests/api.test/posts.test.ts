@@ -22,6 +22,15 @@ const posts = [{
 
 const app = express(posts, "test");
 
+describe("GET /", () => {
+  test("root request redirected to /posts", () =>
+    request(app)
+      .get("/")
+      .expect(302)
+      .expect("Location", "/posts"),
+  );
+});
+
 describe("GET /posts", () => {
   test("all posts returned for GET /posts", () =>
     request(app)
@@ -52,4 +61,16 @@ describe("GET /posts", () => {
         expect(res.body).toEqual(sorted),
       );
   });
+});
+
+describe("GET /feed.rss", () => {
+  test("posts returned in feed", () =>
+    request(app)
+      .get("/feed.rss")
+      .expect(200)
+      .then(res => {
+        const count = (res.text.match(/\<item\>/g) || []).length;
+        return expect(count).toBe(posts.length);
+      }),
+  );
 });
