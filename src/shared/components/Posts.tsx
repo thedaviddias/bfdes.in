@@ -16,7 +16,7 @@ type Props = {
   context?: {
     data: PostStub[],
   };
-  get(url: string): Promise<Post[]>;
+  get(url: string): Promise<PostStub[]>;
 };
 
 type State = {

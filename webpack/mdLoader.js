@@ -4,13 +4,6 @@ const hljs = require("highlight.js");
 
 marked.setOptions({
   renderer: new marked.Renderer(),
-  gfm: true,
-  tables: true,
-  breaks: true,
-  pedantic: true,
-  sanitize: true,
-  smartLists: true,
-  smartypants: false,
   highlight: (code, lang) => {
     if (typeof lang === "undefined") {
       return code;
