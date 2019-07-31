@@ -1,10 +1,11 @@
-import { configure, mount } from "enzyme";
+import { configure, mount, shallow } from "enzyme";
 import * as React from "react";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Route } from "react-router-dom";
 const Adapter = require("enzyme-adapter-react-16");
 
 import { PostOr404 } from "../../src/shared/components";
 import { Context } from "../../src/shared/containers";
+import { withSlug } from "../../src/shared/hocs";
 import { RequestError } from "../../src/shared/http";
 
 const post = {
@@ -21,6 +22,21 @@ const get = jest.fn((_) => mockPromise);
 
 beforeAll(() => {
   configure({adapter: new Adapter()});
+});
+
+test("withSlug", () => {
+  const slug = "my-first-post";
+  const Component = withSlug(PostOr404);
+  const match = {
+    params: { slug },
+    isExact: true,
+    path: "/posts/:slug",
+    url: `/posts/${slug}`,
+  };
+  const wrapper = shallow(
+    <Component match={match} />,
+  );
+  expect(wrapper.prop("slug")).toBe(slug);
 });
 
 describe("<PostOr404 />", () => {

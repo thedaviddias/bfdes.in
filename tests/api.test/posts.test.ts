@@ -31,8 +31,8 @@ describe("GET /", () => {
   );
 });
 
-describe("GET /posts", () => {
-  test("all posts returned for GET /posts", () =>
+describe("GET /api/posts", () => {
+  test("all posts returned", () =>
     request(app)
       .get("/api/posts")
       .expect(200)
@@ -43,7 +43,7 @@ describe("GET /posts", () => {
 
   test("posts filtered by tag correctly", () => {
     const tag = "Algorithms";
-    const filtered = posts.filter((p) => p.tags.includes(tag));
+    const filtered = posts.filter(p => p.tags.includes(tag));
     return request(app)
       .get(`/api/posts?tag=${tag}`)
       .expect(200)
@@ -69,7 +69,8 @@ describe("GET /feed.rss", () => {
       .get("/feed.rss")
       .expect(200)
       .then(res => {
-        const count = (res.text.match(/\<item\>/g) || []).length;
+        const tag = /\<item\>/g;
+        const count = (res.text.match(tag) || []).length;
         return expect(count).toBe(posts.length);
       }),
   );

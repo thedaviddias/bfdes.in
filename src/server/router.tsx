@@ -118,7 +118,7 @@ router.get("/feed.rss", (req, res) => {
 router.get("*", (req, res) => {
   const stream = renderToNodeStream(
     <StaticRouter location={req.url} context={{}}>
-        <App />
+      <App />
     </StaticRouter>,
   );
   res.status(404);

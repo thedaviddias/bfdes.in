@@ -25,10 +25,10 @@ export default () => (
     <Route path="/" component={Sidebar} />
     <div id="content">
       <Switch>
-        <Route exact={true} path="/" render={() => <Redirect to="/posts" />} />
-        <Route exact={true} path="/about" component={About} />
-        <Route exact={true} path="/posts" component={withTag(withHTTPClient(Posts))} />
-        <Route exact={true} path="/posts/:slug" component={withSlug(withHTTPClient(PostOr404))} />
+        <Route exact path="/" render={() => <Redirect to="/posts" />} />
+        <Route exact path="/about" component={About} />
+        <Route exact path="/posts" component={withTag(withHTTPClient(Posts))} />
+        <Route exact path="/posts/:slug" component={withSlug(withHTTPClient(PostOr404))} />
         <Route component={NoMatch} />
       </Switch>
     </div>

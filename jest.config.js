@@ -12,6 +12,6 @@ module.exports = {
   },
   testRegex: "/tests/.*\\.(ts|tsx)$",
   moduleNameMapper: {
-    "\\.(svg|jpeg)$": "<rootDir>/tests/setup/assetTransformer.js"
+    "\\.(svg|jpeg|png)$": "<rootDir>/tests/setup/assetTransformer.js"
   }
 }

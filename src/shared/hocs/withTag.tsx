@@ -14,6 +14,10 @@ type Props = {
   tag?: string;
 };
 
+type Location = {
+  search: string;
+};
+
 export default function(Component: React.SFC<Props>) {
   return (props: {location: Location}) => {
     const { location, ...rest } = props;

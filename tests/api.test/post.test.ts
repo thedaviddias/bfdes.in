@@ -26,7 +26,7 @@ const posts = [{
 
 const app = express(posts, "test");
 
-describe("GET /posts/:slug", () => {
+describe("GET /api/posts/:slug", () => {
   test("post can be fetched by slug", () => {
     const post = posts[0];
     return request(app)

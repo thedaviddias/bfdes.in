@@ -1,10 +1,11 @@
-import { configure, mount } from "enzyme";
+import { configure, mount, shallow } from "enzyme";
 import * as React from "react";
 import { MemoryRouter } from "react-router-dom";
 const Adapter = require("enzyme-adapter-react-16");
 
 import { Posts } from "../../src/shared/components";
 import { Context } from "../../src/shared/containers";
+import { withTag } from "../../src/shared/hocs";
 import { RequestError } from "../../src/shared/http";
 
 const posts = [{
@@ -26,6 +27,18 @@ const get = jest.fn((_) => mockPromise);
 
 beforeAll(() => {
   configure({adapter: new Adapter()});
+});
+
+test("withTag", () => {
+  const tag = "Python";
+  const Component = withTag(Posts);
+  const location = {
+    search: `?tag=${tag}`,
+  };
+  const wrapper = shallow(
+    <Component location={location} />,
+  );
+  expect(wrapper.prop("tag")).toBe(tag);
 });
 
 describe("<Posts />", () => {
