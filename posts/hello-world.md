@@ -33,7 +33,7 @@ Isomorphic applications are SPA-like websites that can 'run' on both client and 
 This blog is built as an isomorphic app, using React components:
 
 * The appserver runs in a Node environment, and each controller renders the relevant component.
-  In this context React is effectively used as a template generating function.
+  In this context React is effectively used as a templating engine.
 
 * Client code uses the same top-level App component, but wraps it in a router.
   The router enables the frontend code to manipulate the aforementioned History API.
@@ -81,8 +81,8 @@ class App extends React.Component {
           <Switch>
             <Route exact path='/' render={() => <Redirect to="/posts" />} />
             <Route exact path='/about' component={About} />
-            <Route exact path='/posts' component={withTag(Posts)} />
-            <Route exact path='/posts/:slug' component={withSlug(PostOr404)} />
+            <Route exact path='/posts' component={Posts} />
+            <Route exact path='/posts/:slug' component={PostOr404} />
             <Route component={NoMatch} />
           </Switch>
         </Wrapper>
@@ -92,7 +92,7 @@ class App extends React.Component {
 }
 ```
 
-Recall that we use a static router in the controllers to inform App which component it should render.
+Recall that a static router in the controllers informs `App` which component it should render.
 But on the browser the router reads from and writes to the History API to enable navigation:
 
 ```jsx
@@ -107,12 +107,12 @@ hydrate(
 
 ## Build process
 
-[Webpack](https://webpack.js.org/) is used to transpile TypeScipt and TSX to JavaScript, and to resolve imports.
+[Webpack](https://webpack.js.org/) is used as the module bundler.
 Two Webpack configurations are used to generate:
-* Client side code, targeting browsers, and other assets under dist/static
-* Server side code -- dist/server.js
+* client-side code and other assets under dist/static
+* server-side code -- dist/server.js
 
-By convention we store relevant files according to whether they are shared or not:
+By convention source code is stored according to whether it is shared or not:
 
 ```
 client/
@@ -133,25 +133,26 @@ Generally a webserver like NGiNX is used to serve static assets and proxy reques
 
 ## Publishing posts
 
-The publishing mechanism is similar to that of Jekyll; posts written in [markdown](https://github.github.com/gfm/) are commited with code.
-As the server boots it parses all these files and renders them into an object that can be queried on demand.
+The publishing mechanism is similar to that of Jekyll:
+* Posts written in [markdown](https://github.github.com/gfm/) are commited alongside code
+* At build-time a custom Webpack loader bundles all the entries into the server code
+* At runtime transformed entries are loaded into memory and queried on demand
 
 Code snippets can be entered inline or in fenced code blocks: 
 
 ```javascript
 marked.setOptions({
-  renderer: new marked.Renderer(),
-  // ... //
-  highlight: (code, lang) => {
-    if(typeof lang == 'undefined') {
-      return code
-    } else if(lang == 'math') {
-      return katex.renderToString(code)
-    } else {
-      return hljs.highlight(lang, code).value
-    }
-  }
-})
+  renderer: new marked.Renderer(),
+  highlight: (code, lang) => {
+    if (typeof lang === "undefined") {
+      return code;
+    } else if (lang === "math") {
+      return katex.renderToString(code);
+    } else {
+      return hljs.highlight(lang, code).value;
+    }
+  },
+});
 ```
 
 Highlighting is carried out by highlight.js, but delegated to katex.js for code marked as ‘math’.
