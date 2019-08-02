@@ -8,6 +8,7 @@ declare interface PostStub {
 
 declare interface Post extends PostStub {
   body: string;
+  summary: string;
   previous?: string;
   next?: string;
 }

@@ -101,6 +101,7 @@ router.get("/feed.rss", (req, res) => {
         return (
           `<item>
             <title>${post.title}</title>
+            <description>${post.summary}</description>
             <link>${url}</link>
             <guid>${url}</guid>
             <pubDate>${date.toUTCString()}</pubDate>

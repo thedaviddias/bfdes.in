@@ -1,10 +1,15 @@
-# ----
+---
 title: Monte Carlo to Las Vegas
 tags: Algorithms API
 created: 2019-06-15
-# ----
+summary: Exploiting convenient axioms to expose a leaner API for high-performance algorithms 
+---
 
 ## Background
+
+Recently I have been writing an algorithms library while following CS courses to better understand the fundamental data structures that underpin modern computing. In the process I have gained an appreciation of the benefits of good API design as well as solid testing strategies.
+
+Most of the time, but not always, the goal of exposing a lean library API and writing DRY code conflicts with that of crafting efficient code. Lets look at one such situation that I encountered.
 
 The Monte Carlo class of algorithms are those which we can guarantee terminate in finite time but which may produce an incorrect result now and then. A Las Vegas algorithm on the other hand is guaranteed to produce a correct result, but we might only be able to obtain a probabilistic measure of its runtime.
 
@@ -21,7 +26,7 @@ f : p \mapsto t \mapsto i,
 \end{cases}
 ```
 
-The goal is to enable the client to write Las Vegas variant `las_vegas` in terms of the Monte Carlo variant `monte_carlo` (alias for `f`) in order to maintain a lean API.
+The goal is to enable the client to write Las Vegas variant in terms of the Monte Carlo variant `f`.
 
 ## Rabin-Karp
 
@@ -94,4 +99,8 @@ There are a couple of perfomance and memory usage penalties to be mindful of:
 
 The Rabin Karp implementation is taken from Algorithms II by Sedgewick and Wayne.
 
-[This article](https://yourbasic.org/algorithms/las-vegas/) provides an excellent explanation of the difference between Monte Carlo and Las Vegas algorithms, and also makes a distinction between a Monte Carlo algorithm and a Monte Carlo simulation. 
+[This article](https://yourbasic.org/algorithms/las-vegas/) provides an excellent explanation of the difference between Monte Carlo and Las Vegas algorithms, and also makes a distinction between a Monte Carlo algorithm and a Monte Carlo simulation.
+
+## Acknowledgements
+
+I would like to thank [Adil Parvez](https://adilparvez.com) and [Scott Williams](https://scottw.co.uk) for their valuable feedback.

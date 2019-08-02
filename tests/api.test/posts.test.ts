@@ -1,12 +1,14 @@
 import * as request from "supertest";
 import express from "../../src/server";
 
+const summary = "Lorem ipsum";
 const body = "Lorem ipsum delorum sit amet";
 const wordCount = 5;
 
 const posts = [{
   title: "My first post",
   slug: "my-first-post",
+  summary,
   body,
   created: 1523401300000,
   tags: ["Algorithms", "Java"],
@@ -14,6 +16,7 @@ const posts = [{
 }, {
   title: "My second post",
   slug: "my-second-post",
+  summary,
   body,
   created: 1523487600000,
   tags: ["Java"],

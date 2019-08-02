@@ -1,8 +1,9 @@
-# ----
+---
 title: Property-based testing
 tags: Testing
 created: 2018-10-15
-# ----
+summary: An introduction to property-based testing and its applications in standard library algorithm validation
+---
 
 Today we discuss what property-based testing entails and why it is used in software development.
 
@@ -145,10 +146,12 @@ A sorting funciton can be fully descibed by two properties:
 
 We describe arrays as a [family](https://math.stackexchange.com/a/361530), and the primed elements belong to the permuted array.
 
-Here is one strategy to programmatically generate samples to verify the above:
+Here is one strategy to programmatically generate integer array samples to verify the above:
 
 * Progressively generate arrays of increasing size (up to a maximum)
-* Large arrays can encode more states (have high entropy), so we generate proportionately more
+* Large arrays encode exponentially more states, so generate more samples of these
+
+In fact an array of size `n` will encode `math.pow(10, n)` states.
 
 ```scala
 def arrays: Stream[Array[Int]] = {
@@ -156,7 +159,7 @@ def arrays: Stream[Array[Int]] = {
     Array.fill(size)(rnd.nextInt())
 
   def samples(size: Int): Stream[Array[Int]] =
-    Stream.fill(Math.max(1, size))(sample(size))
+    Stream.fill(math.pow(2, size))(sample(size))
 
   Stream.range(0, maxSize).flatMap(samples)
 }  // `maxSize` and `rnd` are set on the class
@@ -164,7 +167,8 @@ def arrays: Stream[Array[Int]] = {
 
 Note:
 * The use of `Stream` means we only generate as many samples as we need
-* The second arguments of `Array.fill` and `Stream.fill` are evaulated [by-name](https://docs.scala-lang.org/tour/by-name-parameters.html)
+* We have struck a balance between getting representative samples and getting quick test feedback
+* The second arguments of `Array.fill` and `Stream.fill` are evaluated [by-name](https://docs.scala-lang.org/tour/by-name-parameters.html)
 
 We also need a utility to put the keys of an array in a histogram to verify property (2):
 

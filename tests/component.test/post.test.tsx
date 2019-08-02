@@ -11,6 +11,7 @@ import { RequestError } from "../../src/shared/http";
 const post = {
   title: "My first post",
   slug: "my-first-post",
+  summary: "Lorem ipsum",
   body: "Lorem ipsum delorum sit amet",
   wordCount: 5,
   tags: ["Algorithms", "Java"],

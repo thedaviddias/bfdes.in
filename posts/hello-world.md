@@ -1,8 +1,9 @@
-# ----
+---
 title: Hello World!
 tags: React SSR
 created: 2018-07-22
-# ----
+summary: Brief overview and comparison of various modern approaches of creating websites
+---
 
 After writing and then re-writing a blogging engine I thought I’d finally get round to publishing a blogpost.
 
@@ -25,7 +26,8 @@ For those unfamiliar with web programming, there are currently three distinct wa
   Such Single Page Applications are usually created with frameworks like [Angular](https://angular.io) and [React](https://reactjs.org).
   SPA code almost always needs to consume content from an API server.
 
-Of course in practice most websites are built using a combination of approaches.
+Static resources are easier to cache and static websites are more amenable to search engine optimisation.
+In practice most [modern websites](https://netflix.com) are built using a combination of approaches because they need to support dynamic content and also load efficiently.
 
 ### Isomorphic apps
 
@@ -38,8 +40,8 @@ This blog is built as an isomorphic app, using React components:
 * Client code uses the same top-level App component, but wraps it in a router.
   The router enables the frontend code to manipulate the aforementioned History API.
 
-Rendering the first page requested in advance reduces the apprent time to first paint.
-It is also a form of SEO: webcrawlers find it easier to parse and index plain HTML.
+Rendering the first page requested on the server reduces the *apparent* time taken to paint it.
+Note that SSR doesn't come for free: the server is under more load unless a caching strategy is employed.
 
 This is the backend code responsible for generating the current page:
 
@@ -64,9 +66,7 @@ router.get('/posts/:slug', (req, res) => {
 })
 ```
 
-Note that streaming markup reduces the actual time for first paint.
-
-Then client JS takes over, enabling rapid navigation between various ‘pages’ of the website.
+On the client JavaScript takes over, enabling rapid navigation between various ‘pages’ of the website.
 [React Router](https://github.com/ReactTraining/react-router) is responsible for the transitions between these views:
 
 ```jsx

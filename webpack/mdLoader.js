@@ -24,16 +24,17 @@ module.exports = function(source) {
       .reduce((total, count) => total + count, 0);
   
   const [meta, content] = source
-    .split("# ----")
+    .split("---")
     .filter((_, i) => i !== 0)
     .map(_ => _.trim());
   
-  const [title, tags, created] = meta
+  const [title, tags, created, summary] = meta
     .split(/[\r\n]+/)
     .map(l => l.split(":").pop().trim());
   
   return `module.exports = ${JSON.stringify({
     title,
+    summary,
     tags: tags.split(" "),
     created: Date.parse(created),
     wordCount: wordCount(content),
