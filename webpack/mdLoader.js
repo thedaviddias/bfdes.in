@@ -13,6 +13,7 @@ marked.setOptions({
       return hljs.highlight(lang, code).value;
     }
   },
+  breaks: true,
 });
 
 module.exports = function(source) {
