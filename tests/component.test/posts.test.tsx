@@ -23,7 +23,7 @@ const posts = [{
 }];
 
 const mockPromise = Promise.resolve(posts);
-const get = jest.fn((_) => mockPromise);
+const get = jest.fn(_ => mockPromise);
 
 beforeAll(() => {
   configure({adapter: new Adapter()});

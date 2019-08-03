@@ -18,12 +18,14 @@ describe("<Tags />", () => {
 
   it("renders a single tag", () => {
     // Edge case
-    const wrapper = shallow(<Tags tags={["Algorithms"]} />);
+    const tags = ["Algorithms"];
+    const wrapper = shallow(<Tags tags={tags} />);
     expect(wrapper.find("Tag")).toHaveLength(1);
   });
 
   it("renders multiple tags", () => {
-    const wrapper = shallow(<Tags tags={["Algorithms", "Python"]} />);
+    const tags = ["Algorithms", "Python"];
+    const wrapper = shallow(<Tags tags={tags} />);
     expect(wrapper.find("Tag")).toHaveLength(2);
   });
 
