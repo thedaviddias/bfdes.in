@@ -29,7 +29,8 @@ export default function(posts: Post[], mode: string = "test") {
   app.use("/static", express.static(path.resolve("dist", "static")));
 
   // iii) router
-  app.use("/", router);
+  const db = new DB(posts);
+  app.use("/", router(db));
 
   // Error handler
   type RequestError = {status?: number} & Error;
@@ -46,9 +47,6 @@ export default function(posts: Post[], mode: string = "test") {
         },
     });
   });
-
-  // Spin-up the db
-  app.set("DB", new DB(posts));
 
   return app;
 }
