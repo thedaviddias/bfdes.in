@@ -8,9 +8,8 @@ beforeAll(() => {
   configure({adapter: new Adapter()});
 });
 
-describe("<Date />", () => {
+describe("<Date /> on server", () => {
   it("renders UNIX birthday", () => {
-    // Edge case
     const wrapper = shallow(<Component timestamp={0} />);
     expect(wrapper.text()).toBe("1 January 1970");
   });
