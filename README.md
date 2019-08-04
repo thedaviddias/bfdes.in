@@ -5,7 +5,7 @@
 
 Source for my personal blog, built using React SSR and written in TypeScript.
 
-The Blog is edited by supplying Jekyll-like Markdown documents in a posts directory beneath the root.
+The Blog is edited by supplying Jekyll-compatible Markdown documents in a posts directory beneath the root.
 
 When the server-side code is built the posts are bundled using a custom Webpack loader.
 
@@ -27,11 +27,12 @@ Run `yarn build:dev`. Uses Webpack in watch mode to compile the TS source for bo
 Write posts in a 'posts' folder under the root directory. The format is
 
 ```
-# ----
+---
 title: <TITLE>
 tags: <TAG1> <TAG2>
 created: <YEAR>-<MONTH>-<DAY>
-# ----
+summary: <RSS SUMMARY>
+---
 <BODY IN MARKDOWN>
 ```
 and the name of the markdown file should correspond to the slug of its post.
