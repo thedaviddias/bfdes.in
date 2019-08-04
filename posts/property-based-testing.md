@@ -17,7 +17,7 @@ The final code is hosted on GitHub as a [gist](https://gist.github.com/bfdes/88f
 
 Property-based testing involves providing a set of properties for the function or method under test. Effectively we define a specification that our implementation should adhere to.
 
-Contrast this with the usual approach, where we provide *examples* which hold true.
+Contrast this with the usual approach, where we provide *examples* which hold.
 This may be satisfactory when we are testing simple business logic: 
 
 > "**it** redirects unauthenticated user to login".
@@ -46,7 +46,7 @@ Consider the addition operation on integers. What conditions does it meet?
   i + j  = j + i \space \forall \space i, j \in \mathbb{Z}
   ```
 
-In fact, the first two properties guarantee integers form a [Monad](https://en.wikipedia.org/wiki/Monad) on addition.
+The first two properties guarantee integers form a [Monad](https://en.wikipedia.org/wiki/Monad) on addition.
 
 Property-based testing can be deployed to check algorithms that effect mutable data too.
 We use it to test an implementation of MergeSort. 
@@ -56,7 +56,7 @@ We use it to test an implementation of MergeSort.
 This implementation of MergeSort is transcribed to Scala from [Algorithms](https://algs4.cs.princeton.edu/home) by Sedgewick and Wayne.
 
 It consists of two subroutines:
-1. Split the array in two, recursively sorting each partititon
+1. Split the array in two, recursively sorting each partition
 2. Merge the sorted partitions
 
 ```scala
@@ -282,10 +282,10 @@ object SortingSpecification extends Properties("mergeSort") {
 }
 ```
 
-By using ScalaCheck we have traded some transparency for the ability to abstract away the details of test case generation. ScalaCheck can also perform [test case minimisation](https://github.com/rickynils/scalacheck/blob/master/doc/UserGuide.md#test-case-minimisation), which is really useful for debugging.
+By using ScalaCheck we have traded some transparency for the ability to abstract away the details of test case generation. ScalaCheck can also perform [test case minimisation](https://github.com/rickynils/scalacheck/blob/master/doc/UserGuide.md#test-case-minimisation), which is useful for debugging.
 
 ## Further reading
 
 MergeSort is an interesting algorithm because its worst-case performance matches the theoretical minimum. QuickSort is an algorithm that is *in practice* faster than MergeSort, but it is not stable. This is why system sorts typically use a variant of MergeSort for sorting reference types, and QuickSort for primitives. Sedgewick and Wayne discuss this in more detail.
 
-If you want more insight into how ScalaCheck works it would be worth looking at the book [Functional Programming in Scala](https://www.manning.com/books/functional-programming-in-scala). The eight chapter walks the reader through designing such a library. 
+If you want more insight into how ScalaCheck works it would be worth looking at the book [Functional Programming in Scala](https://www.manning.com/books/functional-programming-in-scala). The eight-chapter walks the reader through designing such a library. 

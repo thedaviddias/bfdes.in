@@ -7,13 +7,13 @@ summary: Exploiting convenient axioms to expose a leaner API for high-performanc
 
 ## Background
 
-Recently I have been writing an algorithms library while following CS courses to better understand the fundamental data structures that underpin modern computing. In the process I have gained an appreciation of the benefits of good API design as well as solid testing strategies.
+Recently I have been writing an algorithms library while following CS courses to better understand the fundamental data structures that underpin modern computing. In the process, I have gained an appreciation of the benefits of good API design as well as solid testing strategies.
 
-Most of the time, but not always, the goal of exposing a lean library API and writing DRY code conflicts with that of crafting efficient code. Lets look at one such situation that I encountered.
+Most of the time, but not always, the goal of exposing a lean library API and writing DRY code conflicts with that of crafting efficient code. Let us look at one such situation that I encountered.
 
-The Monte Carlo class of algorithms are those which we can guarantee terminate in finite time but which may produce an incorrect result now and then. A Las Vegas algorithm on the other hand is guaranteed to produce a correct result, but we might only be able to obtain a probabilistic measure of its runtime.
+The Monte Carlo class of algorithms are those which we can guarantee to terminate in finite time, but which may produce an incorrect result now and then. A Las Vegas algorithm, on the other hand, is guaranteed to produce a correct result, but we might only be able to obtain a probabilistic measure of its runtime.
 
-In certain cases it is possible to formulate a Las Vegas variant from the Monte Carlo variant of an algorithm.
+In certain cases, it is possible to formulate a Las Vegas variant from the Monte Carlo variant of an algorithm.
 
 The Rabin Karp substring search algorithm has this property. Suppose substring search algorithms are exposed as functions `f` that accept substrings `p` and return search functions for the text `t`:
 
@@ -30,7 +30,7 @@ The goal is to enable the client to write Las Vegas variant in terms of the Mont
 
 ## Rabin-Karp
 
-The Rabin Karp algorithm attempts to find the target pattern by computing a rolling hash of successive substrings. In the Monte Carlo variant we return the index that defines the first substring with a hash matching that of the pattern -- if one exists.
+The Rabin Karp algorithm attempts to find the target pattern by computing a rolling hash of successive substrings. In the Monte Carlo variant, we return the index that defines the first substring with a hash matching that of the pattern -- if one exists.
 
 ```python
 def rabin_karp(pattern):
@@ -73,7 +73,7 @@ def rabin_karp(pattern):
   return search
 ```
 
-The Las Vegas variant additionally performs an equality check if the hashes match before returning. But this is equivalent to modifying the Monte Carlo variant to call itself on the remaining portion of text if the equality check fails, viz:
+The Las Vegas variant additionally performs an equality check to verify if the hashes match before returning. But this is equivalent to modifying the Monte Carlo variant to call itself on the remaining portion of text if the equality check fails, viz:
 
 ```python
 def las_vegas(pattern):
@@ -90,9 +90,9 @@ def las_vegas(pattern):
   return search
 ```
 
-There are a couple of perfomance and memory usage penalties to be mindful of:
+There are a couple of performance and memory usage penalties to be mindful of:
 
-* When working in a language that does not come with a tail-call optimizing compiler an (iterative) implementation written from scratch could stop the algorithm consuming too many stack frames.
+* When working in a language that does not come with a tail-call optimizing compiler, an (iterative) implementation written from scratch could stop the algorithm consuming too many stack frames.
 * Calling the original search function repeatedly will force recomputation of the factor responsible for removing the leading digit. This can be avoided by writing the implementation from scratch, as above.
 
 ## Further reading

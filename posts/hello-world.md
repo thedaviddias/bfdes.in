@@ -34,10 +34,10 @@ In practice most [modern websites](https://netflix.com) are built using a combin
 Isomorphic applications are SPA-like websites that can 'run' on both client and server.
 This blog is built as an isomorphic app, using React components:
 
-* The appserver runs in a Node environment, and each controller renders the relevant component.
-  In this context React is effectively used as a templating engine.
+* The app server runs in a Node environment, and each controller renders the relevant component.
+  In this context, React is effectively used as a templating engine.
 
-* Client code uses the same top-level App component, but wraps it in a router.
+* Client code uses the same top-level App component but wraps it in a router.
   The router enables the frontend code to manipulate the aforementioned History API.
 
 Rendering the first page requested on the server reduces the *apparent* time taken to paint it.
@@ -122,19 +122,19 @@ server/
 
 ### Development
 
-During development Webpack watches the files and rebuilds on code change.
-Appserver code is run under Nodemon so the server restarts during recompilation and as posts change.
+During development, Webpack watches the files and rebuilds on code change.
+Server-side code is run under Nodemon so the server restarts during recompilation and as posts change.
 
 ### Production
 
-For the production build Webpack minifies code and carries out [tree-shaking](https://webpack.js.org/guides/tree-shaking/).
-This time the appserver is run under a process manager so that it can restart with the machine it runs on.
-Generally a webserver like NGiNX is used to serve static assets and proxy requests to the appserver.
+For the production build, Webpack minifies code and carries out [tree-shaking](https://webpack.js.org/guides/tree-shaking/).
+This time the server-side is run under a process manager so that it can restart with the machine it runs on.
+Generally, a webserver like NGiNX is used to serve static assets and proxy requests to the server.
 
 ## Publishing posts
 
 The publishing mechanism is similar to that of Jekyll:
-* Posts written in [markdown](https://github.github.com/gfm/) are commited alongside code
+* Posts written in [Markdown](https://github.github.com/gfm/) are committed alongside code
 * At build-time a custom Webpack loader bundles all the entries into the server code
 * At runtime transformed entries are loaded into memory and queried on demand
 
