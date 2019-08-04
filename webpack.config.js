@@ -9,7 +9,11 @@ module.exports = [{
     path: path.resolve(__dirname, './dist/static'),
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.css']
+    extensions: ['.ts', '.tsx', '.js', '.css'],
+    modules: [
+      path.resolve(__dirname, "src"),
+      "node_modules"
+    ]
   },
   module: {
     rules: [{
@@ -56,6 +60,10 @@ module.exports = [{
     publicPath: '/',
   },
   resolve: {
+    modules: [
+      path.resolve(__dirname, "src"),
+      "node_modules"
+    ],
     extensions: ['.ts', '.tsx', '.js', '.md']
   },
   module: {

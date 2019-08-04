@@ -2,7 +2,7 @@ import { mount, shallow } from "enzyme";
 import * as React from "react";
 import { MemoryRouter } from "react-router-dom";
 
-import Tags from "../../src/shared/components/Tags";
+import Tags from "shared/components/Tags";
 
 describe("<Tags />", () => {
   it("renders empty span for a post with no tags", () => {

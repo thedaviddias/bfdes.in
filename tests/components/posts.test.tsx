@@ -2,10 +2,10 @@ import { mount, shallow } from "enzyme";
 import * as React from "react";
 import { MemoryRouter } from "react-router-dom";
 
-import { Posts } from "../../src/shared/components";
-import { Context } from "../../src/shared/containers";
-import { withTag } from "../../src/shared/hocs";
-import { RequestError } from "../../src/shared/http";
+import { Posts } from "shared/components";
+import { Context } from "shared/containers";
+import { withTag } from "shared/hocs";
+import { RequestError } from "shared/http";
 
 const posts = [{
   title: "My first post",

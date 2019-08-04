@@ -1,5 +1,5 @@
+import express from "server";
 import * as request from "supertest";
-import express from "../../src/server";
 
 const summary = "Lorem ipsum";
 const body = "Lorem ipsum delorum sit amet";

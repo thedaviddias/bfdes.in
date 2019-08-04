@@ -1,7 +1,8 @@
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import Component from "../../src/shared/components/Date";
+import Component from "shared/components/Date";
+
 describe("<Date /> on server", () => {
   it("renders UNIX birthday", () => {
     const wrapper = shallow(<Component timestamp={0} />);

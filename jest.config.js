@@ -2,6 +2,10 @@ module.exports = {
   collectCoverageFrom: [
       "src/**/*"
   ],
+  moduleDirectories: [
+    "src",
+    "node_modules"
+  ],
   moduleFileExtensions: [
     "ts",
     "tsx",

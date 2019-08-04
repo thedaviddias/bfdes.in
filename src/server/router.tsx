@@ -3,9 +3,9 @@ import * as React from "react";
 import { renderToNodeStream } from "react-dom/server";
 import { StaticRouter } from "react-router";
 
-import { App, Context } from "../shared/containers";
-import DB from "../shared/db";
-import { get } from "../shared/http";
+import { App, Context } from "shared/containers";
+import DB from "shared/db";
+import { get } from "shared/http";
 
 const header = (initialData: any) =>
   `
