@@ -83,7 +83,7 @@ describe("<PostOr404 />", () => {
 
     it("displays <NoMatch /> when post does not exist", () => {
       const mockPromise = Promise.reject(new RequestError(404, "404: No post with that slug"));
-      const get = jest.fn((_) => mockPromise);
+      const get = jest.fn(_ => mockPromise);
 
       const wrapper = mount(
         <MemoryRouter>

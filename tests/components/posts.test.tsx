@@ -83,7 +83,7 @@ describe("<Posts />", () => {
 
     it("asks the reader to return", () => {
       const mockPromise = Promise.resolve([]);
-      const get = jest.fn((_) => mockPromise);
+      const get = jest.fn(_ => mockPromise);
       const wrapper = mount(
         <MemoryRouter>
           <Posts get={get} />
@@ -108,7 +108,7 @@ describe("<Posts />", () => {
 
     it("displays error message for failed request", () => {
       const mockPromise = Promise.reject(new RequestError(500, "Server Error"));
-      const get = jest.fn((_) => mockPromise);
+      const get = jest.fn(_ => mockPromise);
 
       const wrapper = mount(
         <MemoryRouter>
