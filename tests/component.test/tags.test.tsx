@@ -1,13 +1,8 @@
-import { configure, mount, shallow } from "enzyme";
+import { mount, shallow } from "enzyme";
 import * as React from "react";
 import { MemoryRouter } from "react-router-dom";
-const Adapter = require("enzyme-adapter-react-16");
 
 import Tags from "../../src/shared/components/Tags";
-
-beforeAll(() => {
-  configure({adapter: new Adapter()});
-});
 
 describe("<Tags />", () => {
   it("renders empty span for a post with no tags", () => {

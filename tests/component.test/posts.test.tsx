@@ -1,7 +1,6 @@
-import { configure, mount, shallow } from "enzyme";
+import { mount, shallow } from "enzyme";
 import * as React from "react";
 import { MemoryRouter } from "react-router-dom";
-const Adapter = require("enzyme-adapter-react-16");
 
 import { Posts } from "../../src/shared/components";
 import { Context } from "../../src/shared/containers";
@@ -24,10 +23,6 @@ const posts = [{
 
 const mockPromise = Promise.resolve(posts);
 const get = jest.fn(_ => mockPromise);
-
-beforeAll(() => {
-  configure({adapter: new Adapter()});
-});
 
 test("withTag", () => {
   const tag = "Python";

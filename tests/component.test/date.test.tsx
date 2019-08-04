@@ -1,13 +1,7 @@
-import { configure, shallow } from "enzyme";
+import { shallow } from "enzyme";
 import * as React from "react";
-const Adapter = require("enzyme-adapter-react-16");
 
 import Component from "../../src/shared/components/Date";
-
-beforeAll(() => {
-  configure({adapter: new Adapter()});
-});
-
 describe("<Date /> on server", () => {
   it("renders UNIX birthday", () => {
     const wrapper = shallow(<Component timestamp={0} />);

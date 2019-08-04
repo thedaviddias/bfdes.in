@@ -1,7 +1,6 @@
-import { configure, mount, shallow } from "enzyme";
+import { mount, shallow } from "enzyme";
 import * as React from "react";
-import { MemoryRouter, Route } from "react-router-dom";
-const Adapter = require("enzyme-adapter-react-16");
+import { MemoryRouter } from "react-router-dom";
 
 import { PostOr404 } from "../../src/shared/components";
 import { Context } from "../../src/shared/containers";
@@ -20,10 +19,6 @@ const post = {
 
 const mockPromise = Promise.resolve(post);
 const get = jest.fn((_) => mockPromise);
-
-beforeAll(() => {
-  configure({adapter: new Adapter()});
-});
 
 test("withSlug", () => {
   const slug = "my-first-post";
