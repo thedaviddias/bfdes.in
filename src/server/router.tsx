@@ -5,6 +5,7 @@ import { StaticRouter } from "react-router";
 
 import { App, Context } from "../shared/containers";
 import DB from "../shared/db";
+import { get } from "../shared/http";
 
 const header = (initialData: any) =>
   `
@@ -35,7 +36,7 @@ export default function(db: DB) {
     const stream = renderToNodeStream(
       <StaticRouter location={req.url} context={{}}>
         <Context.PostStub.Provider value={posts}>
-          <App />
+          <App get={get} />
         </Context.PostStub.Provider>
       </StaticRouter>,
     );
@@ -53,7 +54,7 @@ export default function(db: DB) {
     const stream = renderToNodeStream(
       <StaticRouter location={req.url} context={{}}>
         <Context.Post.Provider value={postOrNone}>
-          <App />
+          <App get={get} />
         </Context.Post.Provider>
       </StaticRouter>,
     );
@@ -121,7 +122,7 @@ export default function(db: DB) {
   router.get("*", (req, res) => {
     const stream = renderToNodeStream(
       <StaticRouter location={req.url} context={{}}>
-        <App />
+        <App get={get} />
       </StaticRouter>,
     );
     res.status(404);
