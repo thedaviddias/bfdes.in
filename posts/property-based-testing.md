@@ -17,8 +17,7 @@ The final code is hosted on GitHub as a [gist](https://gist.github.com/bfdes/88f
 
 Property-based testing involves providing a set of properties for the function or method under test. Effectively we define a specification that our implementation should adhere to.
 
-Contrast this with the usual approach, where we provide *examples* which hold.
-This may be satisfactory when we are testing simple business logic: 
+Contrast this with the usual approach, where we provide examples which hold. This may be satisfactory when we are testing simple business logic: 
 
 > "**it** redirects unauthenticated user to login".
 
@@ -48,8 +47,7 @@ Consider the addition operation on integers. What conditions does it meet?
 
 The first two properties guarantee integers form a [Monad](https://en.wikipedia.org/wiki/Monad) on addition.
 
-Property-based testing can be deployed to check algorithms that effect mutable data too.
-We use it to test an implementation of MergeSort. 
+Property-based testing can be deployed to check algorithms that effect mutable data too. We use it to test an implementation of MergeSort. 
 
 ## MergeSort
 
@@ -242,7 +240,7 @@ def saturated: Gen[Array[Int]] = {
 }
 ```
 
-A stable sorting algorithm is one that ensures that any two keys which compare equally maintain their relative positions in the array. To test `mergeSort` is stable we create arrays loaded with tuples, sorting them by the second element in the tuple *and then* the first. We should find that the mutated array should be sorted with respect to a compound order which orders the tuples by comparing first elements and, if necessary, breaks ties on the second element. (Actually, this is the default ordering for tuples in Scala.)
+A stable sorting algorithm is one that ensures that any two keys which compare equally maintain their relative positions in the array. To test `mergeSort` is stable we create arrays loaded with tuples, sorting them by the second element in the tuple and then the first. We should find that the mutated array should be sorted with respect to a compound order which orders the tuples by comparing first elements and, if necessary, breaks ties on the second element. (Actually, this is the default ordering for tuples in Scala.)
 
 Here is the resulting test code, without the utility methods listed above:
 
@@ -286,6 +284,6 @@ By using ScalaCheck we have traded some transparency for the ability to abstract
 
 ## Further reading
 
-MergeSort is an interesting algorithm because its worst-case performance matches the theoretical minimum. QuickSort is an algorithm that is *in practice* faster than MergeSort, but it is not stable. This is why system sorts typically use a variant of MergeSort for sorting reference types, and QuickSort for primitives. Sedgewick and Wayne discuss this in more detail.
+MergeSort is an interesting algorithm because its worst-case performance matches the theoretical minimum. QuickSort is an algorithm that is in practice faster than MergeSort, but it is not stable. This is why system sorts typically use a variant of MergeSort for sorting reference types, and QuickSort for primitives. Sedgewick and Wayne discuss this in more detail.
 
 If you want more insight into how ScalaCheck works it would be worth looking at the book [Functional Programming in Scala](https://www.manning.com/books/functional-programming-in-scala). The eight-chapter walks the reader through designing such a library. 

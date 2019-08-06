@@ -7,8 +7,7 @@ summary: Brief overview and comparison of various modern approaches of creating 
 
 After writing and then re-writing a blogging engine I thought I’d finally get round to publishing a blogpost.
 
-Depending on your point of view [reinventing the wheel](https://www.gatsbyjs.org) can be a learning experience, or downright stupid.
-I thought what better way to start blogging than by, uh, documenting my experience.
+Depending on your point of view [reinventing the wheel](https://www.gatsbyjs.org) can be a learning experience, or downright stupid. I thought what better way to start blogging than by, uh, documenting my experience.
 
 ## Server-side rendering
 
@@ -26,13 +25,11 @@ For those unfamiliar with web programming, there are currently three distinct wa
   Such Single Page Applications are usually created with frameworks like [Angular](https://angular.io) and [React](https://reactjs.org).
   SPA code almost always needs to consume content from an API server.
 
-Static resources are easier to cache and static websites are more amenable to search engine optimisation.
-In practice most [modern websites](https://netflix.com) are built using a combination of approaches because they need to support dynamic content and also load efficiently.
+Static resources are easier to cache and static websites are more amenable to search engine optimisation. In practice most [modern websites](https://netflix.com) are built using a combination of approaches because they need to support dynamic content and also load efficiently.
 
 ### Isomorphic apps
 
-Isomorphic applications are SPA-like websites that can 'run' on both client and server.
-This blog is built as an isomorphic app, using React components:
+Isomorphic applications are SPA-like websites that can 'run' on both client and server. This blog is built as an isomorphic app, using React components:
 
 * The app server runs in a Node environment, and each controller renders the relevant component.
   In this context, React is effectively used as a templating engine.
@@ -40,8 +37,7 @@ This blog is built as an isomorphic app, using React components:
 * Client code uses the same top-level App component but wraps it in a router.
   The router enables the frontend code to manipulate the aforementioned History API.
 
-Rendering the first page requested on the server reduces the *apparent* time taken to paint it.
-Note that SSR doesn't come for free: the server is under more load unless a caching strategy is employed.
+Rendering the first page requested on the server reduces the apparent time taken to paint it. Note that SSR doesn't come for free: the server is under more load unless a caching strategy is employed.
 
 This is the backend code responsible for generating the current page:
 
@@ -66,8 +62,7 @@ router.get('/posts/:slug', (req, res) => {
 })
 ```
 
-On the client JavaScript takes over, enabling rapid navigation between various ‘pages’ of the website.
-[React Router](https://github.com/ReactTraining/react-router) is responsible for the transitions between these views:
+On the client JavaScript takes over, enabling rapid navigation between various ‘pages’ of the website. [React Router](https://github.com/ReactTraining/react-router) is responsible for the transitions between these views:
 
 ```jsx
 // App.jsx
@@ -92,8 +87,7 @@ class App extends React.Component {
 }
 ```
 
-Recall that a static router in the controllers informs `App` which component it should render.
-But on the browser the router reads from and writes to the History API to enable navigation:
+Recall that a static router in the controllers informs `App` which component it should render. But on the browser the router reads from and writes to the History API to enable navigation:
 
 ```jsx
 // browser/index.jsx
@@ -107,8 +101,7 @@ hydrate(
 
 ## Build process
 
-[Webpack](https://webpack.js.org/) is used as the module bundler.
-Two Webpack configurations are used to generate:
+[Webpack](https://webpack.js.org/) is used as the module bundler. Two Webpack configurations are used to generate:
 * client-side code and other assets under dist/static
 * server-side code -- dist/server.js
 
@@ -122,14 +115,11 @@ server/
 
 ### Development
 
-During development, Webpack watches the files and rebuilds on code change.
-Server-side code is run under Nodemon so the server restarts during recompilation and as posts change.
+During development, Webpack watches the files and rebuilds on code change. Server-side code is run under Nodemon so the server restarts during recompilation and as posts change.
 
 ### Production
 
-For the production build, Webpack minifies code and carries out [tree-shaking](https://webpack.js.org/guides/tree-shaking/).
-This time the server-side is run under a process manager so that it can restart with the machine it runs on.
-Generally, a webserver like NGiNX is used to serve static assets and proxy requests to the server.
+For the production build, Webpack minifies code and carries out [tree-shaking](https://webpack.js.org/guides/tree-shaking/). This time the server-side is run under a process manager so that it can restart with the machine it runs on. Generally, a webserver like NGiNX is used to serve static assets and proxy requests to the server.
 
 ## Publishing posts
 
@@ -155,15 +145,12 @@ marked.setOptions({
 });
 ```
 
-Highlighting is carried out by highlight.js, but delegated to katex.js for code marked as ‘math’.
-Both these tools tag the HTML they generate with classes that are targeted by CSS loaded on the client.
+Highlighting is carried out by highlight.js, but delegated to katex.js for code marked as ‘math’. Both these tools tag the HTML they generate with classes that are targeted by CSS loaded on the client.
 
 ## Further reading
 
 If you are thinking about writing a blog or creating documentation consider using [Gatsby.js](https://www.gatsbyjs.org) or [Next.js](https://nextjs.org).
 
-However, keep in mind that they sacrifice the dynamism afforded by a hybrid solution.
-e.g. if you wish to filter posts by tag then you will end up generating as many pages as you have tags.
+However, keep in mind that they sacrifice the dynamism afforded by a hybrid solution. For example, if you wish to filter posts by tag then you will end up generating as many pages as you have tags.
 
-If you want to learn more about server-side rendering please take a look at [this](https://tylermcginnis.com/react-router-server-rendering/) blog post.
-And if you wish to write in TypeScript take a look at [my repo](https://github.com/bfdes/bfdes.in) as well.
+If you want to learn more about server-side rendering please take a look at [this](https://tylermcginnis.com/react-router-server-rendering/) blog post. And if you wish to write in TypeScript take a look at [my repo](https://github.com/bfdes/bfdes.in) as well.
