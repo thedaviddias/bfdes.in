@@ -31,10 +31,10 @@ export default class DB {
     let previous;
     let next;
     if (index > 0) {
-      previous = this.posts[index - 1].slug;
+      next = this.posts[index - 1].slug;
     }
     if (index < this.posts.length - 1) {
-      next = this.posts[index + 1].slug;
+      previous = this.posts[index + 1].slug;
     }
     return {
       previous,

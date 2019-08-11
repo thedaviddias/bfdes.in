@@ -62,7 +62,7 @@ describe("GET /api/posts/:slug", () => {
         .then(res =>
           expect(res.body).toEqual({
             ...first,
-            next: second.slug,
+            previous: second.slug,
           }),
         ),
       request(app)
@@ -71,8 +71,8 @@ describe("GET /api/posts/:slug", () => {
         .then(res =>
           expect(res.body).toEqual({
             ...second,
-            previous: first.slug,
-            next: third.slug,
+            previous: third.slug,
+            next: first.slug,
           }),
         ),
       request(app)
@@ -81,7 +81,7 @@ describe("GET /api/posts/:slug", () => {
         .then(res =>
           expect(res.body).toEqual({
             ...third,
-            previous: second.slug,
+            next: second.slug,
           }),
         ),
     ]);
