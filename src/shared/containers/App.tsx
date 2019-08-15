@@ -25,7 +25,7 @@ type Props = {
 
 export default function(props: Props) {
   const withClient = (Component: React.SFC<Props>) =>
-    (rest: any) => <Component get={props.get} {...rest}/>;
+    (rest: any) => <Component get={props.get} {...rest} />;
 
   return(
     <>

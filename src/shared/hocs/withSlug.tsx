@@ -2,7 +2,7 @@ import * as React from "react";
 import { match } from "react-router";
 
 type Props = {
-  slug?: string;
+  slug: string;
 };
 
 export default function(Component: React.SFC<Props>) {

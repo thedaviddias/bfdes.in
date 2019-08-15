@@ -32,7 +32,7 @@ const Post: React.SFC<Post>
   );
 
 type Props = {
-  slug?: string;
+  slug: string;
   context?: {
     data: Post,
   };

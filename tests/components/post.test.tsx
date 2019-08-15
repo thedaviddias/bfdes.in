@@ -18,7 +18,7 @@ const post = {
 };
 
 const mockPromise = Promise.resolve(post);
-const get = jest.fn((_) => mockPromise);
+const get = jest.fn(_ => mockPromise);
 
 test("withSlug", () => {
   const slug = "my-first-post";
@@ -45,7 +45,7 @@ describe("<PostOr404 />", () => {
       const wrapper = mount(
         <MemoryRouter>
           <Context.Post.Provider value={post}>
-            <PostOr404 get={jest.fn()} />
+            <PostOr404 get={jest.fn()} slug="test" />
           </Context.Post.Provider>
         </MemoryRouter>,
       );
@@ -73,7 +73,7 @@ describe("<PostOr404 />", () => {
     it("displays post", () => {
       const wrapper = mount(
         <MemoryRouter>
-          <PostOr404 get={get} />
+          <PostOr404 get={get} slug="test" />
         </MemoryRouter>,
       );
       return mockPromise.then(() => {
@@ -87,7 +87,7 @@ describe("<PostOr404 />", () => {
 
       const wrapper = mount(
         <MemoryRouter>
-          <PostOr404 get={get}/>
+          <PostOr404 get={get} slug="test" />
         </MemoryRouter>,
       );
       return mockPromise
@@ -103,7 +103,7 @@ describe("<PostOr404 />", () => {
 
       const wrapper = mount(
         <MemoryRouter>
-          <PostOr404 get={get} />
+          <PostOr404 get={get} slug="test" />
         </MemoryRouter>,
       );
       return mockPromise
