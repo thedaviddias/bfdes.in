@@ -7,18 +7,23 @@ import { Context } from "shared/containers";
 import { withTag } from "shared/hocs";
 import { RequestError } from "shared/http";
 
+const summary = "Lorem ipsum";
+const wordCount = 5;
+
 const posts = [{
   title: "My first post",
   slug: "my-first-post",
+  summary,
   created: 1523401200000,
   tags: ["Algorithms", "Java"],
-  wordCount: 5,
+  wordCount,
 }, {
   title: "My second post",
   slug: "my-second-post",
+  summary,
   created: 1523487600000,
   tags: ["Java"],
-  wordCount: 5,
+  wordCount,
 }];
 
 const mockPromise = Promise.resolve(posts);

@@ -56,7 +56,9 @@ describe("GET /api/posts", () => {
   });
 
   test("posts returned in sorted order", () => {
-    const sorted = posts.sort((a, b) => b.created - a.created);
+    const sorted = posts
+      .map(({body, ...stub}) => stub)
+      .sort((a, b) => b.created - a.created);
     return request(app)
       .get("/api/posts")
       .expect(200)

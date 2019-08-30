@@ -16,11 +16,12 @@ export default class DB {
     , {});
   }
 
-  public all(tag?: string): Post[] {
+  public all(tag?: string): PostStub[] {
+    const stubs = this.posts.map(({body, ...stub}) => stub);
     if (tag === undefined) {
-      return this.posts;
+      return stubs;
     }
-    return this.posts.filter(p => p.tags.includes(tag));
+    return stubs.filter(p => p.tags.includes(tag));
   }
 
   public get(slug: string): Post {
