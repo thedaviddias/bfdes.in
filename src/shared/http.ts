@@ -8,7 +8,7 @@ export class RequestError extends Error {
   }
 }
 
-export function get(url: string) {
+export function get(url: string): Promise<any> {
   return fetch(url, {
     method: "get",
     headers: {"Content-Type": "application/json"},

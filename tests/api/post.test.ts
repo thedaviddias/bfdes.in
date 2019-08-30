@@ -3,31 +3,33 @@ import * as request from "supertest";
 
 const summary = "Lorem ipsum";
 const body = "Lorem ipsum delorum sit amet";
+const created = 1523401300000;
+const wordCount = 5;
 
 const posts = [{
   title: "My first post",
   slug: "my-first-post",
   summary,
   body,
-  created: 1523401300000,
+  created,
   tags: ["Algorithms", "Java"],
-  wordCount: 5,
+  wordCount,
 }, {
   title: "My second post",
   slug: "my-second-post",
   summary,
   body,
-  created: 1523401300000,
+  created,
   tags: ["Java"],
-  wordCount: 5,
+  wordCount,
 }, {
   title: "My third post",
   slug: "my-third-post",
   summary,
   body,
-  created: 1523401300000,
+  created,
   tags: ["Python"],
-  wordCount: 5,
+  wordCount,
 }];
 
 const app = express(posts, "test");

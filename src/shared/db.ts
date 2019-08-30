@@ -1,6 +1,4 @@
-type Index = {
-  [slug: string]: number;
-};
+type Index = Record<string, number>;
 
 /**
  * In-memory database to query the posts.
