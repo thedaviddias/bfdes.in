@@ -17,8 +17,10 @@ export default class DB {
   }
 
   public all(tag?: string): Post[] {
-    return this.posts
-      .filter(p => tag === undefined || p.tags.includes(tag));
+    if (tag === undefined) {
+      return this.posts;
+    }
+    return this.posts.filter(p => p.tags.includes(tag));
   }
 
   public get(slug: string): Post {
