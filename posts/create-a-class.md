@@ -137,14 +137,13 @@ def knapsack(coefficients):
 
     filled_slots = set()
     chosen_attachments = set()
-    i = 0
 
-    while len(chosen_attachments) < 5 and i < len(with_price):
-      (slot, attachment, _) = with_price[i]
+    for (slot, attachment, _) in with_price:
+      if len(chosen_attachments) > 5:
+        break
       if not slot in filled_slots:
         chosen_attachments.add(attachment)
         filled_slots.add(slot)
-      i += 1
     
     return chosen_attachments
 
