@@ -7,7 +7,7 @@ summary: Applying combinatorial optimization to competitive multiplayer video ga
 
 This post is about combinatorial optimization around the weapon modification system present in the multiplayer component of the recently released Call Of Duty game “Modern Warfare”, and not Object-Oriented programming, as the title would otherwise imply.
 
-For those who are not aware, in Call Of Duty players are pit against each other in deathmatch or objective capture game modes. Being a first-person shooter, good gunplay and weapon customisation is an important part of the competitive multiplayer experience.
+For those who are not aware, in Call Of Duty, players are pit against each other in deathmatch or objective capture game modes. Being a first-person shooter, good gunplay and weapon customisation is an important part of the competitive multiplayer experience.
 
 Modern Warfare takes weapon customisation a step further than its predecessors, enabling players to extensively modify weapons to suit their tastes in [Gunsmith](https://blog.activision.com/call-of-duty/2019-09/A-Deeper-Look-at-Modern-Warfare-Customization). Due to the large permutation of possible setups, I wondered whether it would be possible to predict the optimal modifications for a weapon given knowledge about the preferred playstyle of a player.
 
@@ -16,7 +16,7 @@ Modern Warfare takes weapon customisation a step further than its predecessors, 
 In the game world, each weapon has a set of base attributes that determine how it handles. 
 These include, but are not limited to, the range of the weapon, its damage and the recoil it imparts.
 
-In Gunsmith players can modify up to five different places of a weapon. For the sake of gameplay balance, generally each attachment or modification improves some attributes and worsens others. 
+In Gunsmith players can modify up to five different places of a weapon. For the sake of gameplay balance, generally, each attachment or modification improves some attributes and worsens others. 
 
 The problem boils down to an economic one: maximising the player’s [utility](https://www.investopedia.com/terms/u/utility.asp) subject to cost constraints.
 
@@ -36,7 +36,7 @@ In this model utility `U` is a multi-valued function of the weapon attributes, r
   \dfrac{\partial U}{\partial x_i} = \dfrac{\partial U_i}{\partial x_i} > 0 \ \forall \ i
   ```
 
-The attribute vector itself is comprised of a base term and the sum of attachment contributions. Denote the presence of the j-th attachment in the i-th slot by a boolean variable. Then we can write
+The attribute vector itself is comprised of a base term and the sum of attachment contributions. If we denote the presence of the j-th attachment in the i-th slot by a boolean variable, we can then write
 
 ```math
 \mathbf{x} = \mathbf{x_0} + \displaystyle\sum_i^m \displaystyle\sum_j^{n_i} \mathbf{\Delta x}_{ij}x'_{ij}, \ \text{where} \ x'_{ij} = \begin{cases}
@@ -73,7 +73,7 @@ Apart from assuming a particular utility model, some other approximations are ma
 
 1. We assume the player is willing to take the time to unlock all weapon modifications. Otherwise, we would need to optimize their utility at every unlock level to obtain a family of solutions for the problem. 
 
-2. Modifying one slot does not prevent another modification from being made in another slot unless it will exceed the total number of possible modifications. In reality, this is not the case -- one cannot attach a muzzle brake to a weapon fitted with an integral suppressor, for example.
+2. Modifying one slot does not prevent another modification from being made in another slot unless it exceeds the total number of possible modifications. In reality, this is not the case -- one cannot attach a muzzle brake to a weapon fitted with an integral suppressor, for example.
 
 3. Some modifications imbue characteristics that cannot be modelled in weapon stats. For instance, using .300 Blackout ammunition removes the tracers that give away a shooter’s position.
 
@@ -90,7 +90,9 @@ Observe that maximising the original objective `U` is the same as maximising a t
 \end{aligned}
 ``` 
 
-The optimization problem reduces to a variant of the [Multiple-Choice Knapsack Problem](https://doi.org/10.1016/0377-2217%2895%2900015-I) where i) the "prices" `P[i][j]` may be real-valued, but ii) all the "objects" have a common weight of 1. This significant simplification enables us to devise a more straightforward algorithm than that reported in papers:
+The optimization problem reduces to a variant of the Multiple-Choice Knapsack Problem where each "price" `P[i][j]` may be real-valued, but all the "objects" have a common weight of 1.
+
+This simplification enables us to devise a more straightforward algorithm than that reported in research papers, such as that of [Bednarczuk E. (2018)](https://doi.org/10.1007/s10589-018-9988-z) and [Pisinger D. (1995)](https://doi.org/10.1016/0377-2217%2895%2900015-I).
 
 1. Sort the modifications in descending order of price `P[i][j]`
 2. While modification slots are still available, select the next modification `(i, j)` provided:
@@ -152,9 +154,13 @@ def knapsack(coefficients):
 
 ## Loadouts and Classes
 
-So far we know how to find the best loadout for a *given* weapon (and playstyle). We can go further and determine the best loadout for all weapon and attachment permutations.
+So far, the algorithm we have devised finds the best loadout for a *given* weapon (and playstyle). We can go further and determine the best loadout for all weapon and attachment permutations.
 
-Observe that attachment choice is tied solely to weapon choice. We can decompose the problem by i) maximising utility for every weapon independently, and ii) comparing utility values. Using a scan at this level is efficient only because there are a limited number of weapons in-game (about 30).
+Observe that attachment choice is tied solely to weapon choice. We can decompose the problem by:
+1. maximising utility for every weapon independently, and,
+2. finding the weapon in this set with the largest utility.
+
+Such an algorithm is efficient only because there are a limited number of weapons in-game (about 30).
 
 A **class** is typically comprised of:
 * A long gun
@@ -166,7 +172,7 @@ Optimizing on the class-level is more of an art than a science, so we avoid it.
 
 ## Model correctness
 
-It is difficult to verify the usefulness of applying utility-theory in this context mainly because of the lack of in-game weapon data. At the time of writing this article, most information reported online has been obtained experimentally and is far from being exhaustive. 
+It is difficult to verify the usefulness of applying utility-theory in this context mainly because of the lack of in-game weapon data. At the time of writing this article, most weapon data [reported online](https://www.reddit.com/r/modernwarfare/comments/dslu8z/modern_warfare_2019_weapon_damage_guide_excel) has been obtained experimentally and is far from being exhaustive. 
 
 I believe the biggest assumption we have made comes from ranking attachments by their contribution to quantitative attributes alone. For example, weapon optics aid most players in acquiring a target quickly due to the clear sight picture they provide. However, the weapon statistics would suggest they simply reduce aim-down-sight time.
 
