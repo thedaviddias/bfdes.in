@@ -45,9 +45,7 @@ Consider the addition operation on integers. What conditions does it meet?
   i + j  = j + i \space \forall \space i, j \in \mathbb{Z}
   ```
 
-The first two properties guarantee integers form a [Monad](https://en.wikipedia.org/wiki/Monad) on addition.
-
-Property-based testing can be deployed to check algorithms that effect mutable data too. We use it to test an implementation of MergeSort. 
+We can assert that these properties hold by verifying that they apply for arbitary integer triples. In a similar way, property-based testing can be employed to check algorithms that effect mutable data too. We use it to test an implementation of MergeSort. 
 
 ## MergeSort
 
@@ -110,13 +108,14 @@ There are a few idiosyncrasies of Scala in the above code that merit explanation
 * A parameter marked as `implicit` will be looked for in scope if it is not provided by the caller
 * Identifiers marked with `val` cannot be reassigned to, but those marked with `var` can.
 
-We also provide a (pure) function to verify an array is sorted with respect to an `Ordering`:
+We also provide a function to verify an array is sorted with respect to an `Ordering`:
 
 ```scala
 def isSorted[T](a: Array[T])(implicit o: Ordering[T]): Boolean = {
   val indices = 0 until a.length-1
   val shifted = 1 until a.length
-  indices.zip(shifted)
+  indices
+    .zip(shifted)
     .forall { case (i, j) => o.lteq(a(i), a(j)) }
 }
 ```
@@ -128,7 +127,7 @@ Again we address the use of a couple of esoteric language features:
 
 ### Testing
 
-A sorting funciton can be fully descibed by two properties:
+A sorting function can be fully described by two properties:
 
 1. it must permute its **input** to form its **output**,
 
@@ -168,7 +167,7 @@ Note:
 * We have struck a balance between getting representative samples and getting quick test feedback
 * The second arguments of `Array.fill` and `Stream.fill` are evaluated [by-name](https://docs.scala-lang.org/tour/by-name-parameters.html)
 
-We also need a utility to put the keys of an array in a histogram to verify property (2):
+We also need to put the keys of an array in a histogram to verify property (2):
 
 ```scala
 def histogram(a: Array[Int]): Map[Int, Int] = 
@@ -218,7 +217,7 @@ The strategy in use to generate samples does not adequately cover the situation 
 [ScalaCheck](https://www.scalacheck.org) is a library designed to aid property-based testing. It is inspired by Haskell's QuickCheck.
 
 To use ScalaCheck we need to be aware of abstract data types it exports:
-* `Gen[T]` is a monad that encodes all the information necessary to produce samples of type `T`. 
+* `Gen[T]` is a [monad](https://en.wikipedia.org/wiki/Monad) that encodes all the information necessary to produce samples of type `T`. 
 * `Prop` is a type responsible for verifying a property by sampling a generator passed to it
 
 Here is the (naïve) strategy for sample generation, re-written to support ScalaCheck:

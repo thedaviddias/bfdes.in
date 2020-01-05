@@ -9,7 +9,7 @@ summary: Exploiting convenient axioms to expose a leaner API for high-performanc
 
 Recently I have been writing an algorithms library while following CS courses to better understand the fundamental data structures that underpin modern computing. In the process, I have gained an appreciation of the benefits of good API design as well as solid testing strategies.
 
-Most of the time, but not always, the goal of exposing a lean library API and writing DRY code conflicts with that of crafting efficient code. Let us look at one such situation that I encountered.
+Most of the time, but not always, the goal of exposing a lean library API and writing DRY code conflicts with that of shipping performant code. Let us look at one such situation that I encountered.
 
 The Monte Carlo class of algorithms are those which we can guarantee to terminate in finite time, but which may produce an incorrect result now and then. A Las Vegas algorithm, on the other hand, is guaranteed to produce a correct result, but we might only be able to obtain a probabilistic measure of its runtime.
 
@@ -33,6 +33,7 @@ The goal is to enable the client to write Las Vegas variant in terms of the Mont
 The Rabin Karp algorithm attempts to find the target pattern by computing a rolling hash of successive substrings. In the Monte Carlo variant, we return the index that defines the first substring with a hash matching that of the pattern -- if one exists.
 
 ```python
+# Library code
 def rabin_karp(pattern):
   # Monte Carlo variant of Rabin Karp
 
@@ -76,11 +77,11 @@ def rabin_karp(pattern):
 The Las Vegas variant additionally performs an equality check to verify if the hashes match before returning. But this is equivalent to modifying the Monte Carlo variant to call itself on the remaining portion of text if the equality check fails, viz:
 
 ```python
+# Client code
 def las_vegas(pattern):
-  original = monte_carlo(pattern)
   m = len(pattern)
   def search(text, start=0):
-    i = original(text[start:])
+    i = monte_carlo(pattern)(text[start:])  # From library 
     if i == -1:
       return -1
     if pattern == text[start+i:start+i+m]:
@@ -92,8 +93,10 @@ def las_vegas(pattern):
 
 There are a couple of performance and memory usage penalties to be mindful of:
 
-* When working in a language that does not come with a tail-call optimizing compiler, an (iterative) implementation written from scratch could stop the algorithm consuming too many stack frames.
-* Calling the original search function repeatedly will force recomputation of the factor responsible for removing the leading digit. This can be avoided by writing the implementation from scratch, as above.
+* When working in a language that does not come with a tail-call optimizing compiler, we must use an iterative version of `las_vegas` to prevent potential stack overflow. 
+* Calling `monte_carlo` repeatedly will also force recomputation of the factor responsible for removing the leading digit. This inefficiency can only be avoided by writing the implementation from scratch.
+
+The library can support just the Monte Carlo implementation if it is not likely to be used in pathological cases, or in situations where false positive matches are unacceptable. 
 
 ## Further reading
 

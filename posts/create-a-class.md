@@ -18,11 +18,11 @@ These include, but are not limited to, the range of the weapon, its damage and t
 
 In Gunsmith players can modify up to five different places of a weapon. For the sake of gameplay balance, generally, each attachment or modification improves some attributes and worsens others. 
 
-The problem boils down to an economic one: maximising the player’s [utility](https://www.investopedia.com/terms/u/utility.asp) subject to cost constraints.
+This optimization problem mirrors a microeconomic one. Effectively, we seek to maximise a player’s [utility](https://www.investopedia.com/terms/u/utility.asp) subject to cost constraints imposed by game mechanics.
 
 ## Player Utility
 
-In this model utility `U` is a multi-valued function of the weapon attributes, represented as a vector `x`. We observe that the model should have the following properties:
+In this model utility `U` is a multi-valued function of the weapon attributes, represented as a vector `x`. Game mechanics dictate that the model should have the following properties:
 
 * Each attribute `x[i]` contributes independently to an increase in utility
 
@@ -71,11 +71,13 @@ To get further we need to propose a form for utility, our objective function. Co
 
 Apart from assuming a particular utility model, some other approximations are made implicitly:
 
-1. We assume the player is willing to take the time to unlock all weapon modifications. Otherwise, we would need to optimize their utility at every unlock level to obtain a family of solutions for the problem. 
+1. Each player has the same parameterized utility function. Of course, the parameters themselves can take different values -- otherwise every player would have the same preference.  
 
-2. Modifying one slot does not prevent another modification from being made in another slot unless it exceeds the total number of possible modifications. In reality, this is not the case -- one cannot attach a muzzle brake to a weapon fitted with an integral suppressor, for example.
+2. We assume the player is willing to take the time to unlock all weapon modifications. Otherwise, we would need to optimize their utility at every unlock level to obtain a family of solutions for the problem. 
 
-3. Some modifications imbue characteristics that cannot be modelled in weapon stats. For instance, using .300 Blackout ammunition removes the tracers that give away a shooter’s position.
+3. Modifying one slot does not prevent another modification from being made in another slot unless it exceeds the total number of possible modifications. In reality, this is not always the case -- one cannot attach a muzzle brake to a weapon fitted with an integral suppressor, for example.
+
+4. Some modifications imbue characteristics that cannot be modelled in weapon stats. For instance, using .300 Blackout ammunition removes the tracers that give away a shooter’s position.
 
 ## The Knapsack Problem
 
