@@ -105,6 +105,7 @@ export default function(db: DB) {
           return (
             `<item>
               <title>${post.title}</title>
+              <author>Bruno Fernandes</author>
               <description>${post.summary}</description>
               <link>${url}</link>
               <guid>${url}</guid>
