@@ -7,19 +7,6 @@ import { Context } from "shared/containers";
 import { withSlug } from "shared/hocs";
 import { RequestError } from "shared/http";
 
-const post = {
-  title: "My first post",
-  slug: "my-first-post",
-  summary: "Lorem ipsum",
-  body: "Lorem ipsum delorum sit amet",
-  wordCount: 5,
-  tags: ["Algorithms", "Java"],
-  created: 1523401200000,
-};
-
-const mockPromise = Promise.resolve(post);
-const get = jest.fn(_ => mockPromise);
-
 test("withSlug", () => {
   const slug = "my-first-post";
   const Component = withSlug(PostOr404);
@@ -36,6 +23,16 @@ test("withSlug", () => {
 });
 
 describe("<PostOr404 />", () => {
+  const post = {
+    title: "My first post",
+    slug: "my-first-post",
+    summary: "Lorem ipsum",
+    body: "Lorem ipsum delorum sit amet",
+    wordCount: 5,
+    tags: ["Algorithms", "Java"],
+    created: 1523401200000,
+  };
+
   describe("<PostOr404 /> on server", () => {
     beforeAll(() => {
       (global as any).__isBrowser__ = false;
@@ -60,6 +57,9 @@ describe("<PostOr404 />", () => {
 
     it("fetches the correct post", () => {
       const { slug } = post;
+      const mockPromise = Promise.resolve(post);
+      const get = jest.fn(_ => mockPromise);
+
       mount(
         <MemoryRouter>
           <PostOr404 slug={slug} get={get} />
@@ -71,6 +71,9 @@ describe("<PostOr404 />", () => {
     });
 
     it("displays post", () => {
+      const mockPromise = Promise.resolve(post);
+      const get = jest.fn(_ => mockPromise);
+
       const wrapper = mount(
         <MemoryRouter>
           <PostOr404 get={get} slug="test" />
@@ -82,7 +85,8 @@ describe("<PostOr404 />", () => {
     });
 
     it("displays <NoMatch /> when post does not exist", () => {
-      const mockPromise = Promise.reject(new RequestError(404, "404: No post with that slug"));
+      const err = new RequestError(404, "404: No post with that slug");
+      const mockPromise = Promise.reject(err);
       const get = jest.fn(_ => mockPromise);
 
       const wrapper = mount(

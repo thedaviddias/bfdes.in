@@ -16,28 +16,28 @@ marked.setOptions({
   breaks: true,
 });
 
-module.exports = function(source) {
-  const wordCount = content =>
-    content.split("```")
-      .filter((_, i) => i % 2 === 0)
-      .map(block => block.split(" ").length)
-      .reduce((total, count) => total + count, 0);
-  
+module.exports = function(source) {  
   const [meta, content] = source
     .split("---")
     .filter((_, i) => i !== 0)
-    .map(_ => _.trim());
+    .map(content => content.trim());
   
   const [title, tags, created, summary] = meta
     .split(/[\r\n]+/)
-    .map(l => l.split(":").pop().trim());
+    .map(line => line.split(":").pop().trim());
+
+  const wordCount = content
+    .split("```")
+    .filter((_, i) => i % 2 === 0)
+    .map(block => block.split(" ").length)
+    .reduce((total, count) => total + count, 0);
   
   return `module.exports = ${JSON.stringify({
     title,
     summary,
+    wordCount,
     tags: tags.split(" "),
     created: Date.parse(created),
-    wordCount: wordCount(content),
     body: marked(content),
   })}`;
 }

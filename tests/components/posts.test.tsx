@@ -7,28 +7,6 @@ import { Context } from "shared/containers";
 import { withTag } from "shared/hocs";
 import { RequestError } from "shared/http";
 
-const summary = "Lorem ipsum";
-const wordCount = 5;
-
-const posts = [{
-  title: "My first post",
-  slug: "my-first-post",
-  summary,
-  created: 1523401200000,
-  tags: ["Algorithms", "Java"],
-  wordCount,
-}, {
-  title: "My second post",
-  slug: "my-second-post",
-  summary,
-  created: 1523487600000,
-  tags: ["Java"],
-  wordCount,
-}];
-
-const mockPromise = Promise.resolve(posts);
-const get = jest.fn(_ => mockPromise);
-
 test("withTag", () => {
   const tag = "Python";
   const Component = withTag(Posts);
@@ -42,6 +20,25 @@ test("withTag", () => {
 });
 
 describe("<Posts />", () => {
+  const summary = "Lorem ipsum";
+  const wordCount = 5;
+
+  const posts = [{
+    title: "My first post",
+    slug: "my-first-post",
+    summary,
+    created: 1523401200000,
+    tags: ["Algorithms", "Java"],
+    wordCount,
+  }, {
+    title: "My second post",
+    slug: "my-second-post",
+    summary,
+    created: 1523487600000,
+    tags: ["Java"],
+    wordCount,
+  }];
+
   describe("<Posts /> on server", () => {
     beforeAll(() => {
       (global as any).__isBrowser__ = false;
@@ -76,6 +73,9 @@ describe("<Posts />", () => {
     });
 
     it("displays posts", () => {
+      const mockPromise = Promise.resolve(posts);
+      const get = jest.fn(_ => mockPromise);
+
       const wrapper = mount(
         <MemoryRouter>
           <Posts get={get} />
@@ -89,6 +89,7 @@ describe("<Posts />", () => {
     it("asks the reader to return", () => {
       const mockPromise = Promise.resolve([]);
       const get = jest.fn(_ => mockPromise);
+
       const wrapper = mount(
         <MemoryRouter>
           <Posts get={get} />
@@ -100,7 +101,10 @@ describe("<Posts />", () => {
     });
 
     it("fetches posts with the correct tag", () => {
+      const mockPromise = Promise.resolve(posts);
+      const get = jest.fn(_ => mockPromise);
       const tag = "Algorithms";
+
       mount(
         <MemoryRouter>
           <Posts tag={tag} get={get} />
