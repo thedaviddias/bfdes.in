@@ -19,7 +19,7 @@ For those unfamiliar with web programming, there are currently three distinct wa
 
 3. Serve the same page for every route with a bundle of JavaScript that manipulates the [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model) to facilitate rich interaction, and the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History) to simulate browsing. Such Single Page Applications are usually created with frameworks like [Angular](https://angular.io) and [React](https://reactjs.org). SPA code almost always needs to consume content from an API server.
 
-Static resources are easier to cache, and static websites are more amenable to search engine optimization. In practice, most [modern websites](https://netflix.com) are built using a combination of approaches because they need to support dynamic content and load efficiently.
+Static resources are easier to cache, and static websites are more amenable to search engine optimisation. In practice, most [modern websites](https://netflix.com) are built using a combination of approaches because they need to support dynamic content and load efficiently.
 
 ## Isomorphic applications
 
@@ -114,10 +114,10 @@ server/
 
 Markup is versioned like source code. In this sense, the publishing mechanism is similar to that of Jekyll:
 * Posts written in [Markdown](https://github.github.com/gfm/) are committed alongside code
-* At build-time, a custom Webpack loader transforms the entries and bundles them into the server code
+* At build-time, the entries are rendered to HTML strings and bundled into the server code
 * At runtime entries loaded into memory can be queried on demand
 
-Code snippets can be entered inline or in fenced code blocks: 
+A custom Webpack loader processes the posts. Within the markup, code snippets can be entered inline or in fenced code blocks. The markdown parser supports highlighting of code blocks:
 
 ```javascript
 marked.setOptions({
@@ -150,6 +150,4 @@ Additionally, [Cloudflare](https://cloudflare.com) is used as a CDN and read-thr
 
 If you are thinking about writing a blog, consider using a static site generator to create your website.
 
-However, keep in mind that they sacrifice the dynamism afforded by a hybrid solution. For example, if you wish to filter posts by tag, then you generate as many pages as you have tags.
-
-If you want to learn more about the nuances of server-side rendering in React, please take a look at Tyler McGinnis' [blog post](https://tylermcginnis.com/react-router-server-rendering). And if you wish to write in TypeScript, take a look at [my repo](https://github.com/bfdes/bfdes.in) as well.
+However, keep in mind that they sacrifice the dynamism afforded by a hybrid solution. For example, if you wish to allow the user to filter posts by tag, then you have to build as many pages as you have tags.

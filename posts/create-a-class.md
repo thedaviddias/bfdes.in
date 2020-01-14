@@ -7,9 +7,9 @@ summary: Applying combinatorial optimisation to competitive multiplayer video ga
 
 This post is about combinatorial optimisation around the weapon modification system present in the multiplayer component of the recently released Call Of Duty game “Modern Warfare”, and not Object-Oriented programming, as the title would otherwise imply.
 
-For those who are not aware, in Call Of Duty, players are pit against each other in deathmatch or objective capture game modes. Being a first-person shooter, good gunplay and weapon customisation is an important part of the competitive multiplayer experience.
+For those who are not aware, in Call Of Duty, players are pit against each other in deathmatch or objective capture game modes. Good gunplay and weapon customisation is an important part of the competitive multiplayer experience.
 
-Modern Warfare takes weapon customisation a step further than its predecessors, enabling players to modify weapons to suit their tastes extensively in [Gunsmith](https://blog.activision.com/call-of-duty/2019-09/A-Deeper-Look-at-Modern-Warfare-Customization).  I wondered whether it would be possible to determine the optimal modifications for a weapon without inspecting every permutation of attachments.
+Modern Warfare takes weapon customisation a step further than its predecessors, enabling players to modify weapons extensively in [Gunsmith](https://blog.activision.com/call-of-duty/2019-09/A-Deeper-Look-at-Modern-Warfare-Customization).  I wondered whether it would be possible to determine the optimal modifications for a weapon without inspecting every permutation of attachments.
 
 ## Gunsmith
 
@@ -18,7 +18,7 @@ These include, but are not limited to, the range of the weapon, its damage and t
 
 In Gunsmith, players can modify up to five different places of a weapon. For the sake of gameplay balance, generally, each attachment or modification improves some attributes and worsens others. 
 
-This optimisation problem mirrors a microeconomic one. Effectively, we seek to maximise a player’s [utility](https://www.investopedia.com/terms/u/utility.asp) subject to cost constraints imposed by game mechanics.
+This optimisation problem mirrors a microeconomic one. Effectively, we seek to maximise a player’s [utility](https://www.investopedia.com/terms/u/utility.asp) subject to cost constraints imposed by game mechanics. Here, utility describes the increased performance a player derives from using their preferred weapon loadout.
 
 ## Player Utility
 
@@ -69,11 +69,11 @@ To get further, we need to propose a form for utility, our objective function. C
 \end{aligned}
 ```
 
-## The Real World
+## The Game World
 
 Apart from assuming a particular utility model that applies for every player, we have made some other approximations implicitly:
 
-1. We expect that a player following this article is motivated enough to unlock all weapon modifications. Otherwise, we would need to optimise their utility at every weapon level to obtain a family of solutions. Although this is trivial to do, it complicates the notation used to describe the problem.
+1. Each player is willing to take the time  to unlock all weapon attachments. Otherwise, we would need to optimise their utility at every weapon level to obtain a family of solutions. Although this is trivial to do, it complicates the notation used to describe the problem.
 
 2. Modifications can be made independently of each other, and their effects on weapon attributes are also independent. In reality, this is not always the case -- one cannot attach a muzzle brake to a weapon fitted with an integral suppressor, for example.
 
@@ -96,7 +96,7 @@ Observe that maximising the original objective `U` is the same as maximising a t
 
 Thus the optimisation problem reduces to a variant of the Multiple-Choice Knapsack Problem where each "price" `P[i][j]` may be real-valued, but all the "objects" have the same weight -- 1.
 
-This simplification, courtesy of the problem domain, enables us to devise a more straightforward algorithm than that reported in research papers, such as that of [Bednarczuk E. (2018)](https://doi.org/10.1007/s10589-018-9988-z) and [Pisinger D. (1995)](https://doi.org/10.1016/0377-2217%2895%2900015-I).
+This simplification, courtesy of the problem domain, enables us to devise a more straightforward algorithm than those reported in research papers, such as [Bednarczuk E. (2018)](https://doi.org/10.1007/s10589-018-9988-z) and [Pisinger D. (1995)](https://doi.org/10.1016/0377-2217%2895%2900015-I).
 
 1. Sort the modifications in descending order of price `P[i][j]`
 2. While modification slots are still available, select the next modification `(i, j)` provided:
