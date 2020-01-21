@@ -75,7 +75,7 @@ Apart from advancing a particular utility model for every player, we made some o
 * Modifications can be made independently of each other
 * All modifications imbue characteristics that can be modelled as changes to weapon attributes
 
-Of these, the second assumption is the hardest one to reconcile with our model. Although one modification rarely prevents another from being made entirely, there are suspicions that their combined effect on weapon attributes is not merely additive
+Of these, the second assumption is the hardest one to reconcile with our model. Although one modification rarely prevents another from being made entirely, there are suspicions that their combined effect on weapon attributes is not merely additive.
 
 ## The Knapsack Problem
 
@@ -92,7 +92,7 @@ Observe that maximising the original objective `U` is the same as maximising a t
 
 Thus the optimisation problem reduces to a variant of the Multiple-Choice Knapsack Problem where each "price" `P[i][j]` may be real-valued, but all the "objects" have the same weight -- 1.
 
-This simplification, courtesy of the problem domain, enables us to devise a more straightforward algorithm than those reported in research papers, such as [Bednarczuk E. (2018)](https://doi.org/10.1007/s10589-018-9988-z) and [Pisinger D. (1995)](https://doi.org/10.1016/0377-2217%2895%2900015-I).
+This simplification, courtesy of the problem domain, enables us to devise a simpler optimisation algorithm than those reported in research papers, such as [Bednarczuk E. (2018)](https://doi.org/10.1007/s10589-018-9988-z) and [Pisinger D. (1995)](https://doi.org/10.1016/0377-2217%2895%2900015-I).
 
 1. Sort the modifications in descending order of price `P[i][j]`
 2. While modification slots are still available, select the next modification `(i, j)` provided:

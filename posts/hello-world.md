@@ -150,7 +150,7 @@ During development, Webpack watches the files and rebuilds the server and browse
 
 For the production build, Webpack minifies code and carries out [tree-shaking](https://webpack.js.org/guides/tree-shaking/). This time the server-side code is run under a process manager so that the app can restart with the machine it runs on. NGiNX is used to serve static assets, but other requests are proxied to the Node.js app.
 
-Additionally, [Cloudflare](https://cloudflare.com) is used as a CDN and read-through cache. Write-though caching would be preferable, but I do not generate enough traffic nor content to warrant making the implementation effort!
+[Cloudflare](https://cloudflare.com) is used as a CDN and read-through cache. Write-though caching would be preferable, but I do not generate enough traffic nor content to warrant making the implementation effort!
 
 ## Further reading
 
