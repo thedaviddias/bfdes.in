@@ -7,7 +7,7 @@ summary: Trading performance for code reuse and readability in algorithm API des
 
 Recently I have been writing an algorithms library while following Computer Science courses to understand better the fundamental data structures that underpin modern computing. In the process, I have gained an appreciation of the benefits of good API design.
 
-Sometimes, but not always, the goal of exposing a lean library API conflicts with that of writing performant code. Let us look at one such situation that I encountered.
+Sometimes, but not always, the goal of exposing a lean library API conflicts with that of writing performant code. Let us look at one such situation that I encountered while writing [Treadstone](https://github.com/bfdes/Treadstone).
 
 The Monte Carlo class of algorithms are those which we can guarantee to terminate in finite time, but which may yield an incorrect result now and then. A Las Vegas algorithm, on the other hand, is guaranteed to produce a correct result, but we might only be able to obtain a probabilistic measure of its runtime.
 
@@ -24,7 +24,7 @@ f : p \mapsto t \mapsto i,
 \end{cases}
 ```
 
-The goal is to enable the client to write Las Vegas variant in terms of the Monte Carlo variant `f`.
+The goal is to enable the client to write Las Vegas variant in terms of the Monte Carlo variant `f`, so that the library only has to export one implementation of Rabin Karp.
 
 ## Rabin-Karp
 

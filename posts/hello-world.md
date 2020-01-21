@@ -13,7 +13,7 @@ Depending on your point of view [reinventing the wheel](https://www.gatsbyjs.org
 
 For those unfamiliar with web programming, there are currently three distinct ways to create websites:
 
-1. Serve a directory of HTML, CSS and images using a webserver like [NGiNX](https://www.nginx.com) or [IIS](https://www.iis.net). Typically programs called static site generators, such as [Jekyll](https://jekyllrb.com), are used to generate resources from markup. Rarely is it necessary to write HTML by hand.
+1. Serve a directory of HTML, CSS and images using a webserver like [NGiNX](https://www.nginx.com) or [IIS](https://www.iis.net). Typically programs called static site generators, such as [Jekyll](https://jekyllrb.com), are used to generate resources from intermediate markup. Rarely is it necessary to write HTML by hand.
 
 2. Use an MVC framework like [Django](https://www.djangoproject.com) to serve pages generated dynamically from templates. Requests contain query or payload data to interact with the database and populate templates.
 
@@ -25,10 +25,10 @@ Static resources are easier to cache, and static websites are more amenable to s
 
 Isomorphic applications are SPA-like websites that can "run" on both the server and the web browser. This blog is built as an isomorphic app, using React components:
 
-* The app server runs in a [Node.js](https://nodejs.org) environment, and each controller renders the relevant page.
+* The app server runs in a [Node.js](https://nodejs.org) environment, and each controller renders a single page.
   In this scenario, React is effectively used as a templating engine.
 
-* Client code uses the same top-level app component but wraps it in a router.
+* Client code uses the same top-level React component as the server but wraps it in a router.
   The router enables the frontend code to manipulate the aforementioned History API.
 
 Rendering the first page requested on the server reduces the apparent time taken to paint it. Note that server-side rendering is not free: the server is under more load unless a caching strategy is employed.
@@ -61,7 +61,7 @@ On the server, each controller uses a `StaticRouter` instance to inform `App` wh
 ```jsx
 router.get('/posts/:slug', (req, res) => {
   // Attempt to fetch a post by its slug 
-  const postOrNone = db.get(req.params.slug);
+  const postOrNone = db.get(req.params.slug)
   // Provide data to `PostOr404` in `App` using the React Context API
   const stream = renderToNodeStream(
     <StaticRouter location={req.url} context={{}}>
@@ -72,11 +72,17 @@ router.get('/posts/:slug', (req, res) => {
   )
   // Write the header, which includes the path to client JavaScript
   res.write(
-    `<!DOCTYPE html><html lang="en"><head>${header(data)}</head><body><div id="root">`
+    `
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>${header(data)}</head>
+        <body>
+          <div id="root">
+    `
   )
-  stream.pipe(res, {end: false})
+  stream.pipe(res, {end: false});
   // Terminate the response with the rest of the HTML
-  stream.on('end', () => res.end('</div></body></html>'))
+  stream.on('end', () => res.end('</div></body></html>'));
 })
 ```
 
@@ -89,7 +95,7 @@ hydrate(
     <App />
   </BrowserRouter>,
   document.getElementById('root')
-);
+)
 ```
 
 If navigation occurs, the server can supply additional metadata or markup to the browser through a JSON API. Lazily loading data in this manner reduces the size of the initial request. 
@@ -117,7 +123,7 @@ Markup is versioned like source code. In this sense, the publishing mechanism is
 * At build-time, the entries are rendered to HTML strings and bundled into the server code
 * At runtime entries loaded into memory can be queried on demand
 
-A custom Webpack loader processes the posts. Within the markup, code snippets can be entered inline or in fenced code blocks. The markdown parser supports highlighting of code blocks:
+A custom Webpack loader processes the posts. Within markup, code snippets can be entered inline or in fenced code blocks. The markdown parser supports syntax highlighting of code blocks:
 
 ```javascript
 marked.setOptions({
@@ -150,4 +156,6 @@ Additionally, [Cloudflare](https://cloudflare.com) is used as a CDN and read-thr
 
 If you are thinking about writing a blog, consider using a static site generator to create your website.
 
-However, keep in mind that they sacrifice the dynamism afforded by a hybrid solution. For example, if you wish to allow the user to filter posts by tag, then you have to build as many pages as you have tags.
+You could host the blog using a regular file server or through an object store such as [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteHosting.html). If you do not want to deal with server or DNS record maintenance, then [GitHub Pages](https://pages.github.com) is a convenient option.
+
+However, keep in mind that dynamic content in static websites is limited to embedded JavaScript. One typical operation which is hard to achieve with client-side scripting is filtering of posts by tag. If you want to allow the user to do this, then you have to build as many pages ahead-of-time as you have tags.
