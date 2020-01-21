@@ -1,4 +1,4 @@
-type Index = Record<string, number>;
+type Index = Map<string, number>;
 
 /**
  * In-memory database to query the posts.
@@ -8,12 +8,10 @@ export default class DB {
   private index: Index;  // Index to query the posts by slug
 
   constructor(posts: Post[]) {
-    this.posts = posts.sort((a, b) =>
-      b.created - a.created,
-    );
-    this.index = this.posts.reduce((index, post, i) =>
-      ({...index, [post.slug]: i })
-    , {});
+    this.posts =
+      posts.sort((a, b) => b.created - a.created);
+    this.index =
+      this.posts.reduce((index, post, i) => index.set(post.slug, i), new Map());
   }
 
   public all(tag?: string): PostStub[] {
@@ -25,7 +23,7 @@ export default class DB {
   }
 
   public get(slug: string): Post {
-    const index = this.index[slug];
+    const index = this.index.get(slug);
     if (index === undefined) {
       return null;  // Not found
     }
