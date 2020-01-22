@@ -6,6 +6,7 @@ import { StaticRouter } from "react-router";
 import { App, Context } from "shared/containers";
 import DB from "shared/db";
 import { get } from "shared/http";
+import Favicon from "shared/images/favicon.png";
 
 const header = (initialData: any) =>
   `
@@ -15,7 +16,7 @@ const header = (initialData: any) =>
     <meta name="description" content="Personal blog">
     <meta name="author" content="Bruno Fernandes">
     <title>bfdes.in</title>
-    <link href=${require("../shared/images/favicon.png")} rel="icon">
+    <link href=${Favicon} rel="icon">
     <link href="/static/styles/main.css" rel="stylesheet">
     <script src='/static/javascripts/bundle.js' defer></script>
     <script>window.__INITIAL_DATA__ = ${JSON.stringify(initialData)}</script>
