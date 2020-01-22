@@ -126,17 +126,20 @@ Markup is versioned like source code. In this sense, the publishing mechanism is
 A custom Webpack loader processes the posts. Within markup, code snippets can be entered inline or in fenced code blocks. The markdown parser supports syntax highlighting of code blocks:
 
 ```javascript
+const supported = new Set(hljs.listLanguages())
+
 marked.setOptions({
   renderer: new marked.Renderer(),
   highlight: (code, lang) => {
-    if (typeof lang === "undefined") {
-      return code;
+    if (lang && supported.has(lang)) {
+      return hljs.highlight(lang, code).value;
     } else if (lang === "math") {
       return katex.renderToString(code);
     } else {
-      return hljs.highlight(lang, code).value;
+      return code;
     }
   },
+  breaks: true,
 });
 ```
 

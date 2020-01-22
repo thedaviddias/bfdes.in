@@ -1,8 +1,11 @@
 import * as React from "react";
 import { NavLink } from "react-router-dom";
+import Avatar from "../images/avatar.jpg";
+import GitHub from "../images/github.png";
+import RSS from "../images/rss.png";
 
-const Avatar = () =>
-  <img className="avatar" src={require("../images/avatar.jpg")} alt="Profile photo" />;
+const Profile = () =>
+  <img className="avatar" src={Avatar} alt="Profile photo" />;
 
 const NavBar = () => (
   <div id="nav">
@@ -18,17 +21,17 @@ const NavBar = () => (
 const Social = () => (
   <div id="social">
     <a className="nav-item" href="https://www.github.com/bfdes" >
-      <img className="badge" src={require("../images/github.png")} alt="GitHub link" />
+      <img className="badge" src={GitHub} alt="GitHub link" />
     </a>
     <a className="nav-item" href="/feed.rss" >
-      <img className="badge" src={require("../images/rss.png")} alt="RSS link" />
+      <img className="badge" src={RSS} alt="RSS link" />
     </a>
   </div>
 );
 
 export default () => (
   <aside id="sidebar">
-    <Avatar />
+    <Profile />
     <NavBar />
     <Social />
   </aside>

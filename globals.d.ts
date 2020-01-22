@@ -13,5 +13,19 @@ declare interface Post extends PostStub {
   next?: string;
 }
 
+// Webpack image import interop
+declare module '*.png' {
+  const content: string
+  export default content
+}
+declare module '*.jpg' {
+  const content: string
+  export default content
+}
+declare module '*.svg' {
+  const content: string
+  export default content
+}
+
 // Injected by Webpack
 declare const __isBrowser__: boolean;

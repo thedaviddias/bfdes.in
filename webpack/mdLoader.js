@@ -2,15 +2,17 @@ const marked = require("marked");
 const katex = require("katex");
 const hljs = require("highlight.js");
 
+const supported = new Set(hljs.listLanguages())
+
 marked.setOptions({
   renderer: new marked.Renderer(),
   highlight: (code, lang) => {
-    if (typeof lang === "undefined") {
-      return code;
+    if (lang && supported.has(lang)) {
+      return hljs.highlight(lang, code).value;
     } else if (lang === "math") {
       return katex.renderToString(code);
     } else {
-      return hljs.highlight(lang, code).value;
+      return code;
     }
   },
   breaks: true,
