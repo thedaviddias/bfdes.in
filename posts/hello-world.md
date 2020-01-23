@@ -35,7 +35,7 @@ Rendering the first page requested on the server reduces the apparent time taken
 
 The responsibility for rendering the correct page is delegated to the `App` component:
 
-```jsx
+```javascript
 class App extends React.Component {
   render() {
     return (
@@ -58,7 +58,7 @@ class App extends React.Component {
 
 On the server, each controller uses a `StaticRouter` instance to inform `App` which page it should display. For example, here is the controller that served the page you are viewing:
 
-```jsx
+```javascript
 router.get('/posts/:slug', (req, res) => {
   // Attempt to fetch a post by its slug 
   const postOrNone = db.get(req.params.slug)
@@ -88,7 +88,7 @@ router.get('/posts/:slug', (req, res) => {
 
 On the client, JavaScript takes over, enabling rapid (internal) navigation between various "pages" of the website. A `BrowserRouter` instance enables manipulation of the History API:
 
-```jsx
+```javascript
 // browser/index.jsx
 hydrate(
   <BrowserRouter>
@@ -110,7 +110,7 @@ Another advantage of isomorphic applications is that, sometimes, they may fall b
 
 By convention source code is stored according to whether it is shared or not:
 
-```
+```plaintext
 client/
 shared/
 server/
@@ -126,18 +126,17 @@ Markup is versioned like source code. In this sense, the publishing mechanism is
 A custom Webpack loader processes the posts. Within markup, code snippets can be entered inline or in fenced code blocks. The markdown parser supports syntax highlighting of code blocks:
 
 ```javascript
-const supported = new Set(hljs.listLanguages())
+const languages = new Set(hljs.listLanguages());
 
 marked.setOptions({
   renderer: new marked.Renderer(),
   highlight: (code, lang) => {
-    if (lang && supported.has(lang)) {
+    if (languages.has(lang)) {
       return hljs.highlight(lang, code).value;
     } else if (lang === "math") {
       return katex.renderToString(code);
-    } else {
-      return code;
     }
+    return hljs.highlightAuto(code).value;
   },
   breaks: true,
 });
