@@ -11,6 +11,7 @@
     "serve:dev": "nodemon --watch dist/server.js dist/server.js",
     "build:prod": "webpack --mode=production",
     "serve:prod": "node dist/server.js",
+    "format": "prettier --write '**/*.{tsx,ts,js,json,css,html,md}'",
     "test": "jest"
   },
   "dependencies": {
@@ -44,6 +45,7 @@
     "katex": "^0.11.1",
     "marked": "^0.8.0",
     "nodemon": "^2.0.2",
+    "prettier": "^1.19.1",
     "supertest": "^4.0.2",
     "ts-jest": "^24.3.0",
     "ts-loader": "^6.2.1",
