@@ -16,6 +16,25 @@ function normalizePort(val: number | string): number | string | boolean {
   return false;
 }
 
+// Create an app given its posts
+const context = require.context("../../posts", false, /\.md$/);
+const posts: Post[] = context
+  .keys()
+  .map(filePath => {
+    const slug = path.parse(filePath).name;
+    const post = context(filePath);
+    return { ...post, slug };
+  });
+const mode = process.env.NODE_ENV;
+const app = express(posts, mode);
+
+// Attempt to normalize the port
+const port = normalizePort(process.env.PORT || 8080);
+
+// Listen on provided port, on all network interfaces
+const server = http.createServer(app);
+server.listen(port);
+
 function onError(error: NodeJS.ErrnoException): void {
   if (error.syscall !== "listen") {
     throw error;
@@ -42,23 +61,5 @@ function onListening(): void {
   console.debug(`Express server listening on ${bind}`);
 }
 
-// Create an app given its posts
-const context = require.context("../../posts", false, /\.md$/);
-const posts: Post[] = context
-  .keys()
-  .map(filePath => {
-    const slug = path.parse(filePath).name;
-    const post = context(filePath);
-    return { ...post, slug };
-  });
-const mode = process.env.NODE_ENV;
-const app = express(posts, mode);
-
-// Attempt to normalize the port
-const port = normalizePort(process.env.PORT || 8080);
-
-// Listen on provided port, on all network interfaces
-const server = http.createServer(app);
-server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);
