@@ -11,7 +11,7 @@
     "serve:dev": "nodemon --watch dist/server.js dist/server.js",
     "build:prod": "webpack --mode=production",
     "serve:prod": "node dist/server.js",
-    "format": "prettier --write '**/*.{tsx,ts,js,json,css,html,md}'",
+    "format": "prettier --write '**/*.{tsx,ts,js,css,html,json,yml,md}'",
     "test": "jest"
   },
   "dependencies": {

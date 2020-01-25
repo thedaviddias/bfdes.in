@@ -3,7 +3,7 @@ import * as path from "path";
 import express from "./index";
 
 function normalizePort(val: number | string): number | string | boolean {
-  const port = (typeof val === "string") ? parseInt(val, 10) : val;
+  const port = typeof val === "string" ? parseInt(val, 10) : val;
   if (isNaN(port)) {
     // named pipe
     return val;
@@ -18,13 +18,11 @@ function normalizePort(val: number | string): number | string | boolean {
 
 // Create an app given its posts
 const context = require.context("../../posts", false, /\.md$/);
-const posts: Post[] = context
-  .keys()
-  .map(filePath => {
-    const slug = path.parse(filePath).name;
-    const post = context(filePath);
-    return { ...post, slug };
-  });
+const posts: Post[] = context.keys().map(filePath => {
+  const slug = path.parse(filePath).name;
+  const post = context(filePath);
+  return { ...post, slug };
+});
 const mode = process.env.NODE_ENV;
 const app = express(posts, mode);
 
@@ -57,7 +55,7 @@ function onError(error: NodeJS.ErrnoException): void {
 
 function onListening(): void {
   const addr = server.address();
-  const bind = (typeof addr === "string") ? `pipe ${addr}` : `port ${addr.port}`;
+  const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
   console.debug(`Express server listening on ${bind}`);
 }
 

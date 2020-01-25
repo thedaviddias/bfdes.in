@@ -28,13 +28,14 @@ describe("<Tags />", () => {
     const tags = ["Algorithms", "Python"];
     const wrapper = mount(
       <MemoryRouter>
-        <Tags tags={tags}/>
-      </MemoryRouter>,
+        <Tags tags={tags} />
+      </MemoryRouter>
     );
-    expect(wrapper
-      .find("Link")
-      .first()
-      .props().to,
+    expect(
+      wrapper
+        .find("Link")
+        .first()
+        .props().to
     ).toBe(`/posts?tag=${tags[0]}`);
   });
 });

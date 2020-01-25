@@ -5,10 +5,10 @@ const parseQuery = (queryString: string) =>
   (/^[?#]/.test(queryString) ? queryString.slice(1) : queryString)
     .split("&")
     .reduce((params, param) => {
-      const [ key, value ] = param.split("=");
+      const [key, value] = param.split("=");
       params[key] = value ? decodeURIComponent(value.replace(/\+/g, " ")) : "";
       return params;
-    }, {} as {[s: string]: string});
+    }, {} as { [s: string]: string });
 
 type Props = {
   tag?: string;
@@ -19,7 +19,7 @@ type Location = {
 };
 
 export default function(Component: React.SFC<Props>) {
-  return (props: {location: Location}) => {
+  return (props: { location: Location }) => {
     const { location, ...rest } = props;
     const { tag } = parseQuery(location.search);
     return <Component tag={tag} {...rest} />;

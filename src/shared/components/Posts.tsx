@@ -14,7 +14,7 @@ Additionally, if the component is server rendered, then we supply posts in advan
 type Props = {
   tag?: string;
   context?: {
-    data: PostStub[],
+    data: PostStub[];
   };
   get(url: string): Promise<PostStub[]>;
 };
@@ -25,19 +25,26 @@ type State = {
   error: RequestError;
 };
 
-const PostStub: React.SFC<PostStub>
-  = ({ title, slug, wordCount, created, tags }) => (
-    <li className="post">
-      <Link to={`/posts/${slug}`} className="nav-item">
-        <h1>{title}</h1>
-      </Link>
-      <p className="meta">
-        <Date timestamp={created} />
-        {" · "}<Tags tags={tags}/>
-        {" · "}{wordCount} {wordCount !== 1 ? "words" : "word"}
-      </p>
-    </li>
-  );
+const PostStub: React.SFC<PostStub> = ({
+  title,
+  slug,
+  wordCount,
+  created,
+  tags
+}) => (
+  <li className="post">
+    <Link to={`/posts/${slug}`} className="nav-item">
+      <h1>{title}</h1>
+    </Link>
+    <p className="meta">
+      <Date timestamp={created} />
+      {" · "}
+      <Tags tags={tags} />
+      {" · "}
+      {wordCount} {wordCount !== 1 ? "words" : "word"}
+    </p>
+  </li>
+);
 
 class Posts extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -53,7 +60,7 @@ class Posts extends React.Component<Props, State> {
     let posts;
     if (__isBrowser__) {
       posts = (window as any).__INITIAL_DATA__;
-      delete (window as any).__INITIAL_DATA__;   // (1)
+      delete (window as any).__INITIAL_DATA__; // (1)
     } else {
       posts = this.props.context.data;
     }
@@ -61,7 +68,7 @@ class Posts extends React.Component<Props, State> {
     this.state = {
       posts,
       error: null,
-      loading: false,
+      loading: false
     };
 
     this.fetchPosts = this.fetchPosts.bind(this);
@@ -92,7 +99,7 @@ class Posts extends React.Component<Props, State> {
     const { posts, loading, error } = this.state;
     const { tag } = this.props;
     if (error) {
-      return(
+      return (
         <Error>
           There was an error fetching the posts. Please try again later.
         </Error>
@@ -102,35 +109,38 @@ class Posts extends React.Component<Props, State> {
       return <Spinner />;
     }
     if (posts.length === 0) {
-      return(
+      return (
         <Error>
-          {`There aren't any posts ${tag ? `under ${tag}` : "yet"}. Please come back later.`}
+          {`There aren't any posts ${
+            tag ? `under ${tag}` : "yet"
+          }. Please come back later.`}
         </Error>
       );
     }
 
     return (
       <ul id="posts">
-        {posts.map(post => <PostStub key={post.slug} {...post}/>)}
+        {posts.map(post => (
+          <PostStub key={post.slug} {...post} />
+        ))}
       </ul>
     );
   }
 
   private fetchPosts(tag?: string): void {
     const url = `/api/posts${tag === undefined ? "" : `?tag=${tag}`}`;
-    this.setState({loading: true}, () =>
-      this.props.get(url).then(posts =>
-        this.setState({posts, loading: false}),
-      ).catch(error =>
-        this.setState({error, loading: false}),
-      ),
+    this.setState({ loading: true }, () =>
+      this.props
+        .get(url)
+        .then(posts => this.setState({ posts, loading: false }))
+        .catch(error => this.setState({ error, loading: false }))
     );
   }
 }
 
 const Wrapped: React.SFC<Props> = props => (
   <Context.PostStub.Consumer>
-    {posts => <Posts {...props} context={{data: posts}} />}
+    {posts => <Posts {...props} context={{ data: posts }} />}
   </Context.PostStub.Consumer>
 );
 

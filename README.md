@@ -11,8 +11,8 @@ When the server-side code is built the posts are bundled using a custom Webpack 
 
 ### Requirements:
 
-* Node 12.x
-* Yarn 1.10.x
+- Node 12.x
+- Yarn 1.10.x
 
 ### Usage:
 
@@ -35,6 +35,7 @@ summary: <RSS SUMMARY>
 ---
 <BODY IN MARKDOWN>
 ```
+
 and the name of the markdown file should correspond to the slug of its post.
 
 Then (also) run `yarn serve:dev` to serve the app on port 8080 using Nodemon.
@@ -48,13 +49,14 @@ Circle CI will also run this test suite for every code push to master.
 ### Deployment:
 
 Running `yarn build:prod` generates two bundles
-* Client code under the /static folder
-* A single file of server-side code
+
+- Client code under the /static folder
+- A single file of server-side code
 
 Run the server-side code using Node.js, and optionally configure a webserver to serve assets under /static.
 
 ### Known issues:
 
-* From bundling Express: 'the request of a dependency is an expression'
+- From bundling Express: 'the request of a dependency is an expression'
 
   Bundling server-side modules with Webpack has [always been problematic](https://github.com/expressjs/express/issues/2832).

@@ -25,10 +25,10 @@ Static resources are easier to cache, and static websites are more amenable to s
 
 Isomorphic applications are SPA-like websites that can "run" on both the server and the web browser. This blog is built as an isomorphic app, using React components:
 
-* The app server runs in a [Node.js](https://nodejs.org) environment, and each controller renders a single page.
+- The app server runs in a [Node.js](https://nodejs.org) environment, and each controller renders a single page.
   In this scenario, React is effectively used as a templating engine.
 
-* Client code uses the same top-level React component as the server but wraps it in a router.
+- Client code uses the same top-level React component as the server but wraps it in a router.
   The router enables the frontend code to manipulate the aforementioned History API.
 
 Rendering the first page requested on the server reduces the apparent time taken to paint it. Note that server-side rendering is not free: the server is under more load unless a caching strategy is employed.
@@ -40,18 +40,18 @@ class App extends React.Component {
   render() {
     return (
       <>
-        <Route path='/' component={Sidebar} />
+        <Route path="/" component={Sidebar} />
         <Wrapper id="content">
           <Switch>
-            <Route exact path='/' render={() => <Redirect to="/posts" />} />
-            <Route exact path='/about' component={About} />
-            <Route exact path='/posts' component={Posts} />
-            <Route exact path='/posts/:slug' component={PostOr404} />
+            <Route exact path="/" render={() => <Redirect to="/posts" />} />
+            <Route exact path="/about" component={About} />
+            <Route exact path="/posts" component={Posts} />
+            <Route exact path="/posts/:slug" component={PostOr404} />
             <Route component={NoMatch} />
           </Switch>
         </Wrapper>
       </>
-    )
+    );
   }
 }
 ```
@@ -59,9 +59,9 @@ class App extends React.Component {
 On the server, each controller uses a `StaticRouter` instance to inform `App` which page it should display. For example, here is the controller that served the page you are viewing:
 
 ```javascript
-router.get('/posts/:slug', (req, res) => {
-  // Attempt to fetch a post by its slug 
-  const postOrNone = db.get(req.params.slug)
+router.get("/posts/:slug", (req, res) => {
+  // Attempt to fetch a post by its slug
+  const postOrNone = db.get(req.params.slug);
   // Provide data to `PostOr404` in `App` using the React Context API
   const stream = renderToNodeStream(
     <StaticRouter location={req.url} context={{}}>
@@ -69,7 +69,7 @@ router.get('/posts/:slug', (req, res) => {
         <App />
       </Context.Post.Provider>
     </StaticRouter>
-  )
+  );
   // Write the header, which includes the path to client JavaScript
   res.write(
     `
@@ -79,11 +79,11 @@ router.get('/posts/:slug', (req, res) => {
         <body>
           <div id="root">
     `
-  )
-  stream.pipe(res, {end: false});
+  );
+  stream.pipe(res, { end: false });
   // Terminate the response with the rest of the HTML
-  stream.on('end', () => res.end('</div></body></html>'));
-})
+  stream.on("end", () => res.end("</div></body></html>"));
+});
 ```
 
 On the client, JavaScript takes over, enabling rapid (internal) navigation between various "pages" of the website. A `BrowserRouter` instance enables manipulation of the History API:
@@ -94,19 +94,20 @@ hydrate(
   <BrowserRouter>
     <App />
   </BrowserRouter>,
-  document.getElementById('root')
-)
+  document.getElementById("root")
+);
 ```
 
-If navigation occurs, the server can supply additional metadata or markup to the browser through a JSON API. Lazily loading data in this manner reduces the size of the initial request. 
+If navigation occurs, the server can supply additional metadata or markup to the browser through a JSON API. Lazily loading data in this manner reduces the size of the initial request.
 
 Another advantage of isomorphic applications is that, sometimes, they may fall back to server-side rendering if the user has disabled browser scripting -- try doing this now.
 
 ## Build process
 
 [Webpack](https://webpack.js.org/) is used as the module bundler. Two Webpack configurations are used to generate:
-* client-side code and other assets under dist/static
-* server-side code -- dist/server.js
+
+- client-side code and other assets under dist/static
+- server-side code -- dist/server.js
 
 By convention source code is stored according to whether it is shared or not:
 
@@ -119,9 +120,10 @@ server/
 ### Publishing posts
 
 Markup is versioned like source code. In this sense, the publishing mechanism is similar to that of Jekyll:
-* Posts written in [Markdown](https://github.github.com/gfm/) are committed alongside code
-* At build-time, the entries are rendered to HTML strings and bundled into the server code
-* At runtime entries loaded into memory can be queried on demand
+
+- Posts written in [Markdown](https://github.github.com/gfm/) are committed alongside code
+- At build-time, the entries are rendered to HTML strings and bundled into the server code
+- At runtime entries loaded into memory can be queried on demand
 
 A custom Webpack loader processes the posts. Within markup, code snippets can be entered inline or in fenced code blocks. The markdown parser supports syntax highlighting of code blocks:
 
@@ -138,7 +140,7 @@ marked.setOptions({
     }
     return hljs.highlightAuto(code).value;
   },
-  breaks: true,
+  breaks: true
 });
 ```
 

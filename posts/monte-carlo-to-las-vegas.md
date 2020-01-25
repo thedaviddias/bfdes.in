@@ -44,7 +44,7 @@ def monte_carlo(pattern):
     for c in s[:m]:
       h = (h * r + ord(c)) % q
     return h
-  
+
   pattern_hash = hash(pattern)
 
   def search(text):
@@ -62,12 +62,12 @@ def monte_carlo(pattern):
     for i in range(m, n):
       # Remove contribution from the leading digit
       text_hash = (text_hash + q - R * ord(text[i-m]) % q) % q
-      # And add contribution from trailing digit  
-      text_hash = (text_hash * r + ord(text[i])) % q   
+      # And add contribution from trailing digit
+      text_hash = (text_hash * r + ord(text[i])) % q
       if text_hash == pattern_hash:
         return i - m + 1
     return -1  # Not found
-  
+
   return search
 ```
 
@@ -78,24 +78,24 @@ The Las Vegas variant additionally performs an equality check to verify that the
 def las_vegas(pattern):
   m = len(pattern)
   def search(text, start=0):
-    i = monte_carlo(pattern)(text[start:])  # From library 
+    i = monte_carlo(pattern)(text[start:])  # From library
     if i == -1:
       return -1
     if pattern == text[start+i:start+i+m]:
       return start+i
     return search(text, start+i+1)
-  
+
   return search
 ```
 
-Library consumers can quickly adapt the Monte Carlo variant if they need to, and library authors can reuse implementation code when writing the Las Vegas form of Rabin Karp. 
+Library consumers can quickly adapt the Monte Carlo variant if they need to, and library authors can reuse implementation code when writing the Las Vegas form of Rabin Karp.
 
 ## Eating your Cake
 
-So what is the problem with reusing code? Well, there are a couple of penalties to be mindful of that only manifest themselves when search text contains lots of false-positive matches. 
+So what is the problem with reusing code? Well, there are a couple of penalties to be mindful of that only manifest themselves when search text contains lots of false-positive matches.
 
-* When working in a language that does not come with a tail-call optimising compiler, we must use an iterative version of `las_vegas` to prevent high stack usage. 
-* Performing the equality check outside `monte_carlo` means we lose access to the rolling hash within the closure. We can only avoid recomputing it by writing the implementation from scratch.
+- When working in a language that does not come with a tail-call optimising compiler, we must use an iterative version of `las_vegas` to prevent high stack usage.
+- Performing the equality check outside `monte_carlo` means we lose access to the rolling hash within the closure. We can only avoid recomputing it by writing the implementation from scratch.
 
 The library can support just the Monte Carlo implementation if it is not likely to be used in situations where false positive matches are unacceptable. Unfortunately, generally speaking, library authors cannot be sure that their code will not be used in pathological cases.
 

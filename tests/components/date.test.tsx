@@ -11,9 +11,18 @@ describe("<Date /> on server", () => {
 
   it("renders current time", () => {
     const monthNames = [
-      "January", "February", "March", "April",
-      "May", "June", "July", "August",
-      "September", "October", "November", "December",
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
     ];
     const now = new Date();
 
@@ -21,9 +30,7 @@ describe("<Date /> on server", () => {
     const month = monthNames[now.getMonth()];
     const year = now.getFullYear();
 
-    const wrapper = shallow(
-      <Component timestamp={now.getTime()} />,
-    );
+    const wrapper = shallow(<Component timestamp={now.getTime()} />);
     expect(wrapper.text()).toBe(`${day} ${month} ${year}`);
   });
 });

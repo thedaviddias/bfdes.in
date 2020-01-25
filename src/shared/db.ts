@@ -5,17 +5,18 @@ type Index = Map<string, number>;
  */
 export default class DB {
   private posts: Post[]; // Posts in sorted order
-  private index: Index;  // Index to query the posts by slug
+  private index: Index; // Index to query the posts by slug
 
   constructor(posts: Post[]) {
-    this.posts =
-      posts.sort((a, b) => b.created - a.created);
-    this.index =
-      this.posts.reduce((index, post, i) => index.set(post.slug, i), new Map());
+    this.posts = posts.sort((a, b) => b.created - a.created);
+    this.index = this.posts.reduce(
+      (index, post, i) => index.set(post.slug, i),
+      new Map()
+    );
   }
 
   public all(tag?: string): PostStub[] {
-    const stubs = this.posts.map(({body, ...stub}) => stub);
+    const stubs = this.posts.map(({ body, ...stub }) => stub);
     if (tag === undefined) {
       return stubs;
     }
@@ -25,7 +26,7 @@ export default class DB {
   public get(slug: string): Post {
     const index = this.index.get(slug);
     if (index === undefined) {
-      return null;  // Not found
+      return null; // Not found
     }
     let previous;
     let next;
@@ -38,7 +39,7 @@ export default class DB {
     return {
       previous,
       next,
-      ...this.posts[index],
+      ...this.posts[index]
     };
   }
 }

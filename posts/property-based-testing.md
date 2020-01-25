@@ -15,7 +15,7 @@ The completed test suite is hosted on GitHub as a [gist](https://gist.github.com
 
 Property-based testing involves providing a set of properties for the function or method under test. Effectively, we define a specification that our implementation should meet.
 
-The usual approach, writing a limited set of assertions, may be satisfactory when testing simple logic: 
+The usual approach, writing a limited set of assertions, may be satisfactory when testing simple logic:
 
 > "**it** redirects an unauthenticated user to login".
 
@@ -27,29 +27,32 @@ Property-based testing has its origins in functional programming, where data is 
 
 Consider the addition operation on integers. What conditions does it meet?
 
-* Associativity:
+- Associativity:
 
   ```math
   \left( i + j \right) + k = i + \left( j + k \right) \space \forall \space i, j, k \in \mathbb{Z}
   ```
-* Identity:
+
+- Identity:
 
   ```math
   i + 0 = 0 + i = i \space \forall \space i \in \mathbb{Z}
   ```
-* Commutativity:
+
+- Commutativity:
 
   ```math
   i + j  = j + i \space \forall \space i, j \in \mathbb{Z}
   ```
 
-We can assert that these properties hold by verifying that they apply for arbitrary integer triples. In a similar manner, property-based testing can also be employed to check algorithms that effect mutable data. We use it to test an implementation of mergesort. 
+We can assert that these properties hold by verifying that they apply for arbitrary integer triples. In a similar manner, property-based testing can also be employed to check algorithms that effect mutable data. We use it to test an implementation of mergesort.
 
 ## Mergesort
 
 This implementation of mergesort is transcribed to Scala from [Algorithms](https://algs4.cs.princeton.edu/home) by Sedgewick and Wayne.
 
 It consists of two subroutines:
+
 1. Split the array in two, recursively sorting each partition
 2. Merge the sorted partitions
 
@@ -130,16 +133,16 @@ A sorting function is defined by two properties:
 
 2. It must totally-order its input to form its output (the comparer defines the total-ordering)
 
-  ```math
-  a'_i \leq a'_j \space \forall \space i, j \in I \space \text{such that} \space i < j
-  ```
+   ```math
+   a'_i \leq a'_j \space \forall \space i, j \in I \space \text{such that} \space i < j
+   ```
 
 We have described arrays as a [family](https://math.stackexchange.com/a/361530), and the primed elements belong to the permuted array.
 
 Since a sorting function has an infinite domain, it is not possible to verify these properties without resorting to **sampling**. Here is one strategy to programmatically generate array samples:
 
-* Progressively create arrays of increasing size (up to a maximum)
-* Large arrays encode exponentially more states, so generate more of these
+- Progressively create arrays of increasing size (up to a maximum)
+- Large arrays encode exponentially more states, so generate more of these
 
 Our sort function can act on generic arrays, but to generate samples, we need to specialise on a type. We choose `Int`; however, there is no reason another type that has a total-ordering defined cannot be used instead -- such as `Char` or `Double`.
 
@@ -197,14 +200,14 @@ class Histogram[K](keys: Seq[K]) {
       val count = m.getOrElse(k, 0) + 1
       m + (k -> count)
     }
-  
-  override def equals(histogram: Any): Boolean = 
+
+  override def equals(histogram: Any): Boolean =
     histogram match {
       case h: Histogram[K] =>
         h.underlying.equals(underlying)
       case _ => false
     }
-  
+
   override def hashCode: Int = underlying.hashCode
 }
 ```
@@ -216,8 +219,9 @@ The strategy in use to generate samples does not adequately cover the situation 
 [ScalaCheck](https://www.scalacheck.org) is a library designed to aid property-based testing. It is inspired by Haskell's QuickCheck.
 
 To use ScalaCheck, we need to be aware of two abstract data types it exports:
-* `Gen[T]` is a [monad](https://en.wikipedia.org/wiki/Monad) that encodes all the information necessary to produce samples of type `T`
-* `Prop` verifies a property by sampling a generator that is passed to it
+
+- `Gen[T]` is a [monad](https://en.wikipedia.org/wiki/Monad) that encodes all the information necessary to produce samples of type `T`
+- `Prop` verifies a property by sampling a generator that is passed to it
 
 Here is the (naïve) strategy for sample generation, re-written using ScalaCheck:
 
@@ -228,7 +232,7 @@ def unsaturated: Gen[Array[Int]] =
 
 ScalaCheck will choose the maximum sample size to generate when running the test.
 
-To test cases where duplicate keys are common, we modify the generator that creates keys to limit itself to choose from the range `[0, sqrt(size))`, where `size` is the length of the array being filled. 
+To test cases where duplicate keys are common, we modify the generator that creates keys to limit itself to choose from the range `[0, sqrt(size))`, where `size` is the length of the array being filled.
 
 ```scala
 def saturated: Gen[Array[Int]] = {
@@ -238,7 +242,7 @@ def saturated: Gen[Array[Int]] = {
 }
 ```
 
-A stable sorting algorithm is one that ensures that any two keys which compare equally maintain their relative positions in the array. To test `mergeSort` is stable we create arrays loaded with tuples, sorting them by the second element in the tuple *and then* the first. We should find that the mutated array should be sorted with respect to a compound order which orders the tuples by comparing first elements and, if necessary, breaks ties on the second element. (Actually, this is the default ordering for tuples in Scala.)
+A stable sorting algorithm is one that ensures that any two keys which compare equally maintain their relative positions in the array. To test `mergeSort` is stable we create arrays loaded with tuples, sorting them by the second element in the tuple _and then_ the first. We should find that the mutated array should be sorted with respect to a compound order which orders the tuples by comparing first elements and, if necessary, breaks ties on the second element. (Actually, this is the default ordering for tuples in Scala.)
 
 Here is the resulting test code, without the generators listed above:
 
@@ -284,4 +288,4 @@ By using ScalaCheck, we have traded some transparency for the ability to abstrac
 
 Mergesort was chosen to demonstrate property-based testing because it is the only performant sorting algorithm that is also stable. System sorts typically use a variant of mergesort for sorting reference types, and quicksort for primitives. Sedgewick and Wayne discuss this in more detail.
 
-If you want more insight into how ScalaCheck works, it would be worth reading the book [Functional Programming in Scala](https://www.manning.com/books/functional-programming-in-scala). The eight-chapter walks the reader through designing such a library. 
+If you want more insight into how ScalaCheck works, it would be worth reading the book [Functional Programming in Scala](https://www.manning.com/books/functional-programming-in-scala). The eight-chapter walks the reader through designing such a library.

@@ -3,6 +3,6 @@ import Spinner from "../images/loading.svg";
 
 export default () => (
   <div className="spinner">
-    <img src={Spinner}/>
+    <img src={Spinner} />
   </div>
 );

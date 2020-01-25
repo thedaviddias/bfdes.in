@@ -10,5 +10,5 @@ hydrate(
   <BrowserRouter>
     <App get={get} />
   </BrowserRouter>,
-  document.getElementById("root"),
+  document.getElementById("root")
 );

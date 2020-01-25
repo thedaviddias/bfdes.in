@@ -5,23 +5,26 @@ const summary = "Lorem ipsum";
 const body = "Lorem ipsum delorum sit amet";
 const wordCount = 5;
 
-const posts = [{
-  title: "My first post",
-  slug: "my-first-post",
-  summary,
-  body,
-  created: 1523401300000,
-  tags: ["Algorithms", "Java"],
-  wordCount,
-}, {
-  title: "My second post",
-  slug: "my-second-post",
-  summary,
-  body,
-  created: 1523487600000,
-  tags: ["Java"],
-  wordCount,
-}];
+const posts = [
+  {
+    title: "My first post",
+    slug: "my-first-post",
+    summary,
+    body,
+    created: 1523401300000,
+    tags: ["Algorithms", "Java"],
+    wordCount
+  },
+  {
+    title: "My second post",
+    slug: "my-second-post",
+    summary,
+    body,
+    created: 1523487600000,
+    tags: ["Java"],
+    wordCount
+  }
+];
 
 const app = express(posts, "test");
 
@@ -30,8 +33,7 @@ describe("GET /", () => {
     request(app)
       .get("/")
       .expect(302)
-      .expect("Location", "/posts"),
-  );
+      .expect("Location", "/posts"));
 });
 
 describe("GET /api/posts", () => {
@@ -41,8 +43,7 @@ describe("GET /api/posts", () => {
       .expect(200)
       .then(res => {
         expect(res.body.length).toBe(posts.length);
-      }),
-  );
+      }));
 
   test("posts filtered by tag correctly", () => {
     const tag = "Algorithms";
@@ -50,21 +51,17 @@ describe("GET /api/posts", () => {
     return request(app)
       .get(`/api/posts?tag=${tag}`)
       .expect(200)
-      .then(res =>
-        expect(res.body.length).toBe(filtered.length),
-      );
+      .then(res => expect(res.body.length).toBe(filtered.length));
   });
 
   test("posts returned in sorted order", () => {
     const sorted = posts
-      .map(({body, ...stub}) => stub)
+      .map(({ body, ...stub }) => stub)
       .sort((a, b) => b.created - a.created);
     return request(app)
       .get("/api/posts")
       .expect(200)
-      .then(res =>
-        expect(res.body).toEqual(sorted),
-      );
+      .then(res => expect(res.body).toEqual(sorted));
   });
 });
 
@@ -77,6 +74,5 @@ describe("GET /feed.rss", () => {
         const tag = /\<item\>/g;
         const count = (res.text.match(tag) || []).length;
         return expect(count).toBe(posts.length);
-      }),
-  );
+      }));
 });

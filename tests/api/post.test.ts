@@ -6,31 +6,35 @@ const body = "Lorem ipsum delorum sit amet";
 const created = 1523401300000;
 const wordCount = 5;
 
-const posts = [{
-  title: "My first post",
-  slug: "my-first-post",
-  summary,
-  body,
-  created,
-  tags: ["Algorithms", "Java"],
-  wordCount,
-}, {
-  title: "My second post",
-  slug: "my-second-post",
-  summary,
-  body,
-  created,
-  tags: ["Java"],
-  wordCount,
-}, {
-  title: "My third post",
-  slug: "my-third-post",
-  summary,
-  body,
-  created,
-  tags: ["Python"],
-  wordCount,
-}];
+const posts = [
+  {
+    title: "My first post",
+    slug: "my-first-post",
+    summary,
+    body,
+    created,
+    tags: ["Algorithms", "Java"],
+    wordCount
+  },
+  {
+    title: "My second post",
+    slug: "my-second-post",
+    summary,
+    body,
+    created,
+    tags: ["Java"],
+    wordCount
+  },
+  {
+    title: "My third post",
+    slug: "my-third-post",
+    summary,
+    body,
+    created,
+    tags: ["Python"],
+    wordCount
+  }
+];
 
 const app = express(posts, "test");
 
@@ -49,11 +53,10 @@ describe("GET /api/posts/:slug", () => {
       .then(res =>
         expect(res.body).toEqual({
           error: {
-            message: "404: No post with that slug",
-          },
-        }),
-      ),
-  );
+            message: "404: No post with that slug"
+          }
+        })
+      ));
 
   test("posts are paged", () => {
     const [first, second, third] = posts;
@@ -64,8 +67,8 @@ describe("GET /api/posts/:slug", () => {
         .then(res =>
           expect(res.body).toEqual({
             ...first,
-            previous: second.slug,
-          }),
+            previous: second.slug
+          })
         ),
       request(app)
         .get(`/api/posts/${second.slug}`)
@@ -74,8 +77,8 @@ describe("GET /api/posts/:slug", () => {
           expect(res.body).toEqual({
             ...second,
             previous: third.slug,
-            next: first.slug,
-          }),
+            next: first.slug
+          })
         ),
       request(app)
         .get(`/api/posts/${third.slug}`)
@@ -83,9 +86,9 @@ describe("GET /api/posts/:slug", () => {
         .then(res =>
           expect(res.body).toEqual({
             ...third,
-            next: second.slug,
-          }),
-        ),
+            next: second.slug
+          })
+        )
     ]);
   });
 });

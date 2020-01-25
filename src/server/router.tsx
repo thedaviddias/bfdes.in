@@ -40,11 +40,15 @@ export default function(db: DB) {
         <Context.PostStub.Provider value={posts}>
           <App get={get} />
         </Context.PostStub.Provider>
-      </StaticRouter>,
+      </StaticRouter>
     );
 
-    res.write(`<!DOCTYPE html><html lang="en"><head>${header(posts)}</head><body><div id="root">`);
-    stream.pipe(res, {end: false});
+    res.write(
+      `<!DOCTYPE html><html lang="en"><head>${header(
+        posts
+      )}</head><body><div id="root">`
+    );
+    stream.pipe(res, { end: false });
     stream.on("end", () => res.end("</div></body></html>"));
   });
 
@@ -58,11 +62,15 @@ export default function(db: DB) {
         <Context.Post.Provider value={postOrNone}>
           <App get={get} />
         </Context.Post.Provider>
-      </StaticRouter>,
+      </StaticRouter>
     );
 
-    res.write(`<!DOCTYPE html><html lang="en"><head>${header(postOrNone)}</head><body><div id="root">`);
-    stream.pipe(res, {end: false});
+    res.write(
+      `<!DOCTYPE html><html lang="en"><head>${header(
+        postOrNone
+      )}</head><body><div id="root">`
+    );
+    stream.pipe(res, { end: false });
     stream.on("end", () => res.end("</div></body></html>"));
   });
 
@@ -84,8 +92,8 @@ export default function(db: DB) {
     } else {
       res.status(404).json({
         error: {
-          message: "404: No post with that slug",
-        },
+          message: "404: No post with that slug"
+        }
       });
     }
   });
@@ -93,29 +101,28 @@ export default function(db: DB) {
   // GET /feed.rss
   router.get("/feed.rss", (req, res) => {
     const recentPosts = db.all().slice(0, 10);
-    const markup =
-      `<?xml version="1.0" encoding="utf-8"?>
+    const markup = `<?xml version="1.0" encoding="utf-8"?>
       <rss version="2.0">
       <channel>
         <title>bfdes.in</title>
         <link>https://www.bfdes.in</link>
         <description>Programming and Technology blog</description>
-        ${recentPosts.map(post => {
-          const date = new Date(post.created);
-          const url = `https://www.bfdes.in/posts/${post.slug}`;
-          return (
-            `<item>
+        ${recentPosts
+          .map(post => {
+            const date = new Date(post.created);
+            const url = `https://www.bfdes.in/posts/${post.slug}`;
+            return `<item>
               <title>${post.title}</title>
               <author>Bruno Fernandes</author>
               <description>${post.summary}</description>
               <link>${url}</link>
               <guid>${url}</guid>
               <pubDate>${date.toUTCString()}</pubDate>
-            </item>`
-          );
-        }).join("")}
+            </item>`;
+          })
+          .join("")}
       </channel>
-    </rss>`.replace(/\>\s+\</g, "><");  // Get rid of newlines between sets of tags
+    </rss>`.replace(/\>\s+\</g, "><"); // Get rid of newlines between sets of tags
     res.status(200);
     res.type("application/xml");
     res.send(markup);
@@ -126,11 +133,15 @@ export default function(db: DB) {
     const stream = renderToNodeStream(
       <StaticRouter location={req.url} context={{}}>
         <App get={get} />
-      </StaticRouter>,
+      </StaticRouter>
     );
     res.status(404);
-    res.write(`<!DOCTYPE html><html lang="en"><head>${header(null)}</head><body><div id="root">`);
-    stream.pipe(res, {end: false});
+    res.write(
+      `<!DOCTYPE html><html lang="en"><head>${header(
+        null
+      )}</head><body><div id="root">`
+    );
+    stream.pipe(res, { end: false });
     stream.on("end", () => res.end("</div></body></html>"));
   });
   return router;

@@ -11,10 +11,14 @@ export class RequestError extends Error {
 export function get(url: string): Promise<any> {
   return fetch(url, {
     method: "get",
-    headers: {"Content-Type": "application/json"},
+    headers: { "Content-Type": "application/json" }
   }).then(res =>
-    res.json().then(data =>
-      res.ok ? data : Promise.reject(new RequestError(res.status, data.error.message)),
-    ),
+    res
+      .json()
+      .then(data =>
+        res.ok
+          ? data
+          : Promise.reject(new RequestError(res.status, data.error.message))
+      )
   );
 }

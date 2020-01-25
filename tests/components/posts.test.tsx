@@ -11,11 +11,9 @@ test("withTag", () => {
   const tag = "Python";
   const Component = withTag(Posts);
   const location = {
-    search: `?tag=${tag}`,
+    search: `?tag=${tag}`
   };
-  const wrapper = shallow(
-    <Component location={location} />,
-  );
+  const wrapper = shallow(<Component location={location} />);
   expect(wrapper.prop("tag")).toBe(tag);
 });
 
@@ -23,21 +21,24 @@ describe("<Posts />", () => {
   const summary = "Lorem ipsum";
   const wordCount = 5;
 
-  const posts = [{
-    title: "My first post",
-    slug: "my-first-post",
-    summary,
-    created: 1523401200000,
-    tags: ["Algorithms", "Java"],
-    wordCount,
-  }, {
-    title: "My second post",
-    slug: "my-second-post",
-    summary,
-    created: 1523487600000,
-    tags: ["Java"],
-    wordCount,
-  }];
+  const posts = [
+    {
+      title: "My first post",
+      slug: "my-first-post",
+      summary,
+      created: 1523401200000,
+      tags: ["Algorithms", "Java"],
+      wordCount
+    },
+    {
+      title: "My second post",
+      slug: "my-second-post",
+      summary,
+      created: 1523487600000,
+      tags: ["Java"],
+      wordCount
+    }
+  ];
 
   describe("<Posts /> on server", () => {
     beforeAll(() => {
@@ -50,7 +51,7 @@ describe("<Posts />", () => {
           <Context.PostStub.Provider value={posts}>
             <Posts get={jest.fn()} />
           </Context.PostStub.Provider>
-        </MemoryRouter>,
+        </MemoryRouter>
       );
       expect(wrapper.find(".post")).toHaveLength(posts.length);
     });
@@ -61,7 +62,7 @@ describe("<Posts />", () => {
           <Context.PostStub.Provider value={[]}>
             <Posts get={jest.fn()} />
           </Context.PostStub.Provider>
-        </MemoryRouter>,
+        </MemoryRouter>
       );
       expect(wrapper.find(".error")).toHaveLength(1);
     });
@@ -79,7 +80,7 @@ describe("<Posts />", () => {
       const wrapper = mount(
         <MemoryRouter>
           <Posts get={get} />
-        </MemoryRouter>,
+        </MemoryRouter>
       );
       return mockPromise.then(() => {
         expect(wrapper.update().find(".post")).toHaveLength(posts.length);
@@ -93,7 +94,7 @@ describe("<Posts />", () => {
       const wrapper = mount(
         <MemoryRouter>
           <Posts get={get} />
-        </MemoryRouter>,
+        </MemoryRouter>
       );
       return mockPromise.then(() => {
         expect(wrapper.update().find(".error")).toHaveLength(1);
@@ -108,7 +109,7 @@ describe("<Posts />", () => {
       mount(
         <MemoryRouter>
           <Posts tag={tag} get={get} />
-        </MemoryRouter>,
+        </MemoryRouter>
       );
       return mockPromise.then(() => {
         expect(get).toHaveBeenCalledWith(`/api/posts?tag=${tag}`);
@@ -122,13 +123,13 @@ describe("<Posts />", () => {
       const wrapper = mount(
         <MemoryRouter>
           <Posts get={get} />
-        </MemoryRouter>,
+        </MemoryRouter>
       );
       return mockPromise
         .then(() => {})
         .catch(() => {
           expect(wrapper.update().find(".error")).toHaveLength(1);
-        });  // Ref. : https://github.com/airbnb/enzyme/issues/450#issuecomment-341244926
+        }); // Ref. : https://github.com/airbnb/enzyme/issues/450#issuecomment-341244926
     });
   });
 });

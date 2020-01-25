@@ -33,20 +33,23 @@ export default function(posts: Post[], mode: string = "test") {
   app.use("/", router(db));
 
   // Error handler
-  type RequestError = {status?: number} & Error;
+  type RequestError = { status?: number } & Error;
 
-  app.use((err: RequestError, req: Request, res: Response, next: NextFunction) => {
-    res.status(err.status || 500);  // Server error if no status
-    console.error(err.stack);
-    const message = (err.status === 500)
-      ? "500: Internal Server error"
-      : `${err.status}: ${err.message}`;
-    res.json({
+  app.use(
+    (err: RequestError, req: Request, res: Response, next: NextFunction) => {
+      res.status(err.status || 500); // Server error if no status
+      console.error(err.stack);
+      const message =
+        err.status === 500
+          ? "500: Internal Server error"
+          : `${err.status}: ${err.message}`;
+      res.json({
         error: {
-            message,
-        },
-    });
-  });
+          message
+        }
+      });
+    }
+  );
 
   return app;
 }

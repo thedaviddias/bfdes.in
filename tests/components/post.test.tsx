@@ -14,11 +14,9 @@ test("withSlug", () => {
     params: { slug },
     isExact: true,
     path: "/posts/:slug",
-    url: `/posts/${slug}`,
+    url: `/posts/${slug}`
   };
-  const wrapper = shallow(
-    <Component match={match} />,
-  );
+  const wrapper = shallow(<Component match={match} />);
   expect(wrapper.prop("slug")).toBe(slug);
 });
 
@@ -30,7 +28,7 @@ describe("<PostOr404 />", () => {
     body: "Lorem ipsum delorum sit amet",
     wordCount: 5,
     tags: ["Algorithms", "Java"],
-    created: 1523401200000,
+    created: 1523401200000
   };
 
   describe("<PostOr404 /> on server", () => {
@@ -44,7 +42,7 @@ describe("<PostOr404 />", () => {
           <Context.Post.Provider value={post}>
             <PostOr404 get={jest.fn()} slug="test" />
           </Context.Post.Provider>
-        </MemoryRouter>,
+        </MemoryRouter>
       );
       expect(wrapper.find(".post")).toHaveLength(1);
     });
@@ -63,7 +61,7 @@ describe("<PostOr404 />", () => {
       mount(
         <MemoryRouter>
           <PostOr404 slug={slug} get={get} />
-        </MemoryRouter>,
+        </MemoryRouter>
       );
       return mockPromise.then(() => {
         expect(get).toHaveBeenCalledWith(`/api/posts/${slug}`);
@@ -77,7 +75,7 @@ describe("<PostOr404 />", () => {
       const wrapper = mount(
         <MemoryRouter>
           <PostOr404 get={get} slug="test" />
-        </MemoryRouter>,
+        </MemoryRouter>
       );
       return mockPromise.then(() => {
         expect(wrapper.update().find(".post")).toHaveLength(1);
@@ -92,7 +90,7 @@ describe("<PostOr404 />", () => {
       const wrapper = mount(
         <MemoryRouter>
           <PostOr404 get={get} slug="test" />
-        </MemoryRouter>,
+        </MemoryRouter>
       );
       return mockPromise
         .then(() => {})
@@ -108,7 +106,7 @@ describe("<PostOr404 />", () => {
       const wrapper = mount(
         <MemoryRouter>
           <PostOr404 get={get} slug="test" />
-        </MemoryRouter>,
+        </MemoryRouter>
       );
       return mockPromise
         .then(() => {})
