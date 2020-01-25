@@ -29,9 +29,7 @@ const app = express(posts, mode);
 // Attempt to normalize the port
 const port = normalizePort(process.env.PORT || 8080);
 
-// Listen on provided port, on all network interfaces
 const server = http.createServer(app);
-server.listen(port);
 
 function onError(error: NodeJS.ErrnoException): void {
   if (error.syscall !== "listen") {
@@ -59,5 +57,7 @@ function onListening(): void {
   console.debug(`Express server listening on ${bind}`);
 }
 
+// Listen on provided port, on all network interfaces
+server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);

@@ -1,0 +1,12 @@
+// Dpeendencies
+node_modules
+
+// Built files
+coverage
+dist
+
+// Config
+webpack
+webpack.config.js
+jest
+jest.config.js

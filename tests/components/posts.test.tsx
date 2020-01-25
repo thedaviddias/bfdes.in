@@ -126,10 +126,12 @@ describe("<Posts />", () => {
         </MemoryRouter>
       );
       return mockPromise
-        .then(() => {})
+        .then(() => {
+          // Ref. https://github.com/airbnb/enzyme/issues/450#issuecomment-341244926
+        })
         .catch(() => {
           expect(wrapper.update().find(".error")).toHaveLength(1);
-        }); // Ref. : https://github.com/airbnb/enzyme/issues/450#issuecomment-341244926
+        });
     });
   });
 });
