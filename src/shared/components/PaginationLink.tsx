@@ -6,14 +6,17 @@ type Props = {
   children: string;
 };
 
-const PaginationLink: React.SFC<Props> = ({ next, children }) => (
-  <span className="pagination-item">
-    {next ? (
-      <Link to={`/posts/${next}`}>{children}</Link>
-    ) : (
-      <span>{children}</span>
-    )}
-  </span>
-);
+function PaginationLink(props: Props): React.ReactElement {
+  const { next, children } = props;
+  return (
+    <span className="pagination-item">
+      {next ? (
+        <Link to={`/posts/${next}`}>{children}</Link>
+      ) : (
+        <span>{children}</span>
+      )}
+    </span>
+  );
+}
 
 export default PaginationLink;

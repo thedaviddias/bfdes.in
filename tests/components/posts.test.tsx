@@ -42,15 +42,15 @@ describe("<Posts />", () => {
 
   describe("<Posts /> on server", () => {
     beforeAll(() => {
-      (global as any).__isBrowser__ = false;
+      __isBrowser__ = false;
     });
 
     it("displays posts", () => {
       const wrapper = mount(
         <MemoryRouter>
-          <Context.PostStub.Provider value={posts}>
+          <Context.Posts.Provider value={posts}>
             <Posts get={jest.fn()} />
-          </Context.PostStub.Provider>
+          </Context.Posts.Provider>
         </MemoryRouter>
       );
       expect(wrapper.find(".post")).toHaveLength(posts.length);
@@ -59,9 +59,9 @@ describe("<Posts />", () => {
     it("asks the reader to return", () => {
       const wrapper = mount(
         <MemoryRouter>
-          <Context.PostStub.Provider value={[]}>
+          <Context.Posts.Provider value={[]}>
             <Posts get={jest.fn()} />
-          </Context.PostStub.Provider>
+          </Context.Posts.Provider>
         </MemoryRouter>
       );
       expect(wrapper.find(".error")).toHaveLength(1);
@@ -70,7 +70,7 @@ describe("<Posts />", () => {
 
   describe("<Posts /> on client", () => {
     beforeAll(() => {
-      (global as any).__isBrowser__ = true;
+      __isBrowser__ = true;
     });
 
     it("displays posts", () => {

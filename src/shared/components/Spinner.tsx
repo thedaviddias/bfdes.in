@@ -1,8 +1,12 @@
 import * as React from "react";
-import Spinner from "../images/loading.svg";
+import Loading from "../images/loading.svg";
 
-export default () => (
-  <div className="spinner">
-    <img src={Spinner} />
-  </div>
-);
+function Spinner(): React.ReactElement {
+  return (
+    <div className="spinner">
+      <img src={Loading} />
+    </div>
+  );
+}
+
+export default Spinner;

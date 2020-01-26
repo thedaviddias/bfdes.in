@@ -1,3 +1,4 @@
+// Common types
 declare interface PostStub {
   title: string;
   slug: string;
@@ -12,6 +13,8 @@ declare interface Post extends PostStub {
   previous?: string;
   next?: string;
 }
+
+declare type Payload = Post | PostStub[]
 
 // Webpack image import interop
 declare module "*.png" {
@@ -28,4 +31,9 @@ declare module "*.svg" {
 }
 
 // Injected by Webpack
-declare const __isBrowser__: boolean;
+declare let __isBrowser__: boolean;
+
+// Injected on the server for SSR
+declare interface Window {
+  __INITIAL_DATA__: Payload;
+}

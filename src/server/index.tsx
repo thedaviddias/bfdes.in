@@ -1,14 +1,15 @@
 import * as bodyParser from "body-parser";
 import * as compression from "compression";
 import * as express from "express";
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import * as logger from "morgan";
 import * as path from "path";
 
 import DB from "../shared/db";
 import router from "./router";
+import { RequestListener } from "http";
 
-export default function(posts: Post[], mode: string = "test") {
+export default function(posts: Post[], mode = "test"): RequestListener {
   const app = express();
 
   // Apply middleware stack:
@@ -16,6 +17,7 @@ export default function(posts: Post[], mode: string = "test") {
   switch (mode) {
     case "production":
       app.use(logger("common"));
+      break;
     case "development":
       app.use(logger("dev"));
   }
@@ -35,21 +37,19 @@ export default function(posts: Post[], mode: string = "test") {
   // Error handler
   type RequestError = { status?: number } & Error;
 
-  app.use(
-    (err: RequestError, req: Request, res: Response, next: NextFunction) => {
-      res.status(err.status || 500); // Server error if no status
-      console.error(err.stack);
-      const message =
-        err.status === 500
-          ? "500: Internal Server error"
-          : `${err.status}: ${err.message}`;
-      res.json({
-        error: {
-          message
-        }
-      });
-    }
-  );
+  app.use((err: RequestError, req: Request, res: Response) => {
+    res.status(err.status || 500); // Server error if no status
+    console.error(err.stack);
+    const message =
+      err.status === 500
+        ? "500: Internal Server error"
+        : `${err.status}: ${err.message}`;
+    res.json({
+      error: {
+        message
+      }
+    });
+  });
 
   return app;
 }

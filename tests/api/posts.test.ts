@@ -71,7 +71,7 @@ describe("GET /feed.rss", () => {
       .get("/feed.rss")
       .expect(200)
       .then(res => {
-        const tag = /\<item\>/g;
+        const tag = /<item>/g;
         const count = (res.text.match(tag) || []).length;
         return expect(count).toBe(posts.length);
       }));

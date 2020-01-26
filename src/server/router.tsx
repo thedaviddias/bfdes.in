@@ -8,7 +8,7 @@ import DB from "shared/db";
 import { get } from "shared/http";
 import Favicon from "shared/images/favicon.png";
 
-const header = (initialData: any) =>
+const header = (initialData: Payload): string =>
   `
     <meta charset="utf8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +22,7 @@ const header = (initialData: any) =>
     <script>window.__INITIAL_DATA__ = ${JSON.stringify(initialData)}</script>
   `;
 
-export default function(db: DB) {
+export default function(db: DB): Router {
   const router = Router();
 
   // GET / is an alias for GET /posts
@@ -37,9 +37,9 @@ export default function(db: DB) {
 
     const stream = renderToNodeStream(
       <StaticRouter location={req.url} context={{}}>
-        <Context.PostStub.Provider value={posts}>
+        <Context.Posts.Provider value={posts}>
           <App get={get} />
-        </Context.PostStub.Provider>
+        </Context.Posts.Provider>
       </StaticRouter>
     );
 
@@ -122,7 +122,7 @@ export default function(db: DB) {
           })
           .join("")}
       </channel>
-    </rss>`.replace(/\>\s+\</g, "><"); // Get rid of newlines between sets of tags
+    </rss>`.replace(/>\s+</g, "><"); // Get rid of newlines between sets of tags
     res.status(200);
     res.type("application/xml");
     res.send(markup);
