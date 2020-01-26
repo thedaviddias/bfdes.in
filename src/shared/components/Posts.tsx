@@ -7,6 +7,24 @@ import Error from "./Error";
 import Spinner from "./Spinner";
 import Tags from "./Tags";
 
+function PostStub(props: PostStub): React.ReactElement {
+  const { title, slug, wordCount, created, tags } = props;
+  return (
+    <li className="post">
+      <Link to={`/posts/${slug}`} className="nav-item">
+        <h1>{title}</h1>
+      </Link>
+      <p className="meta">
+        <Date timestamp={created} />
+        {" · "}
+        <Tags tags={tags} />
+        {" · "}
+        {wordCount} {wordCount !== 1 ? "words" : "word"}
+      </p>
+    </li>
+  );
+}
+
 /*
 A tag may be supplied (by React Router) if the user has chosen to filter posts by tag.
 Additionally, if the component is server rendered, then we supply posts in advance ysing React's context API.
@@ -25,27 +43,6 @@ type State = {
   error: RequestError;
 };
 
-const PostStub: React.SFC<PostStub> = ({
-  title,
-  slug,
-  wordCount,
-  created,
-  tags
-}) => (
-  <li className="post">
-    <Link to={`/posts/${slug}`} className="nav-item">
-      <h1>{title}</h1>
-    </Link>
-    <p className="meta">
-      <Date timestamp={created} />
-      {" · "}
-      <Tags tags={tags} />
-      {" · "}
-      {wordCount} {wordCount !== 1 ? "words" : "word"}
-    </p>
-  </li>
-);
-
 class Posts extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -59,8 +56,8 @@ class Posts extends React.Component<Props, State> {
     */
     let posts;
     if (__isBrowser__) {
-      posts = (window as any).__INITIAL_DATA__;
-      delete (window as any).__INITIAL_DATA__; // (1)
+      posts = window.__INITIAL_DATA__ as PostStub[];
+      delete window.__INITIAL_DATA__; // (1)
     } else {
       posts = this.props.context.data;
     }
@@ -78,7 +75,7 @@ class Posts extends React.Component<Props, State> {
   Fetch posts when component mounts (not called on server),
   but not when React's deferred first render occurs.
   */
-  public componentDidMount() {
+  public componentDidMount(): void {
     if (this.state.posts == null) {
       const { tag } = this.props;
       this.fetchPosts(tag);
@@ -88,14 +85,14 @@ class Posts extends React.Component<Props, State> {
   /*
   Fetch posts afresh if filtering by another tag.
   */
-  public componentDidUpdate(prevProps: Props, _: State) {
-    if (prevProps.tag !== this.props.tag) {
-      const { tag } = this.props;
+  public componentDidUpdate(prevProps: Props): void {
+    const { tag } = this.props;
+    if (prevProps.tag !== tag) {
       this.fetchPosts(tag);
     }
   }
 
-  public render() {
+  public render(): React.ReactElement {
     const { posts, loading, error } = this.state;
     const { tag } = this.props;
     if (error) {
@@ -138,10 +135,11 @@ class Posts extends React.Component<Props, State> {
   }
 }
 
-const Wrapped: React.SFC<Props> = props => (
-  <Context.PostStub.Consumer>
-    {posts => <Posts {...props} context={{ data: posts }} />}
-  </Context.PostStub.Consumer>
-);
+function Wrapped(props: Props): React.ReactElement {
+  function posts(data: PostStub[]): React.ReactElement {
+    return <Posts {...props} context={{ data }} />;
+  }
+  return <Context.Posts.Consumer>{posts}</Context.Posts.Consumer>;
+}
 
 export default Wrapped;

@@ -7,14 +7,16 @@ import { About, NoMatch, PostOr404, Posts, Sidebar } from "../components/";
 import { withSlug, withTag } from "../hocs";
 
 type Props = {
-  get(url: string): Promise<any>;
+  get(url: string): Promise<Payload>;
 };
 
-export default function(props: Props) {
-  const withClient = (Component: React.SFC<Props>) => (rest: any) => (
-    <Component get={props.get} {...rest} />
-  );
-
+function App(props: Props): React.ReactElement {
+  const { get } = props;
+  function withClient(Component: React.SFC<Props>) {
+    return function WithClient(rest: any): React.ReactElement {
+      return <Component get={get} {...rest} />;
+    }
+  }
   return (
     <>
       <Route path="/" component={Sidebar} />
@@ -34,3 +36,5 @@ export default function(props: Props) {
     </>
   );
 }
+
+export default App;

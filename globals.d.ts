@@ -33,7 +33,13 @@ declare module "*.svg" {
 // Injected by Webpack
 declare let __isBrowser__: boolean;
 
-// Injected on the server for SSR
+declare namespace NodeJS {
+  interface Global {
+    __isBrowser__: boolean;
+  }
+}
+
+// Injected into the header by the server
 declare interface Window {
   __INITIAL_DATA__: Payload;
 }

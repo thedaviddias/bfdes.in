@@ -33,7 +33,7 @@ describe("<PostOr404 />", () => {
 
   describe("<PostOr404 /> on server", () => {
     beforeAll(() => {
-      __isBrowser__ = false;
+      global.__isBrowser__ = false;
     });
 
     it("displays post", () => {
@@ -50,7 +50,7 @@ describe("<PostOr404 />", () => {
 
   describe("<PostOr404 /> on client", () => {
     beforeAll(() => {
-      __isBrowser__ = true;
+      global.__isBrowser__ = true;
     });
 
     it("fetches the correct post", () => {

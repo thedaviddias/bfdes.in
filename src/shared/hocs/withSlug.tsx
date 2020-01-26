@@ -1,12 +1,16 @@
 import * as React from "react";
 import { match } from "react-router";
 
-type Props = {
+type Slug = {
   slug: string;
 };
 
-export default function(Component: React.SFC<Props>) {
-  return (props: { match: match<Props> }) => {
+type Match = {
+  match: match<Slug>;
+};
+
+export default function(Component: React.SFC<Slug>): React.SFC<Match> {
+  return function WithSlug(props: Match): React.ReactElement {
     const { match, ...rest } = props;
     const { slug } = match.params;
     return <Component slug={slug} {...rest} />;

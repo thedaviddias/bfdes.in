@@ -42,7 +42,7 @@ describe("<Posts />", () => {
 
   describe("<Posts /> on server", () => {
     beforeAll(() => {
-      __isBrowser__ = false;
+      global.__isBrowser__ = false;
     });
 
     it("displays posts", () => {
@@ -70,7 +70,7 @@ describe("<Posts />", () => {
 
   describe("<Posts /> on client", () => {
     beforeAll(() => {
-      __isBrowser__ = true;
+      global.__isBrowser__ = true;
     });
 
     it("displays posts", () => {

@@ -8,33 +8,28 @@ import PaginationLink from "./PaginationLink";
 import Spinner from "./Spinner";
 import Tags from "./Tags";
 
-const Post: React.SFC<Post> = ({
-  title,
-  body,
-  created,
-  tags,
-  wordCount,
-  previous,
-  next
-}) => (
-  <>
-    <div className="post">
-      <h1>{title}</h1>
-      <p className="meta">
-        <Date timestamp={created} />
-        {" · "}
-        <Tags tags={tags} />
-        {" · "}
-        {wordCount} {wordCount !== 1 ? " words" : " word"}
-      </p>
-      <div dangerouslySetInnerHTML={{ __html: body }} />
-    </div>
-    <div className="pagination">
-      <PaginationLink next={previous}>Previous</PaginationLink>
-      <PaginationLink next={next}>Next</PaginationLink>
-    </div>
-  </>
-);
+function Post(props: Post): React.ReactElement {
+  const { title, body, created, tags, wordCount, previous, next } = props;
+  return (
+    <>
+      <div className="post">
+        <h1>{title}</h1>
+        <p className="meta">
+          <Date timestamp={created} />
+          {" · "}
+          <Tags tags={tags} />
+          {" · "}
+          {wordCount} {wordCount !== 1 ? " words" : " word"}
+        </p>
+        <div dangerouslySetInnerHTML={{ __html: body }} />
+      </div>
+      <div className="pagination">
+        <PaginationLink next={previous}>Previous</PaginationLink>
+        <PaginationLink next={next}>Next</PaginationLink>
+      </div>
+    </>
+  );
+}
 
 type Props = {
   slug: string;
@@ -56,8 +51,8 @@ class PostOr404 extends React.Component<Props, State> {
 
     let post;
     if (__isBrowser__) {
-      post = (window as any).__INITIAL_DATA__;
-      delete (window as any).__INITIAL_DATA__;
+      post = window.__INITIAL_DATA__ as Post;
+      delete window.__INITIAL_DATA__;
     } else {
       post = this.props.context.data;
     }
@@ -71,21 +66,21 @@ class PostOr404 extends React.Component<Props, State> {
     this.fetchPost = this.fetchPost.bind(this);
   }
 
-  public componentDidMount() {
+  public componentDidMount(): void {
     if (!this.state.post) {
       const { slug } = this.props;
       this.fetchPost(slug);
     }
   }
 
-  public componentDidUpdate(prevProps: Props, _: State) {
-    if (prevProps.slug !== this.props.slug) {
-      const { slug } = this.props;
+  public componentDidUpdate(prevProps: Props): void {
+    const { slug } = this.props;
+    if (prevProps.slug !== slug) {
       this.fetchPost(slug);
     }
   }
 
-  public render() {
+  public render(): React.ReactElement {
     const { post, error, loading } = this.state;
     if (error && error.status === 404) {
       return <NoMatch />;
@@ -114,10 +109,11 @@ class PostOr404 extends React.Component<Props, State> {
   }
 }
 
-const Wrapped: React.SFC<Props> = props => (
-  <Context.Post.Consumer>
-    {post => <PostOr404 {...props} context={{ data: post }} />}
-  </Context.Post.Consumer>
-);
+function Wrapped(props: Props): React.ReactElement {
+  function post(data: Post): React.ReactElement {
+    return <PostOr404 {...props} context={{ data }} />;
+  }
+  return <Context.Post.Consumer>{post}</Context.Post.Consumer>;
+}
 
 export default Wrapped;
