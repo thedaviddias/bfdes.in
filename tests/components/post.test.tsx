@@ -56,7 +56,7 @@ describe("<PostOr404 />", () => {
     it("fetches the correct post", () => {
       const { slug } = post;
       const mockPromise = Promise.resolve(post);
-      const get = jest.fn(_ => mockPromise);
+      const get = jest.fn(() => mockPromise);
 
       mount(
         <MemoryRouter>
@@ -70,7 +70,7 @@ describe("<PostOr404 />", () => {
 
     it("displays post", () => {
       const mockPromise = Promise.resolve(post);
-      const get = jest.fn(_ => mockPromise);
+      const get = jest.fn(() => mockPromise);
 
       const wrapper = mount(
         <MemoryRouter>
@@ -85,7 +85,7 @@ describe("<PostOr404 />", () => {
     it("displays <NoMatch /> when post does not exist", () => {
       const err = new RequestError(404, "404: No post with that slug");
       const mockPromise = Promise.reject(err);
-      const get = jest.fn(_ => mockPromise);
+      const get = jest.fn(() => mockPromise);
 
       const wrapper = mount(
         <MemoryRouter>
@@ -103,7 +103,7 @@ describe("<PostOr404 />", () => {
 
     it("displays error message for failed request", () => {
       const mockPromise = Promise.reject(new Error());
-      const get = jest.fn(_ => mockPromise);
+      const get = jest.fn(() => mockPromise);
 
       const wrapper = mount(
         <MemoryRouter>

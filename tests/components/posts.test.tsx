@@ -75,7 +75,7 @@ describe("<Posts />", () => {
 
     it("displays posts", () => {
       const mockPromise = Promise.resolve(posts);
-      const get = jest.fn(_ => mockPromise);
+      const get = jest.fn(() => mockPromise);
 
       const wrapper = mount(
         <MemoryRouter>
@@ -89,7 +89,7 @@ describe("<Posts />", () => {
 
     it("asks the reader to return", () => {
       const mockPromise = Promise.resolve([]);
-      const get = jest.fn(_ => mockPromise);
+      const get = jest.fn(() => mockPromise);
 
       const wrapper = mount(
         <MemoryRouter>
@@ -103,7 +103,7 @@ describe("<Posts />", () => {
 
     it("fetches posts with the correct tag", () => {
       const mockPromise = Promise.resolve(posts);
-      const get = jest.fn(_ => mockPromise);
+      const get = jest.fn(() => mockPromise);
       const tag = "Algorithms";
 
       mount(
@@ -118,7 +118,7 @@ describe("<Posts />", () => {
 
     it("displays error message for failed request", () => {
       const mockPromise = Promise.reject(new RequestError(500, "Server Error"));
-      const get = jest.fn(_ => mockPromise);
+      const get = jest.fn(() => mockPromise);
 
       const wrapper = mount(
         <MemoryRouter>
