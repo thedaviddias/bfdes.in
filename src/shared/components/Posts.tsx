@@ -34,7 +34,7 @@ type Props = {
   context?: {
     data: PostStub[];
   };
-  get(url: string): Promise<PostStub[]>;
+  get<P>(url: string): Promise<P>;
 };
 
 type State = {
@@ -128,7 +128,7 @@ class Posts extends React.Component<Props, State> {
     const url = `/api/posts${tag === undefined ? "" : `?tag=${tag}`}`;
     this.setState({ loading: true }, () =>
       this.props
-        .get(url)
+        .get<PostStub[]>(url)
         .then(posts => this.setState({ posts, loading: false }))
         .catch(error => this.setState({ error, loading: false }))
     );
