@@ -14,7 +14,7 @@ declare interface Post extends PostStub {
   next?: string;
 }
 
-declare type Payload = Post | PostStub[]
+declare type Payload = Post | PostStub[];
 
 // Webpack image import interop
 declare module "*.png" {

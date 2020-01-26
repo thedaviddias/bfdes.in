@@ -7,11 +7,7 @@ type Tag = {
 
 function Tag(props: Tag): React.ReactElement {
   const { value } = props;
-  return (
-    <Link to={`/posts?tag=${value}`}>
-      {value}
-    </Link>
-  );
+  return <Link to={`/posts?tag=${value}`}>{value}</Link>;
 }
 
 type Tags = {
