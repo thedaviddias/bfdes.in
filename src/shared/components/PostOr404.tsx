@@ -36,7 +36,7 @@ type Props = {
   context?: {
     data: Post;
   };
-  get<P>(url: string): Promise<P>;
+  get(url: string): Promise<Post>;
 };
 
 type State = {
@@ -102,7 +102,7 @@ class PostOr404 extends React.Component<Props, State> {
     const url = `/api/posts/${slug}`;
     this.setState({ loading: true }, () =>
       this.props
-        .get<Post>(url)
+        .get(url)
         .then(post => this.setState({ post, loading: false }))
         .catch(error => this.setState({ error, loading: false }))
     );

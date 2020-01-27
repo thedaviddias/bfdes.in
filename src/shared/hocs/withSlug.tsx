@@ -2,7 +2,7 @@ import * as React from "react";
 import { match } from "react-router";
 
 type Slug = {
-  slug: string;
+  slug?: string;
 };
 
 type Match = {
