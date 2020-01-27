@@ -7,7 +7,7 @@ type Props = {
   get<P>(url: string): Promise<P>;
 };
 
-function App(props: Props): React.ReactElement {
+const App: React.FC<Props> = (props: Props) => {
   const { get } = props;
   function withClient(Component: React.SFC<Props | object>) {
     return function WithClient(rest: object): React.ReactElement {
@@ -32,6 +32,6 @@ function App(props: Props): React.ReactElement {
       </div>
     </>
   );
-}
+};
 
 export default App;

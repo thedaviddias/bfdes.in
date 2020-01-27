@@ -6,7 +6,7 @@ type Props = {
   children: string;
 };
 
-function PaginationLink(props: Props): React.ReactElement {
+const PaginationLink: React.FC<Props> = (props: Props) => {
   const { next, children } = props;
   return (
     <span className="pagination-item">
@@ -17,6 +17,6 @@ function PaginationLink(props: Props): React.ReactElement {
       )}
     </span>
   );
-}
+};
 
 export default PaginationLink;

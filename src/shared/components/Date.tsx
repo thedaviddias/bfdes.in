@@ -19,12 +19,12 @@ const monthNames = [
   "December"
 ];
 
-function Date(props: Props): React.ReactElement {
+const Date: React.FC<Props> = (props: Props) => {
   const date = new global.Date(props.timestamp);
   const day = date.getDate();
   const month = monthNames[date.getMonth()];
   const year = date.getFullYear();
   return <>{`${day} ${month} ${year}`}</>;
-}
+};
 
 export default Date;

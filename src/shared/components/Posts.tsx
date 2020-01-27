@@ -7,7 +7,7 @@ import Error from "./Error";
 import Spinner from "./Spinner";
 import Tags from "./Tags";
 
-function PostStub(props: PostStub): React.ReactElement {
+const PostStub: React.FC<PostStub> = (props: PostStub) => {
   const { title, slug, wordCount, created, tags } = props;
   return (
     <li className="post">
@@ -23,7 +23,7 @@ function PostStub(props: PostStub): React.ReactElement {
       </p>
     </li>
   );
-}
+};
 
 /*
 A tag may be supplied (by React Router) if the user has chosen to filter posts by tag.
@@ -135,11 +135,11 @@ class Posts extends React.Component<Props, State> {
   }
 }
 
-function Wrapped(props: Props): React.ReactElement {
-  function posts(data: PostStub[]): React.ReactElement {
-    return <Posts {...props} context={{ data }} />;
-  }
-  return <Context.Posts.Consumer>{posts}</Context.Posts.Consumer>;
-}
+const Wrapped: React.FC<Props> = (props: Props) => {
+  const WithPosts: React.SFC<PostStub[]> = (data: PostStub[]) => (
+    <Posts {...props} context={{ data }} />
+  );
+  return <Context.Posts.Consumer>{WithPosts}</Context.Posts.Consumer>;
+};
 
 export default Wrapped;

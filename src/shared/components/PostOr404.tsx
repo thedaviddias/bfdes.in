@@ -8,7 +8,7 @@ import PaginationLink from "./PaginationLink";
 import Spinner from "./Spinner";
 import Tags from "./Tags";
 
-function Post(props: Post): React.ReactElement {
+const Post: React.FC<Post> = (props: Post) => {
   const { title, body, created, tags, wordCount, previous, next } = props;
   return (
     <>
@@ -29,7 +29,7 @@ function Post(props: Post): React.ReactElement {
       </div>
     </>
   );
-}
+};
 
 type Props = {
   slug: string;
@@ -109,11 +109,11 @@ class PostOr404 extends React.Component<Props, State> {
   }
 }
 
-function Wrapped(props: Props): React.ReactElement {
-  function post(data: Post): React.ReactElement {
-    return <PostOr404 {...props} context={{ data }} />;
-  }
-  return <Context.Post.Consumer>{post}</Context.Post.Consumer>;
-}
+const Wrapped: React.FC<Props> = (props: Props) => {
+  const WithPost: React.FC<Post> = (data: Post) => (
+    <PostOr404 {...props} context={{ data }} />
+  );
+  return <Context.Post.Consumer>{WithPost}</Context.Post.Consumer>;
+};
 
 export default Wrapped;

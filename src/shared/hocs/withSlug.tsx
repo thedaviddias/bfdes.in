@@ -10,9 +10,10 @@ type Match = {
 };
 
 export default function(Component: React.SFC<Slug>): React.SFC<Match> {
-  return function WithSlug(props: Match): React.ReactElement {
+  const WithSlug: React.FC<Match> = (props: Match) => {
     const { match, ...rest } = props;
     const { slug } = match.params;
     return <Component slug={slug} {...rest} />;
   };
+  return WithSlug;
 }
