@@ -16,7 +16,7 @@ declare interface Post extends PostStub {
 
 declare type Payload = Post | PostStub[];
 
-// Declarations for TypeScript compatibility with Webpack, Jest 
+// Declarations for TypeScript compatibility with Webpack, Jest
 declare module "*.png" {
   const content: string;
   export default content;
