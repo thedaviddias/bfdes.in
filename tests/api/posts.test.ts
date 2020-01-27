@@ -76,9 +76,15 @@ describe("GET /posts", () => {
 
   test("posts filtered by tag", () => {
     const tag = "Algorithms";
+    const filtered = posts.filter(p => p.tags.includes(tag));
     return request(app)
       .get(`/posts?tag=${tag}`)
-      .expect(200);
+      .expect(200)
+      .then(res => {
+        const elem = /<li class="post">/g;
+        const count = (res.text.match(elem) || []).length;
+        return expect(count).toBe(filtered.length);
+      });
   });
 });
 
@@ -88,8 +94,8 @@ describe("GET /feed.rss", () => {
       .get("/feed.rss")
       .expect(200)
       .then(res => {
-        const tag = /<item>/g;
-        const count = (res.text.match(tag) || []).length;
+        const elem = /<item>/g;
+        const count = (res.text.match(elem) || []).length;
         return expect(count).toBe(posts.length);
       }));
 });
