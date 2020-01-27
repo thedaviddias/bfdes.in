@@ -12,7 +12,7 @@ When the server-side code is built the posts are bundled using a custom Webpack 
 ### Requirements:
 
 - Node 12.x
-- Yarn 1.10.x
+- Yarn 1.x
 
 ### Usage:
 
@@ -43,6 +43,8 @@ Then (also) run `yarn serve:dev` to serve the app on port 8080 using Nodemon.
 #### Testing
 
 Run `yarn test:watch` to run the tests using Jest in watch mode.
+
+Run `yarn:lint` and `yarn:format` to lint and format code, respectively.
 
 Circle CI will also run this test suite for every code push to master.
 
