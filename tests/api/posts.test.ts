@@ -45,7 +45,7 @@ describe("GET /api/posts", () => {
         expect(res.body.length).toBe(posts.length);
       }));
 
-  test("posts filtered by tag correctly", () => {
+  test("posts filtered by tag", () => {
     const tag = "Algorithms";
     const filtered = posts.filter(p => p.tags.includes(tag));
     return request(app)
@@ -62,6 +62,23 @@ describe("GET /api/posts", () => {
       .get("/api/posts")
       .expect(200)
       .then(res => expect(res.body).toEqual(sorted));
+  });
+});
+
+describe("GET /posts", () => {
+  beforeAll(() => {
+    global.__isBrowser__ = false;
+  });
+  test("all posts returned", () =>
+    request(app)
+      .get("/posts")
+      .expect(200));
+
+  test("posts filtered by tag", () => {
+    const tag = "Algorithms";
+    return request(app)
+      .get(`/posts?tag=${tag}`)
+      .expect(200);
   });
 });
 

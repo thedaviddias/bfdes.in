@@ -92,3 +92,16 @@ describe("GET /api/posts/:slug", () => {
     ]);
   });
 });
+
+describe("GET /posts", () => {
+  beforeAll(() => {
+    global.__isBrowser__ = false;
+  });
+
+  test("post can be fetched by slug", () => {
+    const post = posts[0];
+    return request(app)
+      .get(`/posts/${post.slug}`)
+      .expect(200);
+  });
+});
