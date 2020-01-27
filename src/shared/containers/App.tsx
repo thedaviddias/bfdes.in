@@ -11,12 +11,7 @@ function App(props: Props): React.ReactElement {
   const { get } = props;
   function withClient(Component: React.SFC<Props | object>) {
     return function WithClient(rest: object): React.ReactElement {
-      if (Component instanceof Posts) {
-        return <Component get={get} {...rest} />;
-      }
-      if (Component instanceof PostOr404) {
-        return <Component get={get} {...rest} />;
-      }
+      return <Component get={get} {...rest} />;
     };
   }
   return (
