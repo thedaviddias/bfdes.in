@@ -1,4 +1,4 @@
-// Common types
+// Common types to be kept in sync on client and server
 declare interface PostStub {
   title: string;
   slug: string;
@@ -16,7 +16,7 @@ declare interface Post extends PostStub {
 
 declare type Payload = Post | PostStub[];
 
-// Webpack image import interop
+// Declarations for TypeScript compatibility with Webpack, Jest 
 declare module "*.png" {
   const content: string;
   export default content;
@@ -30,16 +30,13 @@ declare module "*.svg" {
   export default content;
 }
 
-// Injected by Webpack
-declare let __isBrowser__: boolean;
-
 declare namespace NodeJS {
   interface Global {
     __isBrowser__: boolean;
   }
 }
 
-// Injected into the header by the server
 declare interface Window {
+  __isBrowser__: boolean;
   __INITIAL_DATA__: Payload;
 }
