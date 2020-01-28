@@ -64,6 +64,7 @@ router.get("/posts/:slug", (req, res) => {
       </Context.Post.Provider>
     </StaticRouter>
   );
+  res.status(postOrNone ? 200 : 404);
   // Write the header, which includes the path to client JavaScript
   res.write(
     `

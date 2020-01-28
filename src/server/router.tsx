@@ -63,7 +63,7 @@ export default function(db: DB): Router {
         </Context.Post.Provider>
       </StaticRouter>
     );
-
+    res.status(postOrNone ? 200 : 404);
     res.write(
       `<!DOCTYPE html><html lang="en"><head>${header(
         postOrNone

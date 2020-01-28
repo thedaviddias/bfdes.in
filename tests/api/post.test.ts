@@ -104,4 +104,9 @@ describe("GET /posts/:slug", () => {
       .get(`/posts/${post.slug}`)
       .expect(200);
   });
+
+  test("404 response returned for non-existent post", () =>
+    request(server)
+      .get("/posts/my-fourth-post")
+      .expect(404));
 });
