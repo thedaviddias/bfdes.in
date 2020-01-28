@@ -5,7 +5,6 @@ import { StaticRouter } from "react-router";
 
 import { App, Context } from "shared/containers";
 import DB from "shared/db";
-import { get } from "shared/http";
 import Favicon from "shared/images/favicon.png";
 
 const header = (initialData: Payload): string =>
@@ -38,7 +37,7 @@ export default function(db: DB): Router {
     const stream = renderToNodeStream(
       <StaticRouter location={req.url} context={{}}>
         <Context.Posts.Provider value={posts}>
-          <App get={get} />
+          <App />
         </Context.Posts.Provider>
       </StaticRouter>
     );
@@ -60,7 +59,7 @@ export default function(db: DB): Router {
     const stream = renderToNodeStream(
       <StaticRouter location={req.url} context={{}}>
         <Context.Post.Provider value={postOrNone}>
-          <App get={get} />
+          <App />
         </Context.Post.Provider>
       </StaticRouter>
     );
@@ -132,7 +131,7 @@ export default function(db: DB): Router {
   router.get("*", (req, res) => {
     const stream = renderToNodeStream(
       <StaticRouter location={req.url} context={{}}>
-        <App get={get} />
+        <App />
       </StaticRouter>
     );
     res.status(404);

@@ -24,10 +24,9 @@ type Location = {
 };
 
 export default function(Component: React.SFC<Tag>): React.SFC<Location> {
-  const WithTag: React.FC<Location> = (props: Location) => {
+  return function WithTag(props: Location): React.ReactElement {
     const { location, ...rest } = props;
     const query = parseQuery(location.search);
     return <Component tag={query.get("tag")} {...rest} />;
   };
-  return WithTag;
 }
