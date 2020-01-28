@@ -2,12 +2,10 @@ const marked = require("marked");
 const katex = require("katex");
 const hljs = require("highlight.js");
 
-const languages = new Set(hljs.listLanguages());
-
 marked.setOptions({
   renderer: new marked.Renderer(),
   highlight: (code, lang) => {
-    if (languages.has(lang)) {
+    if (hljs.getLanguage(lang)) {
       return hljs.highlight(lang, code).value;
     } else if (lang === "math") {
       return katex.renderToString(code);
@@ -33,7 +31,7 @@ module.exports = function(source) {
   const wordCount = content
     .split("```")
     .filter((_, i) => i % 2 === 0)
-    .map(block => block.split(" ").length)
+    .map(block => block.trim().split(" ").length)
     .reduce((total, count) => total + count, 0);
 
   return `module.exports = ${JSON.stringify({

@@ -34,24 +34,20 @@ Rendering the first page requested on the server reduces the apparent time taken
 The responsibility for rendering the correct page is delegated to the `App` component:
 
 ```javascript
-class App extends React.Component {
-  render() {
-    return (
-      <>
-        <Route path="/" component={Sidebar} />
-        <Wrapper id="content">
-          <Switch>
-            <Route exact path="/" render={() => <Redirect to="/posts" />} />
-            <Route exact path="/about" component={About} />
-            <Route exact path="/posts" component={Posts} />
-            <Route exact path="/posts/:slug" component={PostOr404} />
-            <Route component={NoMatch} />
-          </Switch>
-        </Wrapper>
-      </>
-    );
-  }
-}
+const App = () => (
+  <>
+    <Route path="/" component={Sidebar} />
+    <Wrapper id="content">
+      <Switch>
+        <Route exact path="/" render={() => <Redirect to="/posts" />} />
+        <Route exact path="/about" component={About} />
+        <Route exact path="/posts" component={Posts} />
+        <Route exact path="/posts/:slug" component={PostOr404} />
+        <Route component={NoMatch} />
+      </Switch>
+    </Wrapper>
+  </>
+);
 ```
 
 On the server, each controller uses a `StaticRouter` instance to inform `App` which page it should display. For example, here is the controller that served the page you are viewing:
@@ -126,12 +122,10 @@ Markup is versioned like source code. In this sense, the publishing mechanism is
 A custom Webpack loader processes the posts. Within markup, code snippets can be entered inline or in fenced code blocks. The markdown parser supports syntax highlighting of code blocks:
 
 ```javascript
-const languages = new Set(hljs.listLanguages());
-
 marked.setOptions({
   renderer: new marked.Renderer(),
   highlight: (code, lang) => {
-    if (languages.has(lang)) {
+    if (hljs.getLanguage(lang)) {
       return hljs.highlight(lang, code).value;
     } else if (lang === "math") {
       return katex.renderToString(code);
