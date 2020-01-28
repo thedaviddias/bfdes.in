@@ -25,11 +25,9 @@ Static resources are easier to cache, and static websites are more amenable to s
 
 Isomorphic applications are SPA-like websites that can "run" on both the server and the web browser. This blog is built as an isomorphic app, using React components:
 
-- The app server runs in a [Node.js](https://nodejs.org) environment, and each controller renders a single page.
-  In this scenario, React is effectively used as a templating engine.
+- The app server runs in a [Node.js](https://nodejs.org) environment, and each controller renders a single page. In this scenario, React is effectively used as a templating engine.
 
-- Client code uses the same top-level React component as the server but wraps it in a router.
-  The router enables the frontend code to manipulate the aforementioned History API.
+- Client code uses the same top-level React component as the server but wraps it in a router. The router enables the frontend code to manipulate the aforementioned History API.
 
 Rendering the first page requested on the server reduces the apparent time taken to paint it. Note that server-side rendering is not free: the server is under more load unless a caching strategy is employed.
 
