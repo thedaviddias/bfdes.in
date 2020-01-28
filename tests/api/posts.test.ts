@@ -1,4 +1,4 @@
-import express from "server";
+import app from "server/app";
 import * as request from "supertest";
 
 const summary = "Lorem ipsum";
@@ -26,11 +26,11 @@ const posts = [
   }
 ];
 
-const app = express(posts, "test");
+const server = app(posts, "test");
 
 describe("GET /", () => {
   test("root request redirected to /posts", () =>
-    request(app)
+    request(server)
       .get("/")
       .expect(302)
       .expect("Location", "/posts"));
@@ -38,7 +38,7 @@ describe("GET /", () => {
 
 describe("GET /api/posts", () => {
   test("all posts returned", () =>
-    request(app)
+    request(server)
       .get("/api/posts")
       .expect(200)
       .then(res => {
@@ -48,7 +48,7 @@ describe("GET /api/posts", () => {
   test("posts filtered by tag", () => {
     const tag = "Algorithms";
     const filtered = posts.filter(p => p.tags.includes(tag));
-    return request(app)
+    return request(server)
       .get(`/api/posts?tag=${tag}`)
       .expect(200)
       .then(res => expect(res.body.length).toBe(filtered.length));
@@ -58,7 +58,7 @@ describe("GET /api/posts", () => {
     const sorted = posts
       .map(({ body, ...stub }) => stub)
       .sort((p, q) => q.created - p.created);
-    return request(app)
+    return request(server)
       .get("/api/posts")
       .expect(200)
       .then(res => expect(res.body).toEqual(sorted));
@@ -70,14 +70,14 @@ describe("GET /posts", () => {
     global.__isBrowser__ = false;
   });
   test("all posts returned", () =>
-    request(app)
+    request(server)
       .get("/posts")
       .expect(200));
 
   test("posts filtered by tag", () => {
     const tag = "Algorithms";
     const filtered = posts.filter(p => p.tags.includes(tag));
-    return request(app)
+    return request(server)
       .get(`/posts?tag=${tag}`)
       .expect(200)
       .then(res => {
@@ -90,7 +90,7 @@ describe("GET /posts", () => {
 
 describe("GET /feed.rss", () => {
   test("posts returned in feed", () =>
-    request(app)
+    request(server)
       .get("/feed.rss")
       .expect(200)
       .then(res => {
