@@ -89,13 +89,38 @@ describe("GET /posts", () => {
 });
 
 describe("GET /feed.rss", () => {
+  const markup = `
+    <?xml version="1.0" encoding="utf-8"?>
+    <rss version="1.0">
+      <channel>
+        <title>bfdes.in</title>
+        <link>https://www.bfdes.in</link>
+        <description>Programming and Technology blog</description>
+        ${posts
+          .map(({ created, slug, title, summary }) => {
+            const date = new Date(created);
+            const url = `https://www.bfdes.in/posts/${slug}`;
+            return `
+              <item>
+                <title>${title}</title>
+                <author>Bruno Fernandes</author>
+                <description>${summary}</description>
+                <link>${url}</link>
+                <guid>${url}</guid>
+                <pubDate>${date.toUTCString()}</pubDate>
+              </item> 
+            `;
+          })
+          .join("")}
+      </channel>
+    </rss>
+  `
+    .trim()
+    .replace(/>\s+</g, "><"); // Get rid of whitespace
+
   test("posts returned in feed", () =>
     request(server)
       .get("/feed.rss")
       .expect(200)
-      .then(res => {
-        const elem = /<item>/g;
-        const count = (res.text.match(elem) || []).length;
-        return expect(count).toBe(posts.length);
-      }));
+      .then(res => expect(res.text).toEqual(markup)));
 });

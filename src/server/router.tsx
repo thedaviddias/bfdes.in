@@ -6,6 +6,7 @@ import { StaticRouter } from "react-router";
 import { App, Context } from "shared/containers";
 import DB from "shared/db";
 import Favicon from "shared/images/favicon.png";
+import { node, Attributes } from "./xml";
 
 const header = (initialData: Payload): string =>
   `
@@ -78,7 +79,7 @@ export default function(db: DB): Router {
   router.get("/api/posts", (req, res) => {
     const { tag } = req.query;
     const posts = db.all(tag);
-    res.status(200).json(posts);
+    res.json(posts);
   });
 
   // GET /api/posts/<slug>
@@ -87,7 +88,7 @@ export default function(db: DB): Router {
     const { slug } = req.params;
     const postOrNone = db.get(slug);
     if (postOrNone) {
-      res.status(200).json(postOrNone);
+      res.json(postOrNone);
     } else {
       res.status(404).json({
         error: {
@@ -98,33 +99,28 @@ export default function(db: DB): Router {
   });
 
   // GET /feed.rss
-  router.get("/feed.rss", (req, res) => {
+  router.get("/feed.rss", (_, res) => {
     const recentPosts = db.all().slice(0, 10);
-    const markup = `<?xml version="1.0" encoding="utf-8"?>
-      <rss version="2.0">
-      <channel>
-        <title>bfdes.in</title>
-        <link>https://www.bfdes.in</link>
-        <description>Programming and Technology blog</description>
-        ${recentPosts
-          .map(post => {
-            const date = new Date(post.created);
-            const url = `https://www.bfdes.in/posts/${post.slug}`;
-            return `<item>
-              <title>${post.title}</title>
-              <author>Bruno Fernandes</author>
-              <description>${post.summary}</description>
-              <link>${url}</link>
-              <guid>${url}</guid>
-              <pubDate>${date.toUTCString()}</pubDate>
-            </item>`;
-          })
-          .join("")}
-      </channel>
-    </rss>`.replace(/>\s+</g, "><"); // Get rid of newlines between sets of tags
-    res.status(200);
+    const title = node("title", "bfdes.in");
+    const link = node("link", "https://www.bfdes.in");
+    const description = node("description", "Programming and Technology blog");
+    const items = recentPosts.map(({ created, slug, title, summary }) => {
+      const date = new Date(created);
+      const url = `https://www.bfdes.in/posts/${slug}`;
+      return node("item", [
+        node("title", title),
+        node("author", "Bruno Fernandes"),
+        node("description", summary),
+        node("link", url),
+        node("guid", url),
+        node("pubDate", date.toUTCString())
+      ]);
+    });
+    const channel = node("channel", [title, link, description, ...items]);
+    const rss = node("rss", [channel], new Attributes([["version", "1.0"]]));
+    const prolog = `<?xml version="1.0" encoding="utf-8"?>`;
     res.type("application/xml");
-    res.send(markup);
+    res.send(`${prolog}${rss.render()}`);
   });
 
   // 404 handler
