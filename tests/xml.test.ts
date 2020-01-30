@@ -7,8 +7,8 @@ describe("Leaf.render", () => {
       ["key2", "value2"]
     ]);
     const leaf = node("leaf", "content", attributes);
-    expect(leaf.render()).toEqual(
-      `<leaf key1="value1" key2="value2">content</leaf>`
+    expect(leaf.render()).toMatch(
+      /^<leaf key1="value1" key2="value2">/
     );
   });
 
