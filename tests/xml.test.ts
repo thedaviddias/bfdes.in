@@ -1,15 +1,14 @@
 import { Attributes, node } from "server/xml";
 
+const attributes = new Attributes([
+  ["key1", "value1"],
+  ["key2", "value2"]
+]);
+
 describe("Leaf.render", () => {
   it("serializes attributes", () => {
-    const attributes = new Attributes([
-      ["key1", "value1"],
-      ["key2", "value2"]
-    ]);
     const leaf = node("leaf", "content", attributes);
-    expect(leaf.render()).toMatch(
-      /^<leaf key1="value1" key2="value2">/
-    );
+    expect(leaf.render()).toMatch(/^<leaf key1="value1" key2="value2">/);
   });
 
   it("serializes content", () => {
@@ -24,6 +23,12 @@ describe("Leaf.render", () => {
 });
 
 describe("Branch.render", () => {
+  it("serializes attributes", () => {
+    const leaf = node("leaf", "content");
+    const root = node("root", [leaf], attributes);
+    expect(root.render()).toMatch(/^<root key1="value1" key2="value2">/);
+  });
+
   it("serializes nested elements", () => {
     const leaf = node("leaf", "content");
     const root = node("root", [leaf]);
