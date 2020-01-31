@@ -63,7 +63,11 @@ module.exports = [
       publicPath: "/"
     },
     resolve: {
-      modules: [path.resolve(__dirname, "src"), "node_modules"],
+      modules: [
+        path.resolve(__dirname),
+        path.resolve(__dirname, "src"),
+        "node_modules"
+      ],
       extensions: [".ts", ".tsx", ".js", ".md"]
     },
     module: {

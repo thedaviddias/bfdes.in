@@ -1,6 +1,6 @@
 import * as http from "http";
-import * as path from "path";
 import app from "./app";
+import posts from "posts";
 
 function normalizePort(val: number | string): number | string | boolean {
   const port = typeof val === "string" ? parseInt(val, 10) : val;
@@ -17,12 +17,6 @@ function normalizePort(val: number | string): number | string | boolean {
 }
 
 // Create an app given its posts
-const context = require.context("../../posts", false, /\.md$/);
-const posts: Post[] = context.keys().map(filePath => {
-  const slug = path.parse(filePath).name;
-  const post = context(filePath);
-  return { ...post, slug };
-});
 const mode = process.env.NODE_ENV;
 const server = http.createServer(app(posts, mode));
 
