@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Context } from "../containers";
-import { RequestError } from "../http";
+import { Context } from "shared/containers";
+import { RequestError } from "shared/http";
 import Date from "./Date";
 import Error from "./Error";
 import NoMatch from "./NoMatch";

@@ -5,7 +5,7 @@ import { StaticRouter } from "react-router";
 
 import { App, Context } from "shared/containers";
 import DB from "shared/db";
-import Favicon from "shared/images/favicon.png";
+import { Favicon } from "shared/images";
 import { node, Attributes } from "./xml";
 
 const header = (initialData: Payload): string =>

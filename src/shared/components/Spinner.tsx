@@ -1,5 +1,5 @@
 import * as React from "react";
-import Loading from "../images/loading.svg";
+import { Loading } from "shared/images";
 
 const Spinner: React.FC = () => (
   <div className="spinner">

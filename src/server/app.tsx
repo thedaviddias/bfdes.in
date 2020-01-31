@@ -4,10 +4,10 @@ import * as express from "express";
 import { Request, Response } from "express";
 import * as logger from "morgan";
 import * as path from "path";
-
-import DB from "../shared/db";
-import router from "./router";
 import { RequestListener } from "http";
+
+import DB from "shared/db";
+import router from "./router";
 
 export default function(posts: Post[], mode = "test"): RequestListener {
   const app = express();

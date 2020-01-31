@@ -1,8 +1,6 @@
 import * as React from "react";
 import { NavLink } from "react-router-dom";
-import Avatar from "../images/avatar.jpg";
-import GitHub from "../images/github.png";
-import RSS from "../images/rss.png";
+import { Avatar, GitHub, RSS } from "shared/images";
 
 const Profile: React.FC = () => (
   <img className="avatar" src={Avatar} alt="Profile photo" />
