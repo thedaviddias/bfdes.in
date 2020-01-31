@@ -16,5 +16,10 @@ module.exports = {
         ignoreRestSiblings: true
       }
     ]
+  },
+  settings: {
+    react: {
+      version: "detect"
+    }
   }
 };
