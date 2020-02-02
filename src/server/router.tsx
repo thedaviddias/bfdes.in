@@ -33,7 +33,7 @@ export default function(db: DB): Router {
   // GET /posts?tag=<tag>
   router.get("/posts", (req, res) => {
     const { tag } = req.query;
-    const posts = db.all(tag);
+    const posts = db.list(tag);
 
     const stream = renderToNodeStream(
       <StaticRouter location={req.url} context={{}}>
@@ -78,7 +78,7 @@ export default function(db: DB): Router {
   // Fetch the posts in chronological order and filter by tag if supplied
   router.get("/api/posts", (req, res) => {
     const { tag } = req.query;
-    const posts = db.all(tag);
+    const posts = db.list(tag);
     res.json(posts);
   });
 
@@ -100,7 +100,7 @@ export default function(db: DB): Router {
 
   // GET /feed.rss
   router.get("/feed.rss", (_, res) => {
-    const recentPosts = db.all().slice(0, 10);
+    const recentPosts = db.list().slice(0, 10);
     const title = node("title", "bfdes.in");
     const link = node("link", "https://www.bfdes.in");
     const description = node("description", "Programming and Technology blog");
