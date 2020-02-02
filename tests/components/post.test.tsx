@@ -31,6 +31,7 @@ describe("<PostOr404 />", () => {
     created: 1523401200000
   };
 
+  // `PostOr404` instance is wrapped in a `MemoryRouter` because we render `Link`s when mount is invoked
   describe("<PostOr404 /> on server", () => {
     beforeAll(() => {
       global.__isBrowser__ = false;
