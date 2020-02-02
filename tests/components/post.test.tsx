@@ -1,6 +1,6 @@
-import { mount, shallow } from "enzyme";
+import { mount } from "enzyme";
 import * as React from "react";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Route } from "react-router-dom";
 
 import { PostOr404 } from "shared/components";
 import { Context } from "shared/containers";
@@ -9,15 +9,15 @@ import { RequestError } from "shared/http";
 
 test("withSlug", () => {
   const slug = "my-first-post";
-  const Component = withSlug(PostOr404);
-  const match = {
-    params: { slug },
-    isExact: true,
-    path: "/posts/:slug",
-    url: `/posts/${slug}`
-  };
-  const wrapper = shallow(<Component match={match} />);
-  expect(wrapper.prop("slug")).toBe(slug);
+  const WithSlug = withSlug(({ slug }) => <>{slug}</>);
+  const wrapper = mount(
+    <MemoryRouter initialEntries={[`/posts/${slug}`]}>
+      <Route path="/posts/:slug">
+        <WithSlug />
+      </Route>
+    </MemoryRouter>
+  );
+  expect(wrapper.text()).toBe(slug);
 });
 
 describe("<PostOr404 />", () => {
