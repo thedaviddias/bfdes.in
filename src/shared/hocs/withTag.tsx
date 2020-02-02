@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useLocation } from "react-router-dom";
 
 /** Method to parse query compatible with client and server. Ref: https://stackoverflow.com/a/3855394/4981237 */
 function parseQuery(queryString: string): Map<string, string> {
@@ -13,19 +14,13 @@ function parseQuery(queryString: string): Map<string, string> {
     }, new Map());
 }
 
-type Tag = {
+type Props = {
   tag?: string;
 };
 
-type Location = {
-  location: {
-    search: string;
-  };
-};
-
-export default function(Component: React.SFC<Tag>): React.SFC<Location> {
-  return function WithTag(props: Location): React.ReactElement {
-    const { location, ...rest } = props;
+export default function(Component: React.SFC<Props>) {
+  return function WithTag(rest: object): React.ReactElement {
+    const location = useLocation();
     const query = parseQuery(location.search);
     return <Component tag={query.get("tag")} {...rest} />;
   };
