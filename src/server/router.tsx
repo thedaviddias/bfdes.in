@@ -34,7 +34,7 @@ export default function(db: DB): Router {
 
   // GET /posts?offset=<offset>&limit=<limit>&tag=<tag>
   router.get("/posts", (req, res) => {
-    const queryString = parse(req.url).search
+    const queryString = parse(req.url).search;
     const { limit, offset, tag } = Params.fromString(queryString);
     const posts = db.list(limit, offset, tag);
 
@@ -45,8 +45,8 @@ export default function(db: DB): Router {
         </Context.Posts.Provider>
       </StaticRouter>
     );
-    if(posts.length == 0 && queryString) {
-      res.redirect("/posts")  // Rollover
+    if (posts.length == 0 && queryString) {
+      res.redirect("/posts"); // Rollover
     }
 
     res.write(
@@ -83,7 +83,7 @@ export default function(db: DB): Router {
   // GET /api/posts?offset=<offset>&limit=<limit>&tag=<tag>
   // Fetch the posts in chronological order and filter by tag if supplied
   router.get("/api/posts", (req, res) => {
-    const queryString = parse(req.url).search
+    const queryString = parse(req.url).search;
     const { limit, offset, tag } = Params.fromString(queryString);
     const posts = db.list(limit, offset, tag);
     res.json(posts);

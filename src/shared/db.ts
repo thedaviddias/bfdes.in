@@ -17,7 +17,7 @@ export default class DB {
 
   public list(offset = 0, limit = 6, tag?: string): PostStub[] {
     return this.posts
-      .slice(offset, offset+limit)
+      .slice(offset, offset + limit)
       .filter(({ tags }) => tag == undefined || tags.includes(tag))
       .map(({ body, ...stub }) => stub);
   }

@@ -1,7 +1,7 @@
 export default class Params {
-  readonly offset: number
-  readonly limit: number
-  readonly tag?: string
+  readonly offset: number;
+  readonly limit: number;
+  readonly tag?: string;
 
   constructor(offset = 0, limit = 6, tag?: string) {
     // Sanitise illegal values
@@ -11,7 +11,10 @@ export default class Params {
   }
 
   static fromString(queryString: string): Params {
-    const parsed = (/^[?#]/.test(queryString) ? queryString.slice(1) : queryString)
+    const parsed = (/^[?#]/.test(queryString)
+      ? queryString.slice(1)
+      : queryString
+    )
       .split("&")
       .reduce((params, param) => {
         const [key, value] = param.split("=");
@@ -20,28 +23,28 @@ export default class Params {
           : "";
         return params.set(key, decoded);
       }, new Map<string, string>());
-    const offset = parseInt(parsed.get("offset"))
-    const limit = parseInt(parsed.get("limit"))
-    return new this(offset, limit, parsed.get("tag"))
+    const offset = parseInt(parsed.get("offset"));
+    const limit = parseInt(parsed.get("limit"));
+    return new this(offset, limit, parsed.get("tag"));
   }
 
   public toString(): string {
     const { offset, limit, tag } = this;
     let queryString = "";
-    if(offset) {
-      queryString += `?offset=${offset}`
+    if (offset) {
+      queryString += `?offset=${offset}`;
     }
-    if(limit) {
-      queryString += offset ? `&limit=${limit}` : `?limit=${limit}`
+    if (limit) {
+      queryString += offset ? `&limit=${limit}` : `?limit=${limit}`;
     }
-    if(tag) {
-      queryString += (offset || limit) ? `&tag=${tag}` : `?tag=${tag}`
+    if (tag) {
+      queryString += offset || limit ? `&tag=${tag}` : `?tag=${tag}`;
     }
     return queryString;
   }
 
   public equals(other: Params): boolean {
     const { offset, limit, tag } = this;
-    return offset == other.offset && limit == other.limit && tag == other.tag
+    return offset == other.offset && limit == other.limit && tag == other.tag;
   }
 }

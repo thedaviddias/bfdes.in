@@ -32,7 +32,7 @@ A tag may be supplied (by React Router) if the user has chosen to filter posts b
 Additionally, if the component is server rendered, then we supply posts in advance ysing React's context API.
 */
 type Props = {
-  params: Params
+  params: Params;
   context?: {
     data: PostStub[];
   };
@@ -92,8 +92,8 @@ class Posts extends React.Component<Props, State> {
     const { posts } = this.state;
     if (prevProps.params !== params) {
       this.fetchPosts(params);
-    } else if(posts.length == 0) {
-      this.fetchPosts(new Params())
+    } else if (posts.length == 0) {
+      this.fetchPosts(new Params());
     }
   }
 
