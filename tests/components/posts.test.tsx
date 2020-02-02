@@ -1,6 +1,6 @@
-import { mount, shallow } from "enzyme";
+import { mount } from "enzyme";
 import * as React from "react";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Route } from "react-router-dom";
 
 import { Posts } from "shared/components";
 import { Context } from "shared/containers";
@@ -9,12 +9,15 @@ import { RequestError } from "shared/http";
 
 test("withTag", () => {
   const tag = "Python";
-  const Component = withTag(Posts);
-  const location = {
-    search: `?tag=${tag}`
-  };
-  const wrapper = shallow(<Component location={location} />);
-  expect(wrapper.prop("tag")).toBe(tag);
+  const WithTag = withTag(({ tag }) => <>{tag}</>);
+  const wrapper = mount(
+    <MemoryRouter initialEntries={[`/posts?tag=${tag}`]}>
+      <Route path="/posts">
+        <WithTag />
+      </Route>
+    </MemoryRouter>
+  );
+  expect(wrapper.text()).toBe(tag);
 });
 
 describe("<Posts />", () => {
