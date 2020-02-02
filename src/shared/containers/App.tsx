@@ -5,18 +5,23 @@ import { withSlug, withTag, withClient } from "../hocs";
 
 const App: React.FC = () => (
   <>
-    <Route path="/" component={Sidebar} />
+    <Route path="/">
+      <Sidebar />
+    </Route>
     <div id="content">
       <Switch>
         <Redirect exact from="/" to="/posts" />
-        <Route exact path="/about" component={About} />
+        <Route path="/about">
+          <About />
+        </Route>
         <Route exact path="/posts" component={withTag(withClient(Posts))} />
         <Route
-          exact
           path="/posts/:slug"
           component={withSlug(withClient(PostOr404))}
         />
-        <Route component={NoMatch} />
+        <Route path="*">
+          <NoMatch />
+        </Route>
       </Switch>
     </div>
   </>
