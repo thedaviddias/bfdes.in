@@ -19,7 +19,7 @@ const App: React.FC = () => (
           component={withSlug(withClient(PostOr404))}
         />
         <Route path="/posts" component={withTag(withClient(Posts))} />
-        <Route path="*">
+        <Route>
           <NoMatch />
         </Route>
       </Switch>
