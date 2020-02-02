@@ -19,8 +19,8 @@ const monthNames = [
   "December"
 ];
 
-const Date: React.FC<Props> = (props: Props) => {
-  const date = new global.Date(props.timestamp);
+const Date: React.FC<Props> = ({ timestamp }: Props) => {
+  const date = new global.Date(timestamp);
   const day = date.getDate();
   const month = monthNames[date.getMonth()];
   const year = date.getFullYear();
