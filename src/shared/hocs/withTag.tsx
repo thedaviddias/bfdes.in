@@ -18,7 +18,7 @@ type Props = {
   tag?: string;
 };
 
-export default function(Component: React.SFC<Props>) {
+export default function(Component: React.FC<Props>) {
   return function WithTag(rest: object): React.ReactElement {
     const location = useLocation();
     const query = parseQuery(location.search);
