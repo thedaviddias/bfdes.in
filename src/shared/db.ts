@@ -15,7 +15,7 @@ export default class DB {
     );
   }
 
-  public all(tag?: string): PostStub[] {
+  public list(tag?: string): PostStub[] {
     const stubs = this.posts.map(({ body, ...stub }) => stub);
     if (tag === undefined) {
       return stubs;
