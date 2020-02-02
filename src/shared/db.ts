@@ -15,12 +15,11 @@ export default class DB {
     );
   }
 
-  public all(tag?: string): PostStub[] {
-    const stubs = this.posts.map(({ body, ...stub }) => stub);
-    if (tag === undefined) {
-      return stubs;
-    }
-    return stubs.filter(p => p.tags.includes(tag));
+  public list(offset = 0, limit = 6, tag?: string): PostStub[] {
+    return this.posts
+      .slice(offset, offset+limit)
+      .filter(({ tags }) => tag == undefined || tags.includes(tag))
+      .map(({ body, ...stub }) => stub);
   }
 
   public get(slug: string): Post {

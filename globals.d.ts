@@ -14,7 +14,7 @@ declare interface Post extends PostStub {
   next?: string;
 }
 
-declare type Payload = Post | PostStub[];
+declare type InitialData = Post | PostStub[];
 
 // Allows image import in TypeScipt
 declare module "*.png" {
@@ -42,5 +42,5 @@ declare namespace NodeJS {
 
 // Data for deferred render supplied by the server
 declare interface Window {
-  __INITIAL_DATA__: Payload;
+  __INITIAL_DATA__: InitialData;
 }

@@ -2,11 +2,11 @@ import * as React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { About, NoMatch, Sidebar } from "../components/";
 import * as Components from "../components";
-import { withSlug, withTag, withClient } from "../hocs";
+import { withSlug, withParams, withClient } from "../hocs";
 
 const App: React.FC = () => {
   const PostOr404 = withSlug(withClient(Components.PostOr404));
-  const Posts = withTag(withClient(Components.Posts));
+  const Posts = withParams(withClient(Components.Posts));
   return (
     <>
       <Route path="/">

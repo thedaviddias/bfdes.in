@@ -2,13 +2,15 @@ import { Router } from "express";
 import * as React from "react";
 import { renderToNodeStream } from "react-dom/server";
 import { StaticRouter } from "react-router";
+import { parse } from "url";
 
 import { App, Context } from "shared/containers";
-import DB from "shared/db";
+import DB from "shared/DB";
 import { Favicon } from "shared/images";
 import { node, Attributes } from "./xml";
+import Params from "shared/Params";
 
-const header = (initialData: Payload): string =>
+const header = (initialData: InitialData): string =>
   `
     <meta charset="utf8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,10 +32,11 @@ export default function(db: DB): Router {
     res.redirect("/posts");
   });
 
-  // GET /posts?tag=<tag>
+  // GET /posts?offset=<offset>&limit=<limit>&tag=<tag>
   router.get("/posts", (req, res) => {
-    const { tag } = req.query;
-    const posts = db.all(tag);
+    const queryString = parse(req.url).search
+    const { limit, offset, tag } = Params.fromString(queryString);
+    const posts = db.list(limit, offset, tag);
 
     const stream = renderToNodeStream(
       <StaticRouter location={req.url} context={{}}>
@@ -42,6 +45,9 @@ export default function(db: DB): Router {
         </Context.Posts.Provider>
       </StaticRouter>
     );
+    if(posts.length == 0 && queryString) {
+      res.redirect("/posts")  // Rollover
+    }
 
     res.write(
       `<!DOCTYPE html><html lang="en"><head>${header(
@@ -74,11 +80,12 @@ export default function(db: DB): Router {
     stream.on("end", () => res.end("</div></body></html>"));
   });
 
-  // GET /api/posts?tag=<tag>
+  // GET /api/posts?offset=<offset>&limit=<limit>&tag=<tag>
   // Fetch the posts in chronological order and filter by tag if supplied
   router.get("/api/posts", (req, res) => {
-    const { tag } = req.query;
-    const posts = db.all(tag);
+    const queryString = parse(req.url).search
+    const { limit, offset, tag } = Params.fromString(queryString);
+    const posts = db.list(limit, offset, tag);
     res.json(posts);
   });
 
@@ -100,7 +107,7 @@ export default function(db: DB): Router {
 
   // GET /feed.rss
   router.get("/feed.rss", (_, res) => {
-    const recentPosts = db.all().slice(0, 10);
+    const recentPosts = db.list();
     const title = node("title", "bfdes.in");
     const link = node("link", "https://www.bfdes.in");
     const description = node("description", "Programming and Technology blog");

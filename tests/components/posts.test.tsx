@@ -4,12 +4,12 @@ import { MemoryRouter, Route } from "react-router-dom";
 
 import { Posts } from "shared/components";
 import { Context } from "shared/containers";
-import { withTag } from "shared/hocs";
+import { withParams } from "shared/hocs";
 import { RequestError } from "shared/http";
 
 test("withTag", () => {
   const tag = "Python";
-  const WithTag = withTag(({ tag }) => <>{tag}</>);
+  const WithTag = withParams(({ tag }) => <>{tag}</>);
   const wrapper = mount(
     <MemoryRouter initialEntries={[`/posts?tag=${tag}`]}>
       <Route path="/posts">

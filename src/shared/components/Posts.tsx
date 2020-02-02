@@ -6,6 +6,8 @@ import Date from "./Date";
 import Error from "./Error";
 import Spinner from "./Spinner";
 import Tags from "./Tags";
+import Params from "shared/Params";
+import PaginationLink from "./PaginationLink";
 
 const PostStub: React.FC<PostStub> = (props: PostStub) => {
   const { title, slug, wordCount, created, tags } = props;
@@ -30,7 +32,7 @@ A tag may be supplied (by React Router) if the user has chosen to filter posts b
 Additionally, if the component is server rendered, then we supply posts in advance ysing React's context API.
 */
 type Props = {
-  tag?: string;
+  params: Params
   context?: {
     data: PostStub[];
   };
@@ -77,8 +79,8 @@ class Posts extends React.Component<Props, State> {
   */
   public componentDidMount(): void {
     if (this.state.posts == null) {
-      const { tag } = this.props;
-      this.fetchPosts(tag);
+      const { params } = this.props;
+      this.fetchPosts(params);
     }
   }
 
@@ -86,15 +88,17 @@ class Posts extends React.Component<Props, State> {
   Fetch posts afresh if filtering by another tag.
   */
   public componentDidUpdate(prevProps: Props): void {
-    const { tag } = this.props;
-    if (prevProps.tag !== tag) {
-      this.fetchPosts(tag);
+    const { params } = this.props;
+    const { posts } = this.state;
+    if (prevProps.params !== params) {
+      this.fetchPosts(params);
+    } else if(posts.length == 0) {
+      this.fetchPosts(new Params())
     }
   }
 
   public render(): React.ReactElement {
     const { posts, loading, error } = this.state;
-    const { tag } = this.props;
     if (error) {
       return (
         <Error>
@@ -105,27 +109,24 @@ class Posts extends React.Component<Props, State> {
     if (loading || posts == null) {
       return <Spinner />;
     }
-    if (posts.length === 0) {
-      return (
-        <Error>
-          {`There aren't any posts ${
-            tag ? `under ${tag}` : "yet"
-          }. Please come back later.`}
-        </Error>
-      );
-    }
 
     return (
-      <ul id="posts">
-        {posts.map(post => (
-          <PostStub key={post.slug} {...post} />
-        ))}
-      </ul>
+      <>
+        <ul id="posts">
+          {posts.map(post => (
+            <PostStub key={post.slug} {...post} />
+          ))}
+        </ul>
+        <div className="pagination">
+          <PaginationLink next={previous}>Previous</PaginationLink>
+          <PaginationLink next={next}>Next</PaginationLink>
+        </div>
+      </>
     );
   }
 
-  private fetchPosts(tag?: string): void {
-    const url = `/api/posts${tag === undefined ? "" : `?tag=${tag}`}`;
+  private fetchPosts(params: Params): void {
+    const url = `/api/posts${params}`;
     this.setState({ loading: true }, () =>
       this.props
         .get(url)
