@@ -5,8 +5,9 @@ type Tag = {
   value: string;
 };
 
-const Tag: React.FC<Tag> = ({ value }: Tag) =>
-  <Link to={`/posts?tag=${value}`}>{value}</Link>;
+const Tag: React.FC<Tag> = ({ value }: Tag) => (
+  <Link to={`/posts?tag=${value}`}>{value}</Link>
+);
 
 type Tags = {
   tags: string[];
