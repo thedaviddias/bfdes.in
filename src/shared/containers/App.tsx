@@ -14,11 +14,11 @@ const App: React.FC = () => (
         <Route path="/about">
           <About />
         </Route>
-        <Route exact path="/posts" component={withTag(withClient(Posts))} />
         <Route
           path="/posts/:slug"
           component={withSlug(withClient(PostOr404))}
         />
+        <Route path="/posts" component={withTag(withClient(Posts))} />
         <Route path="*">
           <NoMatch />
         </Route>
