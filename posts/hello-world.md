@@ -36,16 +36,26 @@ The responsibility for rendering the correct page is delegated to the `App` comp
 ```javascript
 const App = () => (
   <>
-    <Route path="/" component={Sidebar} />
-    <Wrapper id="content">
+    <Route path="/">
+      <Sidebar />
+    </Route>
+    <div id="content">
       <Switch>
-        <Route exact path="/" render={() => <Redirect to="/posts" />} />
-        <Route exact path="/about" component={About} />
-        <Route exact path="/posts" component={Posts} />
-        <Route exact path="/posts/:slug" component={PostOr404} />
-        <Route component={NoMatch} />
+        <Redirect exact from="/" to="/posts" />
+        <Route path="/about">
+          <About />
+        </Route>
+        <Route path="/posts/:slug">
+          <PostOr404 />
+        </Route>
+        <Route path="/posts">
+          <Posts />
+        </Route>
+        <Route>
+          <NoMatch />
+        </Route>
       </Switch>
-    </Wrapper>
+    </div>
   </>
 );
 ```
