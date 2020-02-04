@@ -15,31 +15,36 @@ marked.setOptions({
   breaks: true
 });
 
-module.exports = function(source) {
-  const [meta, content] = source
-    .split("---")
-    .filter((_, i) => i !== 0)
-    .map(content => content.trim());
+const metaRegex = /^\s*---(?<matter>[\s\S]*)---(?<content>[\s\S]*)$/
+const rowRegex = /(?<key>\w+):\s*(?<value>[\w\s-!]+)\n+/g
+const tagRegex = /(?<tag>\w+)/g
 
-  const [title, tags, created, summary] = meta.split(/[\r\n]+/).map(line =>
-    line
-      .split(":")
-      .pop()
-      .trim()
-  );
+module.exports = function(source) {
+  const { matter, content } = metaRegex.exec(source).groups
+
+  const meta = Array
+    .from(matter.matchAll(rowRegex))
+    .map(match => match.groups)
+    .reduce((map, {key, value}) => map.set(key, value.trim()), new Map())
+
+  const tags = Array
+    .from(meta.get("tags").matchAll(tagRegex))
+    .map(match => match.groups.tag)
 
   const wordCount = content
     .split("```")
     .filter((_, i) => i % 2 === 0)
-    .map(block => block.trim().split(" ").length)
+    .map(block => block.trim().split(/\s+/).length)
     .reduce((total, count) => total + count, 0);
 
+  const created = Date.parse(meta.get("created"));
+
   return `module.exports = ${JSON.stringify({
-    title,
-    summary,
+    title: meta.get("title"),
+    summary: meta.get("summary"),
     wordCount,
-    tags: tags.split(" "),
-    created: Date.parse(created),
+    tags,
+    created,
     body: marked(content)
   })}`;
 };
