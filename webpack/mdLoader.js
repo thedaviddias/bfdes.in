@@ -15,21 +15,20 @@ marked.setOptions({
   breaks: true
 });
 
-const metaRegex = /^\s*---(?<matter>[\s\S]*)---(?<content>[\s\S]*)$/
-const rowRegex = /(?<key>\w+):\s*(?<value>[\w\s-!]+)\n+/g
-const tagRegex = /(?<tag>\w+)/g
+const metaRegex = /^\s*---(?<matter>[\s\S]*)---(?<content>[\s\S]*)$/;
+const rowRegex = /(?<key>\w+):\s*(?<value>[\w\s-!]+)\n+/g;
+const tagRegex = /(?<tag>\w+)/g;
 
 module.exports = function(source) {
-  const { matter, content } = metaRegex.exec(source).groups
+  const { matter, content } = metaRegex.exec(source).groups;
 
-  const meta = Array
-    .from(matter.matchAll(rowRegex))
+  const meta = Array.from(matter.matchAll(rowRegex))
     .map(match => match.groups)
-    .reduce((map, {key, value}) => map.set(key, value.trim()), new Map())
+    .reduce((map, { key, value }) => map.set(key, value.trim()), new Map());
 
-  const tags = Array
-    .from(meta.get("tags").matchAll(tagRegex))
-    .map(match => match.groups.tag)
+  const tags = Array.from(meta.get("tags").matchAll(tagRegex)).map(
+    match => match.groups.tag
+  );
 
   const wordCount = content
     .split("```")
