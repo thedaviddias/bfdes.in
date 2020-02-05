@@ -13,7 +13,7 @@
  * https://github.com/poole/hyde.
  */
 
-@import "https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono";
+@import "https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono&display=swap";
 @import "https://unpkg.com/highlight.js@9.18.0/styles/github.css";
 @import "https://unpkg.com/katex@0.11.1/dist/katex.min.css";
 
@@ -47,6 +47,7 @@ body {
 html {
   font-family: "Roboto", sans-serif;
   font-size: 16px;
+  font-display: swap;
   line-height: 1.5;
 }
 
