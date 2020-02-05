@@ -28,14 +28,6 @@ const posts = [
 
 const server = app(posts, "test");
 
-describe("GET /", () => {
-  test("root request redirected to /posts", () =>
-    request(server)
-      .get("/")
-      .expect(302)
-      .expect("Location", "/posts"));
-});
-
 describe("GET /api/posts", () => {
   test("all posts returned", () =>
     request(server)
@@ -69,10 +61,20 @@ describe("GET /posts", () => {
   beforeAll(() => {
     global.__isBrowser__ = false;
   });
+
   test("all posts returned", () =>
     request(server)
       .get("/posts")
       .expect(200));
+
+  test("root request serves same content as /posts", () =>
+    request(server)
+      .get("/")
+      .then(res =>
+        request(server)
+          .get("/posts")
+          .then(res2 => expect(res.text).toEqual(res2.text))
+      ));
 
   test("posts filtered by tag", () => {
     const tag = "Algorithms";

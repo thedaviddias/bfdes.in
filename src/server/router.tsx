@@ -26,8 +26,24 @@ export default function(db: DB): Router {
   const router = Router();
 
   // GET / is an alias for GET /posts
-  router.get("/", (_, res) => {
-    res.redirect("/posts");
+  router.get("/", (req, res) => {
+    const posts = db.list();
+
+    const stream = renderToNodeStream(
+      <StaticRouter location={req.url} context={{}}>
+        <Context.Posts.Provider value={posts}>
+          <App />
+        </Context.Posts.Provider>
+      </StaticRouter>
+    );
+
+    res.write(
+      `<!DOCTYPE html><html lang="en"><head>${header(
+        posts
+      )}</head><body><div id="root">`
+    );
+    stream.pipe(res, { end: false });
+    stream.on("end", () => res.end("</div></body></html>"));
   });
 
   // GET /posts?tag=<tag>

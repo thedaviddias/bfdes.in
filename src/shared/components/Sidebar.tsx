@@ -1,5 +1,5 @@
 import * as React from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Avatar, GitHub, RSS } from "shared/images";
 
 const Profile: React.FC = () => (
@@ -8,12 +8,12 @@ const Profile: React.FC = () => (
 
 const NavBar: React.FC = () => (
   <div id="nav">
-    <NavLink to="/posts" className="nav-item" activeClassName="active">
+    <Link to="/posts" className="nav-item">
       <h2>Blog</h2>
-    </NavLink>
-    <NavLink to="/about" className="nav-item" activeClassName="active">
+    </Link>
+    <Link to="/about" className="nav-item">
       <h2>About</h2>
-    </NavLink>
+    </Link>
   </div>
 );
 
