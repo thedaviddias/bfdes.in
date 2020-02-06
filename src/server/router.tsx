@@ -25,6 +25,23 @@ const header = (initialData: Payload): string =>
 export default function(db: DB): Router {
   const router = Router();
 
+  // GET /about
+  router.get("/about", (req, res) => {
+    const stream = renderToNodeStream(
+      <StaticRouter location={req.url} context={{}}>
+        <App />
+      </StaticRouter>
+    );
+
+    res.write(
+      `<!DOCTYPE html><html lang="en"><head>${header(
+        null
+      )}</head><body><div id="root">`
+    );
+    stream.pipe(res, { end: false });
+    stream.on("end", () => res.end("</div></body></html>"));
+  });
+
   // GET / is an alias for GET /posts
   router.get("/", (req, res) => {
     const posts = db.list();
