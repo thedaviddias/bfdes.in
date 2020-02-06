@@ -34,11 +34,16 @@ export class Leaf implements Tree {
   }
   render(): string {
     const { name, content, attributes } = this;
-    const openingTag = attributes.size
-      ? `<${name} ${attributes}>`
-      : `<${name}>`;
-    const closingTag = `</${name}>`;
-    return `${openingTag}${content}${closingTag}`; // Don't bother with self-closing tag
+    if (content && attributes.size) {
+      return `<${name} ${attributes}>${content}</${name}>`;
+    }
+    if (content) {
+      return `<${name}>${content}</${name}>`;
+    }
+    if (attributes.size) {
+      return `<${name} ${attributes} />`;
+    }
+    return `<${name} />`;
   }
 }
 

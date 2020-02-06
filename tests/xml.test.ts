@@ -8,7 +8,7 @@ const attributes = new Attributes([
 describe("Leaf.render", () => {
   it("serializes attributes", () => {
     const leaf = node("leaf", "content", attributes);
-    expect(leaf.render()).toMatch(/^<leaf key1="value1" key2="value2">/);
+    expect(leaf.render()).toMatch(/^<leaf key1="value1" key2="value2"/);
   });
 
   it("serializes content", () => {
@@ -16,9 +16,11 @@ describe("Leaf.render", () => {
     expect(leaf.render()).toEqual("<leaf>content</leaf>");
   });
 
-  it.skip("serializes self-closing tags", () => {
-    const leaf = node("leaf", "");
+  it("serializes self-closing tags", () => {
+    let leaf = node("leaf", "");
     expect(leaf.render()).toEqual("<leaf />");
+    leaf = node("leaf", "", attributes);
+    expect(leaf.render()).toEqual('<leaf key1="value1" key2="value2" />');
   });
 });
 
