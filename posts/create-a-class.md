@@ -5,7 +5,7 @@ created: 2019-12-05
 summary: Applying combinatorial optimisation to competitive multiplayer video game strategy
 ---
 
-This post is about applying combinatorial optimisation to the weapon modification system present in the multiplayer component of the recently released Call Of Duty game “Modern Warfare”, and not Object-Oriented programming, as the title would otherwise imply.
+This post is about applying combinatorial optimisation to the weapon modification system present in the multiplayer component of the recently released Call Of Duty game “Modern Warfare."
 
 For those who are not aware, in Call Of Duty games, players are pit against each other in deathmatch or objective capture game modes. Good gunplay and weapon customisation is an important part of the competitive multiplayer experience.
 

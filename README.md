@@ -5,9 +5,9 @@
 
 Source for my personal blog, built using React SSR and written in TypeScript.
 
-The Blog is edited by supplying Jekyll-compatible Markdown documents in a posts directory beneath the root.
+The Blog is edited by supplying Markdown documents with YAML frontmatter in a posts directory beneath the root.
 
-When the server-side code is built the posts are bundled using a custom Webpack loader.
+When the server-side code is built, the posts are bundled using a custom Webpack loader.
 
 ### Requirements:
 
@@ -42,7 +42,7 @@ Then (also) run `yarn serve:dev` to serve the app on port 8080 using Nodemon.
 
 #### Testing
 
-Run `yarn test:watch` to run the tests using Jest in watch mode.
+Run `yarn test` to run the tests using Jest.
 
 Run `yarn:lint` and `yarn:format` to lint and format code, respectively.
 

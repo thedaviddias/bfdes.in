@@ -7,6 +7,7 @@ import { App, Context } from "shared/containers";
 import DB from "shared/db";
 import { Favicon } from "shared/images";
 import { node, Attributes } from "./xml";
+import { version } from "package.json";
 
 const header = (initialData: Payload): string =>
   `
@@ -17,6 +18,9 @@ const header = (initialData: Payload): string =>
     <meta name="author" content="Bruno Fernandes">
     <title>bfdes.in</title>
     <link href=${Favicon} rel="icon">
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/highlight.js@9.18.0/styles/github.css" rel="stylesheet">
+    <link href="https://unpkg.com/katex@0.11.1/dist/katex.min.css" rel="stylesheet">
     <link href="/static/styles/main.css" rel="stylesheet">
     <script src='/static/javascripts/bundle.js' defer></script>
     <script>window.__INITIAL_DATA__ = ${JSON.stringify(initialData)}</script>

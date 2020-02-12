@@ -12,11 +12,6 @@
  * Modified version of the Hyde theme by @mdo.
  * https://github.com/poole/hyde.
  */
-
-@import "https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono&display=swap";
-@import "https://unpkg.com/highlight.js@9.18.0/styles/github.css";
-@import "https://unpkg.com/katex@0.11.1/dist/katex.min.css";
-
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
