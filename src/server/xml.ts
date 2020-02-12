@@ -73,7 +73,7 @@ export class Branch implements Tree {
 
 export function node(
   name: string,
-  content: string | NonEmptyArray<Tree>,
+  content: string | NonEmptyArray<Tree> = "",
   attributes: Attributes = new Attributes()
 ): Tree {
   if (Array.isArray(content)) {

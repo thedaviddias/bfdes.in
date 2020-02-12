@@ -17,7 +17,7 @@ describe("Leaf.render", () => {
   });
 
   it("serializes self-closing tags", () => {
-    let leaf = node("leaf", "");
+    let leaf = node("leaf");
     expect(leaf.render()).toEqual("<leaf />");
     leaf = node("leaf", "", attributes);
     expect(leaf.render()).toEqual('<leaf key1="value1" key2="value2" />');
