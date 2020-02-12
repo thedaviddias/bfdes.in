@@ -5,11 +5,11 @@ created: 2019-12-05
 summary: Applying combinatorial optimisation to competitive multiplayer video game strategy
 ---
 
-This post is about applying combinatorial optimisation to the weapon modification system present in the multiplayer component of the recently released Call Of Duty game “Modern Warfare."
+This post is about applying combinatorial optimisation to the weapon modification system "Create-A-Class" present in the multiplayer mode of the recently released Call Of Duty game Modern Warfare.
 
 For those who are not aware, in Call Of Duty games, players are pit against each other in deathmatch or objective capture game modes. Good gunplay and weapon customisation is an important part of the competitive multiplayer experience.
 
-Modern Warfare takes weapon customisation a step further than its predecessors, enabling players to modify weapons extensively in [Gunsmith](https://blog.activision.com/call-of-duty/2019-09/A-Deeper-Look-at-Modern-Warfare-Customization). I wondered whether it would be possible to determine the optimal modifications for a weapon without inspecting every permutation of attachments.
+Modern Warfare takes weapon customisation a step further than its predecessors, enabling players to modify weapons extensively in the [Gunsmith](https://blog.activision.com/call-of-duty/2019-09/A-Deeper-Look-at-Modern-Warfare-Customization) component of "Create-A-Class." I wondered whether it would be possible to determine the optimal modifications for a weapon without inspecting every permutation of attachments.
 
 ## Gunsmith
 
