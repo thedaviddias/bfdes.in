@@ -19,8 +19,12 @@ const header = (initialData: Payload): string => {
     <title>bfdes.in</title>
     <link href=${Favicon} rel="icon">
     <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/highlight.js@${devDependencies["highlight.js"]}/styles/github.css" rel="stylesheet">
-    <link href="https://unpkg.com/katex@${devDependencies.katex}/dist/katex.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/highlight.js@${
+      devDependencies["highlight.js"]
+    }/styles/github.css" rel="stylesheet">
+    <link href="https://unpkg.com/katex@${
+      devDependencies.katex
+    }/dist/katex.min.css" rel="stylesheet">
     <link href="/static/styles/main.css" rel="stylesheet">
     <script src='/static/javascripts/bundle.js' defer></script>
     <script>window.__INITIAL_DATA__ = ${JSON.stringify(initialData)}</script>
