@@ -130,24 +130,9 @@ Markup is versioned like source code. In this sense, the publishing mechanism is
 - At build-time, the entries are rendered to HTML strings and bundled into the server code
 - At runtime entries loaded into memory can be queried on demand
 
-A custom Webpack loader processes the posts. Within markup, code snippets can be entered inline or in fenced code blocks. The markdown parser supports syntax highlighting of code blocks:
+A custom Webpack loader processes the posts. Within markup, code and LaTeX snippets can be entered inline or in delimited blocks. The markdown parser is built using components from the [unified.js](https://unifiedjs.com/) ecosystem.
 
-```javascript
-marked.setOptions({
-  renderer: new marked.Renderer(),
-  highlight: (code, lang) => {
-    if (hljs.getLanguage(lang)) {
-      return hljs.highlight(lang, code).value;
-    } else if (lang === "math") {
-      return katex.renderToString(code);
-    }
-    return hljs.highlightAuto(code).value;
-  },
-  breaks: true
-});
-```
-
-Highlighting is carried out by highlight.js, but delegated to katex.js for code marked as "math". Both these tools tag the HTML strings they generate with classes that are targeted by CSS loaded on the client.
+Highlighting is carried out by highlight.js, and katex.js renders inline and block math. Both these tools tag the HTML strings they generate with classes that are targeted by CSS loaded on the client.
 
 ### Development
 
