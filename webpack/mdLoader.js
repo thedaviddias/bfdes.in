@@ -1,8 +1,8 @@
 const unified = require("unified");
 const remarkParse = require("remark-parse");
-const remarkHighlight = require("remark-highlight.js");
 const remarkMath = require("remark-math");
 const remarkRehype = require("remark-rehype");
+const rehypeHighlight = require("rehype-highlight");
 const rehypeKatex = require("rehype-katex");
 const rehypeStringify = require("rehype-stringify");
 const vfile = require("vfile");
@@ -31,9 +31,9 @@ module.exports = function(contents) {
   // Extract rendered post content
   const body = unified()
     .use(remarkParse)
-    .use(remarkHighlight)
     .use(remarkMath)
     .use(remarkRehype)
+    .use(rehypeHighlight)
     .use(rehypeKatex)
     .use(rehypeStringify)
     .processSync(file)
