@@ -35,7 +35,7 @@ The responsibility for rendering the correct page is delegated to the `App` comp
 
 ```javascript
 const App = () => (
-  <>
+  <React.Fragment>
     <Route path="/">
       <Sidebar />
     </Route>
@@ -56,7 +56,7 @@ const App = () => (
         </Route>
       </Switch>
     </div>
-  </>
+  </React.Fragment>
 );
 ```
 
