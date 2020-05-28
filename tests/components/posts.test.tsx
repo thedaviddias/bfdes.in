@@ -20,6 +20,7 @@ test("withTag", () => {
   expect(wrapper.text()).toBe(tag);
 });
 
+// `Posts` instance is wrapped in a `MemoryRouter` because we render `Link`s when mount is invoked
 describe("<Posts />", () => {
   const summary = "Lorem ipsum";
   const wordCount = 5;

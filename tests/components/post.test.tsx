@@ -22,16 +22,17 @@ test("withSlug", () => {
 
 describe("<PostOr404 />", () => {
   const post = {
-    title: "My first post",
-    slug: "my-first-post",
+    title: "My second post",
+    slug: "my-second-post",
     summary: "Lorem ipsum",
     body: "Lorem ipsum delorum sit amet",
     wordCount: 5,
     tags: ["Algorithms", "Java"],
-    created: 1523401200000
+    created: 1523401200000,
+    previous: "my-first-post",
+    next: "my-third-post"
   };
 
-  // `PostOr404` instance is wrapped in a `MemoryRouter` because we render `Link`s when mount is invoked
   describe("<PostOr404 /> on server", () => {
     beforeAll(() => {
       global.__isBrowser__ = false;
