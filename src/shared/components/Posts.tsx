@@ -34,7 +34,7 @@ type Props = {
   context?: {
     data: PostStub[];
   };
-  get(url: string): Promise<PostStub[]>;
+  get(url: string, signal: AbortSignal): Promise<PostStub[]>;
 };
 
 type State = {
@@ -44,6 +44,7 @@ type State = {
 };
 
 class Posts extends React.Component<Props, State> {
+  private controller: AbortController;
   constructor(props: Props) {
     super(props);
 
@@ -76,6 +77,7 @@ class Posts extends React.Component<Props, State> {
   but not when React's deferred first render occurs.
   */
   public componentDidMount(): void {
+    this.controller = new AbortController();
     if (this.state.posts == null) {
       const { tag } = this.props;
       this.fetchPosts(tag);
@@ -124,13 +126,22 @@ class Posts extends React.Component<Props, State> {
     );
   }
 
+  public componentWillUnmount(): void {
+    this.controller.abort();
+  }
+
   private fetchPosts(tag?: string): void {
     const url = `/api/posts${tag === undefined ? "" : `?tag=${tag}`}`;
     this.setState({ loading: true }, () =>
       this.props
-        .get(url)
+        .get(url, this.controller.signal)
         .then(posts => this.setState({ posts, loading: false }))
-        .catch(error => this.setState({ error, loading: false }))
+        .catch(error => {
+          if (error.name !== "AbortError") {
+            // User navigated away
+            this.setState({ error, loading: false });
+          }
+        })
     );
   }
 }

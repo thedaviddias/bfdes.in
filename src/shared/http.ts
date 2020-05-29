@@ -8,10 +8,11 @@ export class RequestError extends Error {
   }
 }
 
-export function get<P>(url: string): Promise<P> {
+export function get<P>(url: string, signal: AbortSignal): Promise<P> {
   return fetch(url, {
     method: "get",
-    headers: { "Content-Type": "application/json" }
+    headers: { "Content-Type": "application/json" },
+    signal
   }).then(res =>
     res
       .json()

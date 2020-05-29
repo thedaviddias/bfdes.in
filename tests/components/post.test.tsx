@@ -66,7 +66,10 @@ describe("<PostOr404 />", () => {
         </MemoryRouter>
       );
       return mockPromise.then(() => {
-        expect(get).toHaveBeenCalledWith(`/api/posts/${slug}`);
+        expect(get).toHaveBeenCalledWith(
+          `/api/posts/${slug}`,
+          expect.anything()
+        );
       });
     });
 
