@@ -169,7 +169,7 @@ root
 
 The last tree is compiled into an HTML string. Highlighting is carried out by highlight.js, and katex.js renders inline and block math. Both these tools tag the HTML substrings they generate with classes that are targeted by CSS loaded on the client.
 
-A syntax tree representation makes it cheap to compute an accurate article word count because the text nodes are clearly labelled. Here is the code for the custom compiler the loader uses:
+A syntax tree representation of markup makes it straightforward to extend the functionality of unified.js. In the loader, a custom compiler is used to cheaply compute article word count:
 
 ```javascript
 function wordCount(tree) {
