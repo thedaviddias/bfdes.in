@@ -9,6 +9,8 @@ After writing and then re-writing a blogging engine, I thought I'd finally get r
 
 Depending on your point of view [reinventing the wheel](https://www.gatsbyjs.org) can be a learning experience, or downright stupid. I thought what better way to start blogging than by, uh, documenting my experience.
 
+This article can be regarded as a living document. It will be updated to reflect new design choices.
+
 ## Web programming
 
 For those unfamiliar with web programming, there are currently three distinct ways to create websites:
@@ -19,7 +21,7 @@ For those unfamiliar with web programming, there are currently three distinct wa
 
 3. Serve the same page for every route with a bundle of JavaScript that manipulates the [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model) to facilitate rich interaction, and the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History) to simulate browsing. Such Single Page Applications are usually created with frameworks like [Angular](https://angular.io) and [React](https://reactjs.org). SPA code almost always needs to consume content from an API server.
 
-Static resources are easier to cache, and static websites are more amenable to search engine optimisation. In practice, most [modern websites](https://netflix.com) are built using a combination of approaches because they need to support dynamic content and load efficiently.
+Static resources are easier to cache, and static websites are more amenable to search engine optimisation. In practice, most modern websites are built using a combination of approaches because they need to support dynamic content and load efficiently.
 
 ## Isomorphic applications
 
@@ -41,14 +43,13 @@ const App = () => (
     </Route>
     <div id="content">
       <Switch>
-        <Redirect exact from="/" to="/posts" />
         <Route path="/about">
           <About />
         </Route>
         <Route path="/posts/:slug">
           <PostOr404 />
         </Route>
-        <Route path="/posts">
+        <Route exact path={["/", "/posts"]}>
           <Posts />
         </Route>
         <Route>
@@ -124,15 +125,62 @@ server/
 
 ### Publishing posts
 
-Markup is versioned like source code. In this sense, the publishing mechanism is similar to that of Jekyll:
+Markup is versioned as source code. In this sense, the publishing mechanism is similar to that of Jekyll:
 
 - Posts written in [Markdown](https://github.github.com/gfm/) are committed alongside code
 - At build-time, the entries are rendered to HTML strings and bundled into the server code
 - At runtime entries loaded into memory can be queried on demand
 
-A custom Webpack loader processes the posts. Within markup, code and LaTeX snippets can be entered inline or in delimited blocks. The markdown parser is built using components from the [unified.js](https://unifiedjs.com/) ecosystem.
+A custom Webpack loader processes the posts. Within markup, code and LaTeX snippets can be entered inline or in delimited blocks, like so:
 
-Highlighting is carried out by highlight.js, and katex.js renders inline and block math. Both these tools tag the HTML strings they generate with classes that are targeted by CSS loaded on the client.
+````markdown
+# Complex numbers
+
+Python supports complex numbers natively. For example, $1 + 2*j$ is written as
+
+```python
+1 + 2j
+```
+````
+
+The loader is built using components from the [unified.js](https://unifiedjs.com/) ecosystem. Initially, when loading a page, a markdown parser transforms the markup to a syntax tree. Plugins are then chained to split nodes to support embedded languages. The snippet above is parsed to the following structure:
+
+```plaintext
+root
++-- heading
+|   +-- text "Complex numbers"
++-- paragraph
+|   +-- text "Python supports complex numbers natively. For example, $1 + 2*j$ is written as"
++-- code "1 + 2j"
+```
+
+and then its paragraph content is transformed by the maths plugin to obtain two more nodes:
+
+```plaintext
+root
++-- heading
+|   +-- text "Complex numbers"
++-- paragraph
+|   +-- text "Python supports complex numbers natively. For example, "
+|   +-- inlineMath "1 + 2*j"
+|   +-- text " is written as"
++-- code "1 + 2j"
+```
+
+The last tree is compiled into an HTML string. Highlighting is carried out by highlight.js, and katex.js renders inline and block math. Both these tools tag the HTML substrings they generate with classes that are targeted by CSS loaded on the client.
+
+A syntax tree representation makes it cheap to compute an accurate article word count because the text nodes are clearly labelled. Here is the code for the custom compiler the loader uses:
+
+```javascript
+function wordCount(tree) {
+  if (tree.type == "text") {
+    return tree.value.trim().split(/\s+/).length;
+  }
+  return (tree.children || [])
+    .map(wordCount)
+    .reduce((count, childCount) => count + childCount, 0);
+}
+```
 
 ### Development
 
