@@ -146,6 +146,7 @@ class Attachment:
     self.values = values
 
   def price(self, utility_coefficients):
+    """Contribution of this attachment to weapon utility"""
     total = 0
     for coeffecient, value in zip(utility_coefficients, self.values):
       total += coeffecient * value
