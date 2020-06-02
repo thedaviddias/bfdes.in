@@ -138,7 +138,7 @@ class WeaponOptimizer:
     return utility, Loadout(weapon, chosen_attachments)
 ```
 
-We have relied on data classes to encapsulate domain interactions: 
+We have relied on data classes to encapsulate domain interactions:
 
 ```python
 class Attachment:
@@ -146,7 +146,7 @@ class Attachment:
     self.values = values
 
   def price(self, utility_coefficients):
-    total = 0 
+    total = 0
     for coeffecient, value in zip(utility_coefficients, self.values):
       total += coeffecient * value
     return total
