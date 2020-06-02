@@ -21,9 +21,9 @@ This optimisation problem mirrors a microeconomic one. Effectively, we seek to m
 
 ## Player Utility
 
-In this model, utility `U` is a multi-valued function of the weapon attributes, represented as a vector `x`. Game mechanics dictate that the model should have the following properties:
+In this model, utility $U$ is a multi-valued function of the weapon attributes, represented as a vector $\mathbf{x}$. Game mechanics dictate that the model should have the following properties:
 
-- Each attribute `x[i]` contributes independently to an increase in utility
+- Each attribute $x_i$ contributes independently to an increase in utility
 
   $$
   U(\mathbf{x}) = \displaystyle\sum_i U_i(x_i)
@@ -35,12 +35,12 @@ In this model, utility `U` is a multi-valued function of the weapon attributes, 
   \dfrac{\partial U}{\partial x_i} = \dfrac{\partial U_i}{\partial x_i} > 0 \ \forall \ i
   $$
 
-The attribute vector itself comprises of a base term and the sum of attachment contributions. If we denote the presence of the j-th attachment in the i-th slot by a boolean variable, we can then write
+The attribute vector itself comprises of a base term and the sum of attachment contributions. If we denote the presence of the j-th attachment in the i-th slot by a boolean variable $x'_{ij}$, we can then write
 
 $$
 \mathbf{x} = \mathbf{x_0} + \displaystyle\sum_i^m \displaystyle\sum_j^{n_i} \mathbf{\Delta x}_{ij}x'_{ij}, \ \text{where} \ x'_{ij} = \begin{cases}
-   1 &\text{if present} \\
-   0 &\text{if not present}
+   1 \\
+   0
 \end{cases}
 $$
 
@@ -75,11 +75,11 @@ Apart from advancing a particular utility model for every player, we made some o
 - Modifications can be made independently of each other
 - All modifications imbue characteristics that can be modelled as changes to weapon attributes
 
-Of these, the second assumption is the hardest one to reconcile with our model. Although one modification rarely prevents another from being made entirely, there are suspicions that their combined effect on weapon attributes is not merely additive.
+Of these, the first assumption is the hardest one to reconcile with our model. Although one modification rarely prevents another from being made entirely, there are suspicions that their combined effect on weapon attributes is not merely additive.
 
 ## The Knapsack Problem
 
-Observe that maximising the original objective `U` is the same as maximising a transformed one `U'`:
+Observe that maximising the original objective $U$ is the same as maximising a transformed one $U'$:
 
 $$
 \begin{aligned}
@@ -90,7 +90,7 @@ $$
 \end{aligned}
 $$
 
-Thus the optimisation problem reduces to a variant of the Multiple-Choice Knapsack Problem where each "price" `P[i][j]` may be real-valued, but all the "objects" have the same weight -- 1.
+Thus the optimisation problem reduces to a variant of the Multiple-Choice Knapsack Problem where each "price" $P_{ij}$ may be real-valued, but all the "objects" have the same weight -- 1.
 
 This simplification, courtesy of the problem domain, enables us to devise a simpler optimisation algorithm than those reported in research papers, such as [Bednarczuk E. (2018)](https://doi.org/10.1007/s10589-018-9988-z) and [Pisinger D. (1995)](https://doi.org/10.1016/0377-2217%2895%2900015-I).
 
@@ -102,14 +102,53 @@ This simplification, courtesy of the problem domain, enables us to devise a simp
 The runtime of this algorithm is dominated by the sorting, which can be done in linearithmic time. Memory usage is linear in the number of available modifications. The following Python code implements this algorithm, and incorporates a couple of practical improvements:
 
 ```python
+class WeaponOptimizer:
+  def __init__(self, utility_coefficients):
+    self.utility_coefficients = utility_coefficients
+
+  def run(self, weapon):
+    """Finds the best loadout for this weapon using a Knapsack algorithm"""
+    def by_price(triple):
+      (_, _, price) = triple
+      return price
+
+    attachments = [] # Attachments, with their price
+    for slot in weapon.slots:
+      for attachment in slot.available_attachments:
+        price = attachment.price(self.utility_coefficients)
+        # Disregard attachments with negative prices at the outset
+        if price > 0:
+          # Cache the computed price for sorting later
+          attachments.append((slot, attachment, price))
+
+    attachments.sort(key=by_price, reverse=True)
+
+    filled_slots = set()
+    chosen_attachments = set()
+    utility = weapon.utility(self.utility_coefficients)
+
+    for (slot, attachment, price) in attachments:
+      if len(chosen_attachments) > 5:
+        break
+      if not slot in filled_slots:
+        chosen_attachments.add(attachment)
+        filled_slots.add(slot)
+        utility += price
+
+    return utility, Loadout(weapon, chosen_attachments)
+```
+
+We have relied on data classes to encapsulate domain interactions: 
+
+```python
 class Attachment:
   def __init__(self, values):
     self.values = values
 
-  def price(self, coeffecients):
-    total = 0
-    for coeffecient, price in zip(coeffecients, self.values):
-      total += coeffecient * price
+  def price(self, utility_coefficients):
+    total = 0 
+    for coeffecient, value in zip(utility_coefficients, self.values):
+      total += coeffecient * value
     return total
 
 class Slot:
@@ -117,39 +156,21 @@ class Slot:
     self.available_attachments = available_attachments
 
 class Weapon:
-  def __init__(self, slots = []):
+  def __init__(self, values, slots = []):
+    self.values = values
     self.slots = slots
 
-def knapsack(coefficients):
-  def by_price(triple):
-    (_, _, price) = triple
-    return price
+  def utility(self, utility_coefficients):
+    """Base utility of a weapon"""
+    total = 0
+    for coeffecient, value in zip(utility_coefficients, self.values):
+      total += coeffecient * value
+    return total
 
-  def attachments(weapon):
-    with_price = []
-    for slot in weapon.slots:
-      for attachment in slot.available_attachments:
-        price = attachment.price(coefficients)
-        # Disregard attachments with negative prices at the outset
-        if price > 0:
-          # Cache the computed price for sorting later
-          with_price.append((slot, attachment, price))
-
-    with_price.sort(key=by_price, reverse=True)
-
-    filled_slots = set()
-    chosen_attachments = set()
-
-    for (slot, attachment, _) in with_price:
-      if len(chosen_attachments) > 5:
-        break
-      if not slot in filled_slots:
-        chosen_attachments.add(attachment)
-        filled_slots.add(slot)
-
-    return chosen_attachments
-
-  return attachments
+class Loadout:
+  def __init__(self, weapon, chosen_attachments = []):
+    self.weapon = weapon
+    self.chosen_attachments = chosen_attachments
 ```
 
 ## Loadouts and Classes
@@ -161,6 +182,25 @@ Observe that attachment choice is tied solely to weapon choice. So we can decomp
 1. maximising utility for every weapon independently (as before), and,
 2. finding the weapon in this set with the largest utility.
 
+In Python,
+
+```python
+class LoadoutOptimizer:
+  def __init__(self, utility_coefficients):
+    self.weapon_optimizer = WeaponOptimizer(utility_coefficients)
+
+  def run(self, weapons):
+    """Finds the best loadout among all weapons by linear scan"""
+    max_utility = float('-inf')
+    best_loadout = None
+    for weapon in weapons:
+      utility, loadout = self.weapon_optimizer.run(weapon)
+      if utility > max_utility:
+        max_utility = utility
+        best_loadout = loadout
+    return max_utility, best_loadout
+```
+
 Such an algorithm is efficient only because there are a limited number of weapons in-game (about 30).
 
 A **class** is typically comprised of:
@@ -170,7 +210,7 @@ A **class** is typically comprised of:
 - Two pieces of explosive or tactical equipment
 - Three Perks
 
-Optimising on the class-level is more of an art than a science. For this reason, it is not worth attempting.
+Optimising for the best class is more of an art than a science. For this reason, it is not worth attempting.
 
 ## Model correctness
 

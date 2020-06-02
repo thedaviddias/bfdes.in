@@ -143,15 +143,15 @@ Python supports complex numbers natively. For example, $1 + 2*j$ is written as
 ```
 ````
 
-The loader is built using components from the [unified.js](https://unifiedjs.com/) ecosystem. Initially, when loading a page, a markdown parser transforms the markup to a syntax tree. Plugins are then chained to split nodes to support embedded languages. The snippet above is parsed to the following structure:
+The loader is built using components from the [unified.js](https://unifiedjs.com/) ecosystem. Initially, when loading a page, a markdown parser transforms the markup to a syntax tree. Plugins are then chained to split nodes to support embedded languages. The snippet above is parsed to the following structure (simplified for the sake of illustration):
 
 ```plaintext
 root
 +-- heading
-|   +-- text "Complex numbers"
+|   +-- text: "Complex numbers"
 +-- paragraph
-|   +-- text "Python supports complex numbers natively. For example, $1 + 2*j$ is written as"
-+-- code "1 + 2j"
+|   +-- text: "Python supports complex numbers natively. For example, $1 + 2*j$ is written as"
++-- code: "1 + 2j" lang: "python"
 ```
 
 and then its paragraph content is transformed by the maths plugin to obtain two more nodes:
@@ -159,17 +159,17 @@ and then its paragraph content is transformed by the maths plugin to obtain two 
 ```plaintext
 root
 +-- heading
-|   +-- text "Complex numbers"
+|   +-- text: "Complex numbers"
 +-- paragraph
-|   +-- text "Python supports complex numbers natively. For example, "
-|   +-- inlineMath "1 + 2*j"
-|   +-- text " is written as"
-+-- code "1 + 2j"
+|   +-- text: "Python supports complex numbers natively. For example, "
+|   +-- inlineMath: "1 + 2*j"
+|   +-- text: " is written as"
++-- code: "1 + 2j" lang: "python"
 ```
 
 The last tree is compiled into an HTML string. Highlighting is carried out by highlight.js, and katex.js renders inline and block math. Both these tools tag the HTML substrings they generate with classes that are targeted by CSS loaded on the client.
 
-A syntax tree representation of markup makes it straightforward to extend the functionality of unified.js. In the loader, a custom compiler is used to cheaply compute article word count:
+A syntax tree representation of markup makes it straightforward to extend the functionality of unified.js. In the loader, a custom compiler is used to compute accurate article word count:
 
 ```javascript
 function wordCount(tree) {
