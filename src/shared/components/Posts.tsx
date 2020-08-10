@@ -138,9 +138,9 @@ class Posts extends React.Component<Props, State> {
         .then(posts => this.setState({ posts, loading: false }))
         .catch(error => {
           if (error.name !== "AbortError") {
-            // User navigated away
             this.setState({ error, loading: false });
           }
+          // User navigated away
         })
     );
   }
