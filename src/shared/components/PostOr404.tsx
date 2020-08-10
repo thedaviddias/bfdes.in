@@ -36,7 +36,7 @@ type Props = {
   context?: {
     data: Post;
   };
-  get(url: string): Promise<Post>;
+  get(url: string, signal: AbortSignal): Promise<Post>;
 };
 
 type State = {
@@ -46,6 +46,7 @@ type State = {
 };
 
 class PostOr404 extends React.Component<Props, State> {
+  private controller: AbortController;
   constructor(props: Props) {
     super(props);
 
@@ -67,6 +68,7 @@ class PostOr404 extends React.Component<Props, State> {
   }
 
   public componentDidMount(): void {
+    this.controller = new AbortController();
     if (!this.state.post) {
       const { slug } = this.props;
       this.fetchPost(slug);
@@ -98,13 +100,21 @@ class PostOr404 extends React.Component<Props, State> {
     return <Post {...post} />;
   }
 
+  public componentWillUnmount(): void {
+    this.controller.abort();
+  }
+
   private fetchPost(slug: string): void {
     const url = `/api/posts/${slug}`;
     this.setState({ loading: true }, () =>
       this.props
-        .get(url)
+        .get(url, this.controller.signal)
         .then(post => this.setState({ post, loading: false }))
-        .catch(error => this.setState({ error, loading: false }))
+        .catch(error => {
+          if (error.name !== "AbortError") {
+            this.setState({ error, loading: false });
+          }
+        })
     );
   }
 }

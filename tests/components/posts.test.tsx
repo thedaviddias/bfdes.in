@@ -116,7 +116,10 @@ describe("<Posts />", () => {
         </MemoryRouter>
       );
       return mockPromise.then(() => {
-        expect(get).toHaveBeenCalledWith(`/api/posts?tag=${tag}`);
+        expect(get).toHaveBeenCalledWith(
+          `/api/posts?tag=${tag}`,
+          expect.anything()
+        );
       });
     });
 
