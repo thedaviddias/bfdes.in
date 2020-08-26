@@ -21,27 +21,26 @@ This optimisation problem mirrors a microeconomic one. Effectively, we seek to m
 
 ## Player Utility
 
-In this model, utility $U$ is a multi-valued function of the weapon attributes, represented as a vector $\mathbf{x}$. Game mechanics dictate that the model should have the following properties:
+In this model, utility $U$ is a function of the weapon attributes, represented as a vector $\mathbf{x}$. Game mechanics dictate that the model should have the following properties:
 
-- Each attribute $x_i$ contributes independently to an increase in utility
+1. Each attribute $x_i$ contributes independently to an increase in utility
 
   $$
-  U(\mathbf{x}) = \displaystyle\sum_i U_i(x_i)
+  \dfrac{\partial^2 U}{\partial x_j\partial x_i} = 0 \ \forall \ i \neq j \iff U(\mathbf{x}) = \displaystyle\sum_i U_i(x_i)
   $$
 
-- For a given attribute, larger values are always preferred to smaller ones
+2. For a given attribute, larger values are always preferred to smaller ones
 
   $$
   \dfrac{\partial U}{\partial x_i} = \dfrac{\partial U_i}{\partial x_i} > 0 \ \forall \ i
   $$
 
-The attribute vector itself comprises of a base term and the sum of attachment contributions. If we denote the presence of the j-th attachment in the i-th slot by a boolean variable $x'_{ij}$, we can then write
+The second property corresponds to the non-satiation assumption in utility theory. 
+
+The attribute vector itself comprises of a base term and the sum of attachment contributions. If we denote the presence of the j-th attachment in the i-th slot by a boolean variable $X_{ij}$, we can then write
 
 $$
-\mathbf{x} = \mathbf{x_0} + \displaystyle\sum_i^m \displaystyle\sum_j^{n_i} \mathbf{\Delta x}_{ij}x'_{ij}, \ \text{where} \ x'_{ij} = \begin{cases}
-   1 \\
-   0
-\end{cases}
+\mathbf{x} = \mathbf{x_0} + \displaystyle\sum_i^m \displaystyle\sum_j^{n_i} X_{ij}\mathbf{\Delta x}_{ij}, \ \text{where} \ X_{ij} \in \{0, 1\}
 $$
 
 Apart from the integrality constraint, there are two other limits to state:
@@ -49,18 +48,43 @@ Apart from the integrality constraint, there are two other limits to state:
 - Gameplay mechanics mean we are restricted to making five modifications
 
   $$
-  \displaystyle\sum_i^m \displaystyle\sum_j^{n_i} x'_{ij} \leq 5
+  \displaystyle\sum_i^m \displaystyle\sum_j^{n_i} X_{ij} \leq 5
   $$
 
 - We cannot make more than one modification in the same place
 
   $$
-  \displaystyle\sum_j^{n_i} x'_{ij} \leq 1 \ \forall \ i
+  \displaystyle\sum_j^{n_i} X_{ij} \leq 1 \ \forall \ i
   $$
 
 Note that we can assume, without any loss of generality, that the player has fully ranked a weapon so that every attachment is available.
 
-To get further, we need to propose a form for utility, our objective function. Composing it from a weighted sum of attribute contributions is a simple and intuitive model. More importantly, it will allow us to transform the problem into more tractable one later.
+Combinatorics can be used to get an idea of the number of loadouts $N$ for a typical weapon.
+
+Suppose $n_i \geq 3 \ \forall \ i$, and $m \geq 5$ for all weapons. Then we can obtain a lower bound: 
+
+$$
+\begin{aligned}
+  N   &\geq \displaystyle\sum_{k=0}^5 \dfrac{m!}{k!(m-k)!} 3^k \\
+      &\geq \displaystyle\sum_{k=0}^5 \dfrac{5!}{k!(5-k)!} 3^k \\
+      &= (1+3)^5 = 1024
+\end{aligned}
+$$
+
+Now suppose $n_i \leq 9 \ \forall \ i$, and $m \leq 7$, again for all weapons. This leads us to an upper bound:
+
+$$
+\begin{aligned}
+    N   &\leq \displaystyle\sum_{k=0}^5 \dfrac{m!}{k!(m-k)!} 9^k \\
+        &= \dfrac{m!}{5!}\displaystyle\sum_{k=0}^5 \dfrac{5!}{k!(m-k)!} 9^k \\
+        &\leq \dfrac{m!}{5!}\displaystyle\sum_{k=0}^5 \dfrac{5!}{k!(5-k)!} 9^k \\
+        &= \dfrac{7!}{5!}(1+9)^5 = 4,200,000 
+\end{aligned}
+$$
+
+In practice, the are many slots supporting fewer than nine attachments, and $N < 100, 000$.
+
+To get further, we need to propose a form for utility, our objective function. Composing it from a weighted sum of attribute contributions is a simple and intuitive model. More importantly, it will allow us to transform the problem into more tractable one later -- one which does not require us to evaluate every combination of attachments. 
 
 $$
 \begin{aligned}
@@ -83,10 +107,10 @@ Observe that maximising the original objective $U$ is the same as maximising a t
 
 $$
 \begin{aligned}
-  U'             &= U(\mathbf{x}) - \mathbf{u} \cdot \mathbf{x_0} \\
-                 &= \mathbf{u} \cdot \left(\displaystyle\sum_i^m \displaystyle\sum_j^{n_i} \mathbf{\Delta x}_{ij} x'_{ij} \right) \\
-                 &= \displaystyle\sum_i^m \displaystyle\sum_j^{n_i} x'_{ij} \times \mathbf{u} \cdot \mathbf{\Delta x}_{ij} \\
-                 &= \displaystyle\sum_i^m \displaystyle\sum_j^{n_i} P_{ij} x'_{ij}
+  U'(\mathbf{x}) &= U(\mathbf{x}) - \mathbf{u} \cdot \mathbf{x_0} \\
+                 &= \mathbf{u} \cdot \left(\displaystyle\sum_i^m \displaystyle\sum_j^{n_i} X_{ij}\mathbf{\Delta x}_{ij}  \right) \\
+                 &= \displaystyle\sum_i^m \displaystyle\sum_j^{n_i} X_{ij} \times \mathbf{u} \cdot \mathbf{\Delta x}_{ij} \\
+                 &= \displaystyle\sum_i^m \displaystyle\sum_j^{n_i} P_{ij} X_{ij}
 \end{aligned}
 $$
 
