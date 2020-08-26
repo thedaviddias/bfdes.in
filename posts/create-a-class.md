@@ -25,17 +25,17 @@ In this model, utility $U$ is a function of the weapon attributes, represented a
 
 1. Each attribute $x_i$ contributes independently to an increase in utility
 
-  $$
-  \dfrac{\partial^2 U}{\partial x_j\partial x_i} = 0 \ \forall \ i \neq j \iff U(\mathbf{x}) = \displaystyle\sum_i U_i(x_i)
-  $$
+$$
+\dfrac{\partial^2 U}{\partial x_j\partial x_i} = 0 \ \forall \ i \neq j \iff U(\mathbf{x}) = \displaystyle\sum_i U_i(x_i)
+$$
 
 2. For a given attribute, larger values are always preferred to smaller ones
 
-  $$
-  \dfrac{\partial U}{\partial x_i} = \dfrac{\partial U_i}{\partial x_i} > 0 \ \forall \ i
-  $$
+$$
+\dfrac{\partial U}{\partial x_i} = \dfrac{\partial U_i}{\partial x_i} > 0 \ \forall \ i
+$$
 
-The second property corresponds to the non-satiation assumption in utility theory. 
+The second property corresponds to the non-satiation assumption in utility theory.
 
 The attribute vector itself comprises of a base term and the sum of attachment contributions. If we denote the presence of the j-th attachment in the i-th slot by a boolean variable $X_{ij}$, we can then write
 
@@ -61,7 +61,7 @@ Note that we can assume, without any loss of generality, that the player has ful
 
 Combinatorics can be used to get an idea of the number of loadouts $N$ for a typical weapon.
 
-Suppose $n_i \geq 3 \ \forall \ i$, and $m \geq 5$ for all weapons. Then we can obtain a lower bound: 
+Suppose $n_i \geq 3 \ \forall \ i$, and $m \geq 5$ for all weapons. Then we can obtain a lower bound:
 
 $$
 \begin{aligned}
@@ -78,13 +78,13 @@ $$
     N   &\leq \displaystyle\sum_{k=0}^5 \dfrac{m!}{k!(m-k)!} 9^k \\
         &= \dfrac{m!}{5!}\displaystyle\sum_{k=0}^5 \dfrac{5!}{k!(m-k)!} 9^k \\
         &\leq \dfrac{m!}{5!}\displaystyle\sum_{k=0}^5 \dfrac{5!}{k!(5-k)!} 9^k \\
-        &= \dfrac{7!}{5!}(1+9)^5 = 4,200,000 
+        &= \dfrac{7!}{5!}(1+9)^5 = 4,200,000
 \end{aligned}
 $$
 
 In practice, the are many slots supporting fewer than nine attachments, and $N < 100, 000$.
 
-To get further, we need to propose a form for utility, our objective function. Composing it from a weighted sum of attribute contributions is a simple and intuitive model. More importantly, it will allow us to transform the problem into more tractable one later -- one which does not require us to evaluate every combination of attachments. 
+To get further, we need to propose a form for utility, our objective function. Composing it from a weighted sum of attribute contributions is a simple and intuitive model. More importantly, it will allow us to transform the problem into more tractable one later -- one which does not require us to evaluate every combination of attachments.
 
 $$
 \begin{aligned}
