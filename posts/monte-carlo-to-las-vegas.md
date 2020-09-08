@@ -19,8 +19,8 @@ $$
 f : p \mapsto t \mapsto i,
 \ \text{where} \ i =
 \begin{cases}
-  -1 &\text{if not found} \\
-   i \in I &\text{if found}
+  -1 \\
+   i \in I
 \end{cases}
 $$
 

@@ -26,7 +26,7 @@ In this model, utility $U$ is a function of the weapon attributes, represented a
 1. Each attribute $x_i$ contributes independently to an increase in utility
 
 $$
-\dfrac{\partial^2 U}{\partial x_j\partial x_i} = 0 \ \forall \ i \neq j \iff U(\mathbf{x}) = \displaystyle\sum_i U_i(x_i)
+U(\mathbf{x}) = \displaystyle\sum_i U_i(x_i)
 $$
 
 2. For a given attribute, larger values are always preferred to smaller ones
@@ -37,10 +37,10 @@ $$
 
 The second property corresponds to the non-satiation assumption in utility theory.
 
-The attribute vector itself comprises of a base term and the sum of attachment contributions. If we denote the presence of the j-th attachment in the i-th slot by a boolean variable $X_{ij}$, we can then write
+The attribute vector itself comprises of a base term and the sum of attachment contributions. If we denote the presence of the j-th attachment in the i-th slot by a boolean variable $X_{ij} \in \{0, 1\}$, we can then write
 
 $$
-\mathbf{x} = \mathbf{x_0} + \displaystyle\sum_i^m \displaystyle\sum_j^{n_i} X_{ij}\mathbf{\Delta x}_{ij}, \ \text{where} \ X_{ij} \in \{0, 1\}
+\mathbf{x} = \mathbf{x_0} + \displaystyle\sum_i^m \displaystyle\sum_j^{n_i} X_{ij}\mathbf{\Delta x}_{ij}
 $$
 
 Apart from the integrality constraint, there are two other limits to state:

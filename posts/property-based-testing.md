@@ -30,20 +30,22 @@ Consider the addition operation on integers. What conditions does it meet?
 - Associativity:
 
   $$
-  \left( i + j \right) + k = i + \left( j + k \right) \space \forall \space i, j, k \in \mathbb{Z}
+  \left( i + j \right) + k = i + \left( j + k \right)
   $$
 
 - Identity:
 
   $$
-  i + 0 = 0 + i = i \space \forall \space i \in \mathbb{Z}
+  i + 0 = 0 + i = i
   $$
 
 - Commutativity:
 
   $$
-  i + j  = j + i \space \forall \space i, j \in \mathbb{Z}
+  i + j  = j + i
   $$
+
+where $i, j, k \in \mathbb{Z}$.
 
 We can assert that these properties hold by verifying that they apply for arbitrary integer triples. In a similar manner, property-based testing can also be employed to check algorithms that effect mutable data. We use it to test an implementation of mergesort.
 
@@ -134,7 +136,7 @@ A sorting function is defined by two properties:
 2. It must totally-order its input to form its output (the comparer defines the total-ordering)
 
    $$
-   a'_i \leq a'_j \space \forall \space i, j \in I \space \text{such that} \space i < j
+   a'_i \leq a'_j \space \forall \space i, j \in I \space \text{s.t.} \space i < j
    $$
 
 We have described arrays as a [family](https://math.stackexchange.com/a/361530), and the primed elements belong to the permuted array.
