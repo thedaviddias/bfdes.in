@@ -172,22 +172,22 @@ class SortingTest extends FlatSpec {
   val maxSize = 20
 
   // Context manager to give tests access to sample arrays
-  def withFixture(testCode: Array[Int] => Boolean): Unit = {
+  def test(testCode: Array[Int] => Boolean): Unit = {
     val maybeFailed = arrays.find(a => !testCode(a))
     maybeFailed.foreach(a =>
       fail(a.mkString("[", ", ", "]"))
     )
   }
 
-  "mergeSort" should "produce a sorted array" in withFixture { array =>
-    mergeSort(array)
-    isSorted(array)
+  "mergeSort" should "produce a sorted array" in test { a =>
+    mergeSort(a)
+    isSorted(a)
   }
 
-  it should "rearrange keys" in withFixture { array =>
-    val before = new Histogram(array)
-    mergeSort(array)
-    val after = new Histogram(array)
+  it should "rearrange keys" in test { a =>
+    val before = new Histogram(a)
+    mergeSort(a)
+    val after = new Histogram(a)
     before == after
   }
 }
