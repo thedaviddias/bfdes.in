@@ -168,8 +168,8 @@ Using [ScalaTest](http://www.scalatest.org) as the test runner, the test-code en
 
 ```scala
 class SortingTest extends FlatSpec {
-  val rnd = new Random()
-  val maxSize = 20
+  private val rnd = new Random()
+  private val maxSize = 20
 
   // Context manager to give tests access to sample arrays
   def test(testCode: Array[Int] => Boolean): Unit = {
