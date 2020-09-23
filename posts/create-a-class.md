@@ -9,7 +9,7 @@ This post is about applying combinatorial optimisation to the weapon modificatio
 
 For those who are not aware, in Call Of Duty games, players are pit against each other in deathmatch or objective capture game modes. Good gunplay and weapon customisation is an important part of the competitive multiplayer experience.
 
-Modern Warfare takes weapon customisation a step further than its predecessors, enabling players to modify weapons extensively in the [Gunsmith](https://blog.activision.com/call-of-duty/2019-09/A-Deeper-Look-at-Modern-Warfare-Customization) component of "Create-A-Class." I wondered whether it would be possible to determine the optimal modifications for a weapon without inspecting every permutation of attachments.
+Modern Warfare takes weapon customisation a step further than its predecessors, enabling players to modify weapons extensively in the [Gunsmith](https://blog.activision.com/call-of-duty/2019-09/A-Deeper-Look-at-Modern-Warfare-Customization) component of "Create-A-Class." I wondered whether it would be possible to determine the optimal modifications for a weapon without inspecting every permutation of attachments. Spoiler: There are a LOT of choices!
 
 ## Gunsmith
 
@@ -37,7 +37,7 @@ $$
 
 The second property corresponds to the non-satiation assumption in utility theory.
 
-The attribute vector itself comprises of a base term and the sum of attachment contributions. If we denote the presence of the j-th attachment in the i-th slot by a boolean variable $X_{ij} \in \{0, 1\}$, we can then write
+The attribute vector itself comprises of a base term $\mathbf{x_0}$ and the sum of attachment contributions. If we denote the presence of the j-th attachment in the i-th slot by a boolean variable $X_{ij} \in \{0, 1\}$, we can then write
 
 $$
 \mathbf{x} = \mathbf{x_0} + \displaystyle\sum_i^m \displaystyle\sum_j^{n_i} X_{ij}\mathbf{\Delta x}_{ij}
@@ -61,7 +61,7 @@ Note that we can assume, without any loss of generality, that the player has ful
 
 Combinatorics can be used to get an idea of the number of loadouts $N$ for a typical weapon.
 
-Suppose $n_i \geq 3 \ \forall \ i$, and $m \geq 5$ for all weapons. Then we can obtain a lower bound:
+Suppose every slot supports at least three modifications, and every weapon has at least five slots, so that $n_i \geq 3 \ \forall \ i$, and $m \geq 5$. Then we can obtain a lower bound:
 
 $$
 \begin{aligned}
@@ -82,9 +82,9 @@ $$
 \end{aligned}
 $$
 
-In practice, the are many slots supporting fewer than nine attachments, and $N < 100, 000$.
+In practice, the are many slots supporting fewer than nine attachments, and our bound on $N$ ends up being tighter.
 
-To get further, we need to propose a form for utility, our objective function. Composing it from a weighted sum of attribute contributions is a simple and intuitive model. More importantly, it will allow us to transform the problem into more tractable one later -- one which does not require us to evaluate every combination of attachments.
+To get further, we need to propose a form for utility, our objective function. Composing it from a weighted sum of attribute contributions is a simple and intuitive model. More importantly, it will allow us to transform the problem into more tractable one later -- one which does not require us to evaluate every combination of attachments!
 
 $$
 \begin{aligned}
