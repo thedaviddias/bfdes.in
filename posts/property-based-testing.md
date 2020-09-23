@@ -69,11 +69,11 @@ object Sorting {
     // Sort the subsequence [l, h]
     def sort(l: Int, h: Int): Unit = {
       if(l < h) {
-        val m = l + (h-l) / 2  // Account for integer overflow
+        val m = l + (h-l) / 2  // account for integer overflow
         sort(l, m)
         sort(m+1, h)
         if(o.gt(a(m), a(m+1))) {
-          merge(l, m, h)  // Only merge if [l, h] is not in order
+          merge(l, m, h)  // only merge if [l, h] is not in order
         }
       }
     }
@@ -102,7 +102,7 @@ object Sorting {
         }  // n.b. Stable implementation of the algorithm
       }
     }
-    sort(0, a.length-1)  // Run the routine on the whole array
+    sort(0, a.length-1)  // run the routine on the whole array
   }
 }
 ```
@@ -154,7 +154,7 @@ def arrays: Stream[Array[Int]] = {
     Array.fill(size)(rnd.nextInt())
 
   def samples(size: Int): Stream[Array[Int]] =
-    Stream.fill(math.pow(2, size).toInt)(sample(size))  // Sample 2^size times
+    Stream.fill(math.pow(2, size).toInt)(sample(size))  // sample 2^size times
 
   Stream.range(0, maxSize).flatMap(samples)
 }  // `maxSize` and `rnd` come from the test class
@@ -257,7 +257,7 @@ object SortingSpec extends Properties("mergeSort") {
     val pair = for {
       i <- n
       j <- n
-    } yield (i, j)  // Syntax sugar for n.flatMap(i => n.map(j => (i, j)))
+    } yield (i, j)  // syntax sugar
     Gen.containerOf[Array, Pair](pair)
   }
 
