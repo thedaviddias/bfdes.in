@@ -168,8 +168,8 @@ Using [ScalaTest](http://www.scalatest.org) as the test runner, the test-code en
 
 ```scala
 class SortingTest extends FlatSpec {
-  private val rnd = new Random()
-  private val maxSize = 20
+  val rnd = new Random()
+  val maxSize = 20
 
   // Context manager to give tests access to sample arrays
   def test(testCode: Array[Int] => Boolean): Unit = {
@@ -228,7 +228,7 @@ To use ScalaCheck, we need to be aware of two abstract data types it exports:
 Here is the (naïve) strategy for sample generation, re-written using ScalaCheck:
 
 ```scala
-def unsaturated: Gen[Array[Int]] =
+val unsaturated: Gen[Array[Int]] =
   Gen.containerOf[Array, Int](Gen.posNum)
 ```
 
@@ -237,7 +237,7 @@ ScalaCheck will choose the maximum sample size to generate when running the test
 To test cases where duplicate keys are common, we modify the generator that creates keys to limit itself to choose from the range `[0, sqrt(size))`, where `size` is the length of the array being filled.
 
 ```scala
-def saturated: Gen[Array[Int]] = {
+val saturated: Gen[Array[Int]] = {
   // One possible way of saturating the array with duplicate keys
   val sized = Gen.sized(s => Gen.choose(0, Math.sqrt(s).toInt))
   Gen.containerOf[Array, Int](sized)
@@ -249,10 +249,10 @@ A stable sorting algorithm is one that ensures that any two keys which compare e
 Here is the resulting test code, without the generators listed above:
 
 ```scala
-object SortingSpecification extends Properties("mergeSort") {
+object SortingSpec extends Properties("mergeSort") {
   type Pair = (Int, Int)  // a type alias
 
-  def pairs: Gen[Array[Pair]] = {
+  val pairs: Gen[Array[Pair]] = {
     val n = Gen.choose(0, 5)
     val pair = for {
       i <- n
