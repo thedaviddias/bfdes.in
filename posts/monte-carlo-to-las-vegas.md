@@ -17,12 +17,9 @@ The Rabin Karp substring search algorithm has this property. Suppose we expose s
 
 $$
 f : p \mapsto t \mapsto i,
-\ \text{where} \ i =
-\begin{cases}
-  -1 \\
-   i \in I
-\end{cases}
 $$
+
+where $i \in I$ if the substring is found, and $i = -1$ otherwise.
 
 The goal is to enable the client to write Las Vegas variant in terms of the Monte Carlo variant $f$, so that the library only has to export one implementation of Rabin Karp.
 
