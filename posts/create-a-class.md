@@ -89,10 +89,12 @@ To get further, we need to propose a form for utility, our objective function. C
 $$
 \begin{aligned}
   U(\mathbf{x}) &= \displaystyle\sum_i U_i(x_i) \\
-                &= \displaystyle\sum_i u_ix_i \ \text{where} \ u_i > 0 \ \forall \ i \\
+                &= \displaystyle\sum_i u_ix_i \\
                 &= \mathbf{u} \cdot \mathbf{x}
 \end{aligned}
 $$
+
+Every utility coefficient $u_i$ needs to be positive; based on what we have said before, can you see why?
 
 Apart from advancing a particular utility model for every player, we made some other assumptions implicitly:
 
@@ -114,88 +116,153 @@ $$
 \end{aligned}
 $$
 
-Thus the optimisation problem reduces to a variant of the Multiple-Choice Knapsack Problem where each "price" $P_{ij}$ may be real-valued, but all the "objects" have the same weight -- 1.
+Restating the whole problem, with constraints, for completeness:
 
-This simplification, courtesy of the problem domain, enables us to devise a simpler optimisation algorithm than those reported in research papers, such as [Bednarczuk E. (2018)](https://doi.org/10.1007/s10589-018-9988-z) and [Pisinger D. (1995)](https://doi.org/10.1016/0377-2217%2895%2900015-I).
+$$
+  \max \displaystyle\sum_i^m \displaystyle\sum_j^{n_i} P_{ij}X_{ij}
+$$
+
+subject to
+
+$$
+\begin{aligned}
+  \displaystyle\sum_i^m \displaystyle\sum_j^{n_i} X_{ij} &\leq 5 \\
+  \displaystyle\sum_j^{n_i} X_{ij} &\leq 1 \ \forall \ i \\
+  X_{ij} &\in \{0, 1\} \ \forall \ i, j
+\end{aligned}
+$$
+
+Thus the optimisation problem reduces to a variant of the Multiple-Choice [Knapsack Problem](https://en.wikipedia.org/wiki/Knapsack_problem) where each "price" $P_{ij}$ may be real-valued, but all the "objects" have the same weight -- 1.
+
+This simplification, courtesy of the problem domain, enables us to devise a simpler optimisation algorithm to solve the Multiple-Choice Knapsack Problem than those reported in research papers, such as [Bednarczuk E. (2018)](https://doi.org/10.1007/s10589-018-9988-z) and [Pisinger D. (1995)](https://doi.org/10.1016/0377-2217%2895%2900015-I).
 
 1. Sort the modifications in descending order of price `P[i][j]`
 2. While modification slots are still available, select the next modification `(i, j)` provided:
    - its slot `i` is vacant
    - its price `P[i][j]` is positive
 
-The runtime of this algorithm is dominated by the sorting, which can be done in linearithmic time. Memory usage is linear in the number of available modifications. The following Python code implements this algorithm, and incorporates a couple of practical improvements:
+The runtime of this algorithm is dominated by the sorting, which can be done in linearithmic time. Memory usage is linear in the number of available modifications. The following Modern Java code implements this algorithm, and incorporates a couple of practical improvements:
 
-```python
-class WeaponOptimizer:
-  def __init__(self, utility_coefficients):
-    self.utility_coefficients = utility_coefficients
+```java
+public class WeaponOptimizer implements Optimizer<Weapon, Loadout> {
+  private static final Comparator<Triple<Slot, Attachment, Double>> byPrice =
+      Comparator.comparing(Triple::third);
 
-  def run(self, weapon):
-    """Finds the best loadout for this weapon using a Knapsack algorithm"""
-    def by_price(triple):
-      (_, _, price) = triple
-      return price
+  private final List<Double> utilityCoefficients;
 
-    attachments = [] # Attachments, with their price
-    for slot in weapon.slots:
-      for attachment in slot.available_attachments:
-        price = attachment.price(self.utility_coefficients)
-        # Disregard attachments with negative prices at the outset
-        if price > 0:
-          # Cache the computed price for sorting later
-          attachments.append((slot, attachment, price))
+  public WeaponOptimizer(List<Double> utilityCoefficients) {
+    this.utilityCoefficients = utilityCoefficients;
+  }
 
-    attachments.sort(key=by_price, reverse=True)
+  @Override
+  public Pair<Double, Loadout> run(Weapon weapon) {
+    var attachments = new ArrayList<Triple<Slot, Attachment, Double>>();
+    for (var slot : weapon.slots()) {
+      for (var attachment : slot.availableAttachments()) {
+        var price = attachment.price(utilityCoefficients);
+        // Disregard attachments with negative prices from the outset
+        if (price > 0) {
+          // Cache the computed price for sorting later
+          attachments.add(new Triple<>(slot, attachment, price));
+        }
+      }
+    }
+    attachments.sort(byPrice.reversed());
 
-    filled_slots = set()
-    chosen_attachments = set()
-    utility = weapon.utility(self.utility_coefficients)
+    var utility = weapon.utility(utilityCoefficients);
+    var chosenAttachments = new ChosenAttachments();
 
-    for (slot, attachment, price) in attachments:
-      if len(chosen_attachments) > 5:
-        break
-      if not slot in filled_slots:
-        chosen_attachments.add(attachment)
-        filled_slots.add(slot)
-        utility += price
-
-    return utility, Loadout(weapon, chosen_attachments)
+    for (var triple : attachments) {
+      var slot = triple.first();
+      var attachment = triple.second();
+      var price = triple.third();
+      if (chosenAttachments.isFull()) {
+        break;
+      }
+      if (!chosenAttachments.containsKey(slot)) {
+        chosenAttachments.put(slot, attachment);
+        utility += price;
+      }
+    }
+    var loadout = new Loadout(weapon, chosenAttachments);
+    return new Pair<>(utility, loadout);
+  }
+}
 ```
 
-We have relied on data classes to encapsulate domain interactions:
+Notice the use of a generic interface `Optimizer`, defined as
 
-```python
-class Attachment:
-  def __init__(self, values):
-    self.values = values
+```java
+public interface Optimizer<I, O> {
+  Pair<Double, O> run(I input);
+}
+```
 
-  def price(self, utility_coefficients):
-    """Contribution of this attachment to weapon utility"""
-    total = 0
-    for coeffecient, value in zip(utility_coefficients, self.values):
-      total += coeffecient * value
-    return total
+We also rely on data classes `Attachment`, `Slot`, and `Weapon` to encapsulate domain interactions:
 
-class Slot:
-  def __init__(self, available_attachments = []):
-    self.available_attachments = available_attachments
+```java
+public record Attachment(List<Double> attributes) {
+  /**
+   * Contribution of this attachment to weapon utility.
+   */
+  public double price(List<Double> utilityCoefficients) {
+    if (utilityCoefficients.size() != attributes.size()) {
+      throw new IllegalArgumentException();
+    }
+    var total = 0;
+    for(var i=0; i < attributes.size(); i++) {
+      total += utilityCoefficients.get(i) * attributes.get(i);
+    }
+    return total;
+  }
+}
 
-class Weapon:
-  def __init__(self, values, slots = []):
-    self.values = values
-    self.slots = slots
+public record Slot(Set<Attachment> availableAttachments){}
 
-  def utility(self, utility_coefficients):
-    """Base utility of a weapon"""
-    total = 0
-    for coeffecient, value in zip(utility_coefficients, self.values):
-      total += coeffecient * value
-    return total
+public record Weapon(List<Double> attributes, Set<Slot> slots) {
+  /**
+   * Base utility of a weapon.
+   */
+  public double utility(List<Double> utilityCoefficients) {
+    if (utilityCoefficients.size() != attributes.size()) {
+      throw new IllegalArgumentException();
+    }
+    var total = 0;
+    for(var i=0; i < attributes.size(); i++) {
+      total += utilityCoefficients.get(i) * attributes.get(i);
+    }
+    return total;
+  }
+}
 
-class Loadout:
-  def __init__(self, weapon, chosen_attachments = []):
-    self.weapon = weapon
-    self.chosen_attachments = chosen_attachments
+public record Loadout(Weapon weapon, ChosenAttachments chosenAttachments) {
+  public Optional<Attachment> chosenAttachment(Slot slot) {
+    var attachment =  chosenAttachments.get(slot);
+    return attachment == null ? Optional.empty() : Optional.of(attachment);
+  }
+}
+```
+
+In `Loadout`, `ChosenAttachments` is simply a `HashMap` that enforces game mechanics:
+
+```java
+public class ChosenAttachments extends HashMap<Slot, Attachment> {
+  public static final int MAX_ALLOWED = 5;
+
+  @Override
+  public Attachment put(Slot slot, Attachment attachment) {
+    // One attachment per slot,
+    if (isFull()) {
+      var msg = String.format("up to %s attachments permitted", MAX_ALLOWED);
+      throw new UnsupportedOperationException(msg);
+    }
+    return super.put(slot, attachment);
+  }
+
+  public boolean isFull() {
+    return size() == 5;  // and up to five attachments in total permitted
+  }
+}
 ```
 
 ## Loadouts and Classes
@@ -207,26 +274,32 @@ Observe that attachment choice is tied solely to weapon choice. So we can decomp
 1. maximising utility for every weapon independently (as before), and,
 2. finding the weapon in this set with the largest utility.
 
-In Python,
+In Java,
 
-```python
-class LoadoutOptimizer:
-  def __init__(self, utility_coefficients):
-    self.weapon_optimizer = WeaponOptimizer(utility_coefficients)
+```java
+public class LoadoutOptimizer implements Optimizer<List<Weapon>, Loadout> {
+  private static final Comparator<Pair<Double, Loadout>> byUtility =
+      Comparator.comparing(Pair::first);
 
-  def run(self, weapons):
-    """Finds the best loadout among all weapons by linear scan"""
-    max_utility = float('-inf')
-    best_loadout = None
-    for weapon in weapons:
-      utility, loadout = self.weapon_optimizer.run(weapon)
-      if utility > max_utility:
-        max_utility = utility
-        best_loadout = loadout
-    return max_utility, best_loadout
+  private final Optimizer<Weapon, Loadout> weaponOptimizer;
+
+  public LoadoutOptimizer(Optimizer<Weapon, Loadout> weaponOptimizer) {
+    this.weaponOptimizer = weaponOptimizer;
+  }
+
+  @Override
+  public Pair<Double, Loadout> run(List<Weapon> weapons) {
+    return weapons.stream()
+        .map(weaponOptimizer::run)
+        .max(byUtility)
+        .orElseThrow(() -> new IllegalArgumentException("no weapons supplied"));
+  }
+}
 ```
 
-Such an algorithm is efficient only because there are a limited number of weapons in-game (about 30).
+Note that this optimizer accepts _any_ underlying weapon optimizer conforming to the `Optimizer<Weapon, Loadout>` interface. Stub implementations can be readily inserted to run tests that only check the behaviour of code in `LoadoutOptimizer`.
+
+The algorithm is efficient only because there are a limited number of weapons in-game (about 30). As a result, it could run in request threads of a web service designed to respond to queries for the best loadout.
 
 A **class** is typically comprised of:
 
