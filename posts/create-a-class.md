@@ -251,7 +251,7 @@ public class ChosenAttachments extends HashMap<Slot, Attachment> {
 
   @Override
   public Attachment put(Slot slot, Attachment attachment) {
-    // One attachment per slot,
+    // One attachment per slot...
     if (isFull()) {
       var msg = String.format("up to %s attachments permitted", MAX_ALLOWED);
       throw new UnsupportedOperationException(msg);
@@ -260,7 +260,8 @@ public class ChosenAttachments extends HashMap<Slot, Attachment> {
   }
 
   public boolean isFull() {
-    return size() == 5;  // and up to five attachments in total permitted
+    // ...and up to five attachments in total permitted
+    return size() == MAX_ALLOWED;
   }
 }
 ```
