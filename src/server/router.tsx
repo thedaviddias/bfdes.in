@@ -136,7 +136,7 @@ export default function(db: DB): Router {
   });
 
   // GET /feed.rss
-  router.get("/feed.rss", (_, res) => {
+  router.get("/feed.rss|/feed.xml|/rss.xml", (_, res) => {
     const recentPosts = db.list().slice(0, 10);
     const title = node("title", "bfdes.in");
     const link = node("link", "https://www.bfdes.in");
