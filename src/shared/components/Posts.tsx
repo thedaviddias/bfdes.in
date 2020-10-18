@@ -12,7 +12,7 @@ const PostStub: React.FC<PostStub> = (props: PostStub) => {
   return (
     <li className="post">
       <Link to={`/posts/${slug}`} className="nav-item">
-        <h1>{title}</h1>
+        <h3>{title}</h3>
       </Link>
       <p className="meta">
         <Date timestamp={created} />
@@ -118,11 +118,14 @@ class Posts extends React.Component<Props, State> {
     }
 
     return (
-      <ul id="posts">
-        {posts.map(post => (
-          <PostStub key={post.slug} {...post} />
-        ))}
-      </ul>
+      <div className="posts">
+        <h1>Blog</h1>
+        <ul id="posts">
+          {posts.map(post => (
+            <PostStub key={post.slug} {...post} />
+          ))}
+        </ul>
+      </div>
     );
   }
 
