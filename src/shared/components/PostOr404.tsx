@@ -7,6 +7,7 @@ import NoMatch from "./NoMatch";
 import PaginationLink from "./PaginationLink";
 import Spinner from "./Spinner";
 import Tags from "./Tags";
+import { delay } from "../http";
 
 const Post: React.FC<Post> = (props: Post) => {
   const { title, body, created, tags, wordCount, previous, next } = props;
@@ -107,8 +108,7 @@ class PostOr404 extends React.Component<Props, State> {
   private fetchPost(slug: string): void {
     const url = `/api/posts/${slug}`;
     this.setState({ loading: true }, () =>
-      this.props
-        .get(url, this.controller.signal)
+      delay(this.props.get(url, this.controller.signal), 100)
         .then(post => this.setState({ post, loading: false }))
         .catch(error => {
           if (error.name !== "AbortError") {

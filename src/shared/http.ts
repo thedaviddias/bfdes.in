@@ -8,6 +8,13 @@ export class RequestError extends Error {
   }
 }
 
+/** Delays a promise from resolving for interval milliseconds if it succeeds */
+export function delay<T>(promise: Promise<T>, interval: number) {
+  return promise.then(
+    data => new Promise<T>(resolve => setTimeout(() => resolve(data), interval))
+  );
+}
+
 export function get<P>(url: string, signal: AbortSignal): Promise<P> {
   return fetch(url, {
     method: "get",
