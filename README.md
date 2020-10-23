@@ -9,18 +9,18 @@ The Blog is edited by supplying Markdown documents with YAML frontmatter in a po
 
 When the server-side code is built, the posts are bundled using a custom Webpack loader.
 
-### Requirements:
+## Requirements
 
 - Node 12.x
 - Yarn 1.x
 
-### Usage:
+## Usage
 
-#### Installation
+### Installation
 
 Run `yarn install` within the root directory.
 
-#### Local development
+### Local development
 
 Run `yarn build:dev`. Uses Webpack in watch mode to compile the TS source for both the frontend and the backend.
 
@@ -40,7 +40,7 @@ and the name of the markdown file should correspond to the slug of its post.
 
 Then (also) run `yarn serve:dev` to serve the app on port 8080 using Nodemon.
 
-#### Testing
+### Testing
 
 Run `yarn test` to run the tests using Jest.
 
@@ -48,7 +48,7 @@ Run `yarn:lint` and `yarn:format` to lint and format code, respectively.
 
 Circle CI will also run this test suite for every code push to master.
 
-### Deployment:
+## Deployment
 
 Running `yarn build:prod` generates two bundles
 
@@ -57,7 +57,7 @@ Running `yarn build:prod` generates two bundles
 
 Run the server-side code using Node.js, and optionally configure a webserver to serve assets under /static.
 
-### Known issues:
+## Known issues
 
 - From bundling Express: 'the request of a dependency is an expression'
 
