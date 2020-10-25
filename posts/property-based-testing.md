@@ -203,8 +203,8 @@ class Histogram[K](keys: Seq[K]) {
       m + (k -> count)
     }
 
-  override def equals(histogram: Any): Boolean =
-    histogram match {
+  override def equals(that: Any): Boolean =
+    that match {
       case h: Histogram[K] =>
         h.underlying.equals(underlying)
       case _ => false
