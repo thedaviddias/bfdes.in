@@ -19,7 +19,7 @@ type Props = {
 };
 
 export default function (Component: React.FC<Props>) {
-  return function WithTag(rest: object): React.ReactElement {
+  return function WithTag(rest: Record<string, unknown>): React.ReactElement {
     const location = useLocation();
     const query = parseQuery(location.search);
     return <Component tag={query.get("tag")} {...rest} />;

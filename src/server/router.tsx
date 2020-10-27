@@ -69,7 +69,7 @@ export default function (db: DB): Router {
 
   // GET /posts?tag=<tag>
   router.get("/posts", (req, res) => {
-    const { tag } = req.query;
+    const tag = req.query.tag as string;
     const posts = db.list(tag);
 
     const stream = renderToNodeStream(
@@ -114,7 +114,7 @@ export default function (db: DB): Router {
   // GET /api/posts?tag=<tag>
   // Fetch the posts in chronological order and filter by tag if supplied
   router.get("/api/posts", (req, res) => {
-    const { tag } = req.query;
+    const tag = req.query.tag as string;
     const posts = db.list(tag);
     res.json(posts);
   });

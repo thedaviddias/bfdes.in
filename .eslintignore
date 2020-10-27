@@ -6,6 +6,7 @@ coverage
 dist
 
 // Config
+.eslintrc.js
 webpack
 webpack.config.js
 jest
