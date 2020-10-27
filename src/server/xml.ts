@@ -62,7 +62,7 @@ export class Branch implements Tree {
   }
   render(): string {
     const { name, attributes, children } = this;
-    const content = children.map(child => child.render()).join("");
+    const content = children.map((child) => child.render()).join("");
     const openingTag = attributes.size
       ? `<${name} ${attributes}>`
       : `<${name}>`; // Handle whitespace

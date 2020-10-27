@@ -20,7 +20,7 @@ export default class DB {
     if (tag === undefined) {
       return stubs;
     }
-    return stubs.filter(p => p.tags.includes(tag));
+    return stubs.filter((p) => p.tags.includes(tag));
   }
 
   public get(slug: string): Post {
@@ -39,7 +39,7 @@ export default class DB {
     return {
       previous,
       next,
-      ...this.posts[index]
+      ...this.posts[index],
     };
   }
 }

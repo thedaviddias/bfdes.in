@@ -61,7 +61,7 @@ class PostOr404 extends React.Component<Props, State> {
     this.state = {
       post,
       error: null,
-      loading: false
+      loading: false,
     };
 
     this.fetchPost = this.fetchPost.bind(this);
@@ -109,8 +109,8 @@ class PostOr404 extends React.Component<Props, State> {
     this.setState({ loading: true }, () =>
       this.props
         .get(url, this.controller.signal)
-        .then(post => this.setState({ post, loading: false }))
-        .catch(error => {
+        .then((post) => this.setState({ post, loading: false }))
+        .catch((error) => {
           if (error.name !== "AbortError") {
             this.setState({ error, loading: false });
           }

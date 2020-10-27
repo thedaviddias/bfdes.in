@@ -16,7 +16,7 @@ type Tags = {
 const Tags: React.FC<Tags> = ({ tags }: Tags) => (
   <span>
     {tags
-      .map(tag => <Tag key={tag} value={tag} />)
+      .map((tag) => <Tag key={tag} value={tag} />)
       .reduce((acc, tag) => [...acc, " # ", tag], [])}
   </span>
 );

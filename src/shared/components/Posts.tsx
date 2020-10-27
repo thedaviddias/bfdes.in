@@ -66,7 +66,7 @@ class Posts extends React.Component<Props, State> {
     this.state = {
       posts,
       error: null,
-      loading: false
+      loading: false,
     };
 
     this.fetchPosts = this.fetchPosts.bind(this);
@@ -121,7 +121,7 @@ class Posts extends React.Component<Props, State> {
       <div className="posts">
         <h1>Blog</h1>
         <ul id="posts">
-          {posts.map(post => (
+          {posts.map((post) => (
             <PostStub key={post.slug} {...post} />
           ))}
         </ul>
@@ -138,8 +138,8 @@ class Posts extends React.Component<Props, State> {
     this.setState({ loading: true }, () =>
       this.props
         .get(url, this.controller.signal)
-        .then(posts => this.setState({ posts, loading: false }))
-        .catch(error => {
+        .then((posts) => this.setState({ posts, loading: false }))
+        .catch((error) => {
           if (error.name !== "AbortError") {
             this.setState({ error, loading: false });
           }

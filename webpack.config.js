@@ -7,11 +7,11 @@ module.exports = [
     output: {
       filename: "javascripts/bundle.js",
       publicPath: "/static/", // public URL of the output directory when referenced in a browser
-      path: path.resolve(__dirname, "./dist/static")
+      path: path.resolve(__dirname, "./dist/static"),
     },
     resolve: {
       extensions: [".ts", ".tsx", ".js", ".css"],
-      modules: [path.resolve(__dirname, "src"), "node_modules"]
+      modules: [path.resolve(__dirname, "src"), "node_modules"],
     },
     module: {
       rules: [
@@ -19,9 +19,9 @@ module.exports = [
           test: /\.tsx?$/,
           include: [
             path.resolve(__dirname, "./src/browser"),
-            path.resolve(__dirname, "./src/shared")
+            path.resolve(__dirname, "./src/shared"),
           ],
-          use: "ts-loader"
+          use: "ts-loader",
         },
         {
           test: /\.(jpg|png|svg)$/,
@@ -31,9 +31,9 @@ module.exports = [
             options: {
               name: "[name].[ext]",
               outputPath: "images/",
-              limit: 8192 // Beyond this limit do not inline files, delegate processing to file-loader
-            }
-          }
+              limit: 8192, // Beyond this limit do not inline files, delegate processing to file-loader
+            },
+          },
         },
         {
           test: /\.css$/,
@@ -42,33 +42,32 @@ module.exports = [
             loader: "file-loader",
             options: {
               name: "[name].[ext]",
-              outputPath: "styles/"
-            }
-          }
-        }
-      ]
+              outputPath: "styles/",
+            },
+          },
+        },
+      ],
     },
     plugins: [
       new webpack.DefinePlugin({
-        __isBrowser__: "true"
-      })
+        __isBrowser__: "true",
+      }),
     ],
-    target: "web"
+    target: "web",
   },
   {
     entry: path.resolve(__dirname, "./src/server", "index.ts"),
     output: {
       filename: "server.js",
-      path: path.resolve(__dirname, "./dist"),
-      publicPath: "/"
+      publicPath: "/",
     },
     resolve: {
       modules: [
         path.resolve(__dirname),
         path.resolve(__dirname, "src"),
-        "node_modules"
+        "node_modules",
       ],
-      extensions: [".ts", ".tsx", ".js", ".md"]
+      extensions: [".ts", ".tsx", ".js", ".md"],
     },
     module: {
       rules: [
@@ -76,9 +75,9 @@ module.exports = [
           test: /\.tsx?$/,
           include: [
             path.resolve(__dirname, "./src/server"),
-            path.resolve(__dirname, "./src/shared")
+            path.resolve(__dirname, "./src/shared"),
           ],
-          loader: "ts-loader"
+          loader: "ts-loader",
         },
         {
           test: /\.(jpg|png|svg)$/,
@@ -89,21 +88,21 @@ module.exports = [
               limit: 8192,
               outputPath: path.join("static", "images"),
               name: "[name].[ext]",
-              emitFile: false // On the server we do not write the files to disk
-            }
-          }
+              emitFile: false, // On the server we do not write the files to disk
+            },
+          },
         },
         {
           test: /\.md$/,
-          use: path.resolve(__dirname, "./webpack", "mdLoader.js")
-        }
-      ]
+          use: path.resolve(__dirname, "./webpack", "mdLoader.js"),
+        },
+      ],
     },
     plugins: [
       new webpack.DefinePlugin({
-        __isBrowser__: "false"
-      })
+        __isBrowser__: "false",
+      }),
     ],
-    target: "node"
-  }
+    target: "node",
+  },
 ];

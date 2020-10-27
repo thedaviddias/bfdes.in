@@ -16,7 +16,7 @@ const monthNames = [
   "September",
   "October",
   "November",
-  "December"
+  "December",
 ];
 
 const Date: React.FC<Props> = ({ timestamp }: Props) => {

@@ -12,11 +12,11 @@ export function get<P>(url: string, signal: AbortSignal): Promise<P> {
   return fetch(url, {
     method: "get",
     headers: { "Content-Type": "application/json" },
-    signal
-  }).then(res =>
+    signal,
+  }).then((res) =>
     res
       .json()
-      .then(data =>
+      .then((data) =>
         res.ok
           ? data
           : Promise.reject(new RequestError(res.status, data.error.message))

@@ -5,5 +5,5 @@ module.exports = {
   process(_, filename) {
     const content = JSON.stringify(path.basename(filename));
     return `module.exports = ${content};`;
-  }
+  },
 };

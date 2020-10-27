@@ -7,19 +7,19 @@ module.exports = {
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
-    "prettier/@typescript-eslint"
+    "prettier/@typescript-eslint",
   ],
   rules: {
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
-        ignoreRestSiblings: true
-      }
-    ]
+        ignoreRestSiblings: true,
+      },
+    ],
   },
   settings: {
     react: {
-      version: "detect"
-    }
-  }
+      version: "detect",
+    },
+  },
 };

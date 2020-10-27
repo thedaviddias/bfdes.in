@@ -31,11 +31,8 @@ describe("<Tags />", () => {
         <Tags tags={tags} />
       </MemoryRouter>
     );
-    expect(
-      wrapper
-        .find("Link")
-        .first()
-        .props().to
-    ).toBe(`/posts?tag=${tags[0]}`);
+    expect(wrapper.find("Link").first().props().to).toBe(
+      `/posts?tag=${tags[0]}`
+    );
   });
 });

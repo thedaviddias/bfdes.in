@@ -14,7 +14,7 @@ const posts = [
     body,
     created,
     tags: ["Algorithms", "Java"],
-    wordCount
+    wordCount,
   },
   {
     title: "My second post",
@@ -23,7 +23,7 @@ const posts = [
     body,
     created,
     tags: ["Java"],
-    wordCount
+    wordCount,
   },
   {
     title: "My third post",
@@ -32,8 +32,8 @@ const posts = [
     body,
     created,
     tags: ["Python"],
-    wordCount
-  }
+    wordCount,
+  },
 ];
 
 const server = app(posts, "test");
@@ -41,20 +41,18 @@ const server = app(posts, "test");
 describe("GET /api/posts/:slug", () => {
   test("post can be fetched by slug", () => {
     const post = posts[0];
-    return request(server)
-      .get(`/api/posts/${post.slug}`)
-      .expect(200);
+    return request(server).get(`/api/posts/${post.slug}`).expect(200);
   });
 
   test("404 response returned for non-existent post", () =>
     request(server)
       .get("/api/posts/my-fourth-post")
       .expect(404)
-      .then(res =>
+      .then((res) =>
         expect(res.body).toEqual({
           error: {
-            message: "404: No post with that slug"
-          }
+            message: "404: No post with that slug",
+          },
         })
       ));
 
@@ -64,31 +62,31 @@ describe("GET /api/posts/:slug", () => {
       request(server)
         .get(`/api/posts/${first.slug}`)
         .expect(200)
-        .then(res =>
+        .then((res) =>
           expect(res.body).toEqual({
             ...first,
-            previous: second.slug
+            previous: second.slug,
           })
         ),
       request(server)
         .get(`/api/posts/${second.slug}`)
         .expect(200)
-        .then(res =>
+        .then((res) =>
           expect(res.body).toEqual({
             ...second,
             previous: third.slug,
-            next: first.slug
+            next: first.slug,
           })
         ),
       request(server)
         .get(`/api/posts/${third.slug}`)
         .expect(200)
-        .then(res =>
+        .then((res) =>
           expect(res.body).toEqual({
             ...third,
-            next: second.slug
+            next: second.slug,
           })
-        )
+        ),
     ]);
   });
 });
@@ -100,13 +98,9 @@ describe("GET /posts/:slug", () => {
 
   test("post can be fetched by slug", () => {
     const post = posts[0];
-    return request(server)
-      .get(`/posts/${post.slug}`)
-      .expect(200);
+    return request(server).get(`/posts/${post.slug}`).expect(200);
   });
 
   test("404 response returned for non-existent post", () =>
-    request(server)
-      .get("/posts/my-fourth-post")
-      .expect(404));
+    request(server).get("/posts/my-fourth-post").expect(404));
 });

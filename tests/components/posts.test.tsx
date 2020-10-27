@@ -32,7 +32,7 @@ describe("<Posts />", () => {
       summary,
       created: 1523401200000,
       tags: ["Algorithms", "Java"],
-      wordCount
+      wordCount,
     },
     {
       title: "My second post",
@@ -40,8 +40,8 @@ describe("<Posts />", () => {
       summary,
       created: 1523487600000,
       tags: ["Java"],
-      wordCount
-    }
+      wordCount,
+    },
   ];
 
   describe("<Posts /> on server", () => {

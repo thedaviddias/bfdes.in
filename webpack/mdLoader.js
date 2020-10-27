@@ -22,7 +22,7 @@ function countWords(tree) {
     .reduce((count, childCount) => count + childCount, 0);
 }
 
-module.exports = function(contents) {
+module.exports = function (contents) {
   let file = vfile({ contents });
   matter(file, { strip: true });
   // Extract metadata
@@ -54,6 +54,6 @@ module.exports = function(contents) {
     tags,
     wordCount,
     body,
-    created: created.getTime()
+    created: created.getTime(),
   })}`;
 };

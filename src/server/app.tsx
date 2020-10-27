@@ -9,7 +9,7 @@ import { RequestListener } from "http";
 import DB from "shared/db";
 import router from "./router";
 
-export default function(posts: Post[], mode = "test"): RequestListener {
+export default function (posts: Post[], mode = "test"): RequestListener {
   const app = express();
 
   // Apply middleware stack:
@@ -46,8 +46,8 @@ export default function(posts: Post[], mode = "test"): RequestListener {
         : `${err.status}: ${err.message}`;
     res.json({
       error: {
-        message
-      }
+        message,
+      },
     });
   });
 

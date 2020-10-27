@@ -22,7 +22,7 @@ describe("<Date /> on server", () => {
       "September",
       "October",
       "November",
-      "December"
+      "December",
     ];
     const now = new global.Date();
 

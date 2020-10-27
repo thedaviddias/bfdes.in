@@ -5,7 +5,7 @@ module.exports = {
   setupFiles: ["<rootDir>/jest/setup.js"],
   transform: {
     "\\.(ts|tsx)$": "ts-jest",
-    "\\.(svg|jpg|png)$": "<rootDir>/jest/assetTransformer.js"
+    "\\.(svg|jpg|png)$": "<rootDir>/jest/assetTransformer.js",
   },
-  testRegex: "/tests/.*\\.(ts|tsx)$"
+  testRegex: "/tests/.*\\.(ts|tsx)$",
 };

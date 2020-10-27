@@ -30,7 +30,7 @@ describe("<PostOr404 />", () => {
     tags: ["Algorithms", "Java"],
     created: 1523401200000,
     previous: "my-first-post",
-    next: "my-third-post"
+    next: "my-third-post",
   };
 
   describe("<PostOr404 /> on server", () => {

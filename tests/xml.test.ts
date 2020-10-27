@@ -2,7 +2,7 @@ import { Attributes, node } from "server/xml";
 
 const attributes = new Attributes([
   ["key1", "value1"],
-  ["key2", "value2"]
+  ["key2", "value2"],
 ]);
 
 describe("Leaf.render", () => {
