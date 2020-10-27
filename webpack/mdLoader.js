@@ -46,7 +46,7 @@ module.exports = function (contents) {
     .use(remarkParse)
     .use(remarkMath)
     .use(retextCount)
-    .processSync(file).contents;
+    .processSync(file).result;
 
   return `module.exports = ${JSON.stringify({
     title,
