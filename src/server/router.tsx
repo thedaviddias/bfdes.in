@@ -18,7 +18,7 @@ const header = (initialData: Payload): string => {
     <title>bfdes.in</title>
     <link href=${Favicon} rel="icon">
     <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/highlight.js@9.16.0/styles/github.css" rel="stylesheet">
+    <link href="https://unpkg.com/highlight.js@10.3.1/styles/github.css" rel="stylesheet">
     <link href="https://unpkg.com/katex@0.12.0/dist/katex.min.css" rel="stylesheet">
     <link href="/static/styles/main.css" rel="stylesheet">
     <script src='/static/javascripts/bundle.js' defer></script>
