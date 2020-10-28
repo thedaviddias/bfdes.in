@@ -74,7 +74,7 @@ export class Branch implements Tree {
 export function node(
   name: string,
   content: string | NonEmptyArray<Tree> = "",
-  attributes: Attributes = new Attributes()
+  attributes: Attributes = Attributes.empty()
 ): Tree {
   if (Array.isArray(content)) {
     return new Branch(name, content, attributes);
