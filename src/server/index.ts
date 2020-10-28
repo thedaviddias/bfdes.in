@@ -1,6 +1,15 @@
 import * as http from "http";
 import app from "./app";
-import posts from "posts";
+import { parse } from "path";
+
+// Look for Markdown files in /posts non-recursively
+const context = require.context("/posts", false, /\.md$/);
+
+const posts = context.keys().map((filePath) => {
+  const slug = parse(filePath).name;
+  const post = context(filePath);
+  return { ...post, slug };
+});
 
 function normalizePort(val: number | string): number | string | boolean {
   const port = typeof val === "string" ? parseInt(val, 10) : val;

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Route, Switch } from "react-router-dom";
-import { About, NoMatch, Sidebar } from "../components/";
+import { About, NoMatch, Sidebar } from "../components";
 import * as Components from "../components";
 import { withSlug, withTag, withClient } from "../hocs";
 
