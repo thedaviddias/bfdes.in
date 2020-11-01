@@ -61,6 +61,6 @@ Run the server-side code using Node.js, and optionally configure a webserver to 
 
 ### Container
 
-Running `docker build .` builds a container image that wraps application code.
+Running `docker build .` builds a creates a container image that wraps the server and client bundles.
 
 GitHub Actions will also build an image for every release and code push to master.
