@@ -3,9 +3,12 @@ import * as React from "react";
 import { renderToNodeStream } from "react-dom/server";
 import { StaticRouter } from "react-router";
 
-import { App, Context } from "shared/containers";
+import * as Containers from "shared/containers";
+import { Context } from "shared/containers";
 import DB from "shared/db";
 import { Favicon } from "shared/images";
+import { withClient } from "shared/hocs";
+import { get } from "shared/http";
 import { node, Attributes } from "./xml";
 
 const header = (initialData: Payload): string => {
@@ -25,6 +28,8 @@ const header = (initialData: Payload): string => {
     <script>window.__INITIAL_DATA__ = ${JSON.stringify(initialData)}</script>
   `;
 };
+
+const App = withClient(Containers.App, get);
 
 export default function (db: DB): Router {
   const router = Router();

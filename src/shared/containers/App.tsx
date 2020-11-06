@@ -4,9 +4,13 @@ import { About, NoMatch, Sidebar } from "../components";
 import * as Components from "../components";
 import { withSlug, withTag, withClient } from "../hocs";
 
-const App: React.FC = () => {
-  const PostOr404 = withSlug(withClient(Components.PostOr404));
-  const Posts = withTag(withClient(Components.Posts));
+type Props = {
+  get<P>(url: string, signal: AbortSignal): Promise<P>;
+};
+
+const App: React.FC<Props> = ({ get }: Props) => {
+  const PostOr404 = withSlug(withClient(Components.PostOr404, get));
+  const Posts = withTag(withClient(Components.Posts, get));
   return (
     <>
       <Route path="/">
