@@ -31,7 +31,7 @@ const postStubs = posts.map(({ body, ...stub }) => stub);
 const server = app(posts, "test");
 
 describe("GET /api/posts", () => {
-  test("all posts returned", () =>
+  it("returns all posts", () =>
     request(server)
       .get("/api/posts")
       .expect(200)
@@ -41,7 +41,7 @@ describe("GET /api/posts", () => {
         return expect(actualPosts).toEqual(expectedPosts);
       }));
 
-  test("posts filtered by tag", () => {
+  it("filters posts by tag", () => {
     const tag = "Algorithms";
     const taggedPosts = postStubs.filter((p) => p.tags.includes(tag));
     return request(server)
@@ -54,7 +54,7 @@ describe("GET /api/posts", () => {
       });
   });
 
-  test("posts returned in reverse chronological order", () => {
+  it("returns posts in reverse chronological order", () => {
     const orderedPosts = postStubs.sort((p, q) => q.created - p.created);
     return request(server)
       .get("/api/posts")
@@ -68,9 +68,9 @@ describe("GET /posts", () => {
     global.__isBrowser__ = false;
   });
 
-  test("all posts returned", () => request(server).get("/posts").expect(200));
+  it("returns all posts", () => request(server).get("/posts").expect(200));
 
-  test("root request serves same content as /posts", () =>
+  it("serves same content as root request", () =>
     request(server)
       .get("/")
       .then((res) =>
@@ -79,7 +79,7 @@ describe("GET /posts", () => {
           .then((res2) => expect(res.text).toEqual(res2.text))
       ));
 
-  test("posts filtered by tag", () => {
+  it("filters posts by tag", () => {
     const tag = "Algorithms";
     const taggedPosts = posts.filter((p) => p.tags.includes(tag));
     return request(server)

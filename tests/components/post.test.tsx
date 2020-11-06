@@ -53,7 +53,7 @@ describe("<PostOr404 />", () => {
       global.__isBrowser__ = false;
     });
 
-    it("displays post", () => {
+    it("renders post", () => {
       act(() => {
         render(
           <MemoryRouter>
@@ -73,7 +73,7 @@ describe("<PostOr404 />", () => {
       global.__isBrowser__ = true;
     });
 
-    it("displays post", async () => {
+    it("renders post", async () => {
       const mockPromise = Promise.resolve(post);
       const get = jest.fn(() => mockPromise);
 
@@ -89,7 +89,7 @@ describe("<PostOr404 />", () => {
       expect(container.querySelectorAll(".post")).toHaveLength(1);
     });
 
-    it("displays <NoMatch /> when post does not exist", async () => {
+    it("renders <NoMatch /> when post does not exist", async () => {
       const err = new RequestError(404, "404: No post with that slug");
       const mockPromise = Promise.reject(err);
       const get = jest.fn(() => mockPromise);
@@ -122,7 +122,7 @@ describe("<PostOr404 />", () => {
       expect(get).toHaveBeenCalledWith(`/api/posts/${slug}`, expect.anything());
     });
 
-    it("displays error message for failed request", async () => {
+    it("renders error message for failed request", async () => {
       const mockPromise = Promise.reject(new Error());
       const get = jest.fn(() => mockPromise);
 

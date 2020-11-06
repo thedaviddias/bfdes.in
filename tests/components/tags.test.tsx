@@ -4,20 +4,20 @@ import { act } from "react-dom/test-utils";
 import { MemoryRouter } from "react-router-dom";
 import Tags from "src/shared/components/Tags";
 
+let container: HTMLDivElement = null;
+
+beforeEach(() => {
+  container = document.createElement("div");
+  document.body.appendChild(container);
+});
+
+afterEach(() => {
+  unmountComponentAtNode(container);
+  container.remove();
+  container = null;
+});
+
 describe("<Tags />", () => {
-  let container: HTMLDivElement = null;
-
-  beforeEach(() => {
-    container = document.createElement("div");
-    document.body.appendChild(container);
-  });
-
-  afterEach(() => {
-    unmountComponentAtNode(container);
-    container.remove();
-    container = null;
-  });
-
   it("renders empty span for a post with no tags", () => {
     // Edge case
     act(() => {
@@ -57,8 +57,10 @@ describe("<Tags />", () => {
     });
     expect(container.querySelectorAll("a")).toHaveLength(tags.length);
   });
+});
 
-  test("<Tag /> navigates to correct route when clicked", () => {
+describe("<Tag />", () => {
+  it("navigates to correct route when clicked", () => {
     const tags = ["Algorithms", "Python"];
 
     act(() => {

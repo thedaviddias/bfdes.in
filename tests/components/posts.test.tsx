@@ -63,7 +63,7 @@ describe("<Posts />", () => {
       global.__isBrowser__ = false;
     });
 
-    it("displays posts", () => {
+    it("renders posts", () => {
       act(() => {
         render(
           <MemoryRouter>
@@ -97,7 +97,7 @@ describe("<Posts />", () => {
       global.__isBrowser__ = true;
     });
 
-    it("displays posts", async () => {
+    it("renders posts", async () => {
       const mockPromise = Promise.resolve(posts);
       const get = jest.fn(() => mockPromise);
 
@@ -128,7 +128,7 @@ describe("<Posts />", () => {
       expect(container.querySelectorAll(".error")).toHaveLength(1);
     });
 
-    it("fetches posts with the correct tag", async () => {
+    it("renders posts with the correct tag", async () => {
       const mockPromise = Promise.resolve(posts);
       const get = jest.fn(() => mockPromise);
       const tag = "Algorithms";
@@ -148,7 +148,7 @@ describe("<Posts />", () => {
       );
     });
 
-    it("displays error message for failed request", async () => {
+    it("renders error message for failed request", async () => {
       const mockPromise = Promise.reject(new RequestError(500, "Server Error"));
       const get = jest.fn(() => mockPromise);
 
