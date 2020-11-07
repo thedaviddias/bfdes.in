@@ -1,4 +1,4 @@
-name: Build
+name: Workflow
 on: push
 env:
   IMAGE_NAME: blog
