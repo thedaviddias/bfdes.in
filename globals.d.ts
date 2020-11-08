@@ -16,7 +16,7 @@ declare interface Post extends PostStub {
 
 declare type Payload = Post | PostStub[];
 
-// Allows image import in TypeScipt
+// Allows image import in TypeScript
 declare module "*.png" {
   const content: string;
   export default content;
