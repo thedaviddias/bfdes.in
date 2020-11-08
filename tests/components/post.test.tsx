@@ -1,7 +1,7 @@
 import * as React from "react";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import { MemoryRouter, Route } from "react-router-dom";
 
 import { PostOr404 } from "shared/components";
 import { Context } from "shared/containers";
@@ -25,9 +25,9 @@ test("withSlug", () => {
   const WithSlug = withSlug(({ slug }) => <>{slug}</>);
   render(
     <MemoryRouter initialEntries={[`/posts/${slug}`]}>
-      <Route path="/posts/:slug">
-        <WithSlug />
-      </Route>
+      <Routes basename="posts">
+        <Route path=":slug" element={<WithSlug />} />
+      </Routes>
     </MemoryRouter>,
     container
   );

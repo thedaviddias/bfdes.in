@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as React from "react";
 import { renderToNodeStream } from "react-dom/server";
-import { StaticRouter } from "react-router";
+import { StaticRouter } from "react-router-dom/server";
 
 import { App } from "shared/containers";
 import { Context } from "shared/containers";
@@ -33,7 +33,7 @@ export default function (db: DB): Router {
   // GET /about
   router.get("/about", (req, res) => {
     const stream = renderToNodeStream(
-      <StaticRouter location={req.url} context={{}}>
+      <StaticRouter location={req.url}>
         <App />
       </StaticRouter>
     );

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 import { Posts } from "shared/components";
 import { Context } from "shared/containers";
@@ -25,9 +25,9 @@ test("withTag", () => {
   const WithTag = withTag(({ tag }) => <>{tag}</>);
   render(
     <MemoryRouter initialEntries={[`/posts?tag=${tag}`]}>
-      <Route path="/posts">
-        <WithTag />
-      </Route>
+      <Routes basename="posts">
+        <Route element={<WithTag />} />
+      </Routes>
     </MemoryRouter>,
     container
   );
