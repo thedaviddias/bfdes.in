@@ -27,7 +27,7 @@ const PostStub: React.FC<PostStub> = (props: PostStub) => {
 
 /*
 A tag may be supplied (by React Router) if the user has chosen to filter posts by tag.
-Additionally, if the component is server rendered, then we supply posts in advance ysing React's context API.
+Additionally, if the component is server rendered, then we supply posts in advance using React's context API.
 */
 type Props = {
   tag?: string;
