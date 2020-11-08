@@ -31,9 +31,7 @@ Additionally, if the component is server rendered, then we supply posts in advan
 */
 type Props = {
   tag?: string;
-  context?: {
-    data: PostStub[];
-  };
+  posts?: PostStub[];
   get(url: string, signal: AbortSignal): Promise<PostStub[]>;
 };
 
@@ -60,7 +58,7 @@ class Posts extends React.Component<Props, State> {
       posts = window.__INITIAL_DATA__ as PostStub[];
       delete window.__INITIAL_DATA__; // (1)
     } else {
-      posts = props.context.data;
+      posts = props.posts;
     }
 
     this.state = {
@@ -150,8 +148,8 @@ class Posts extends React.Component<Props, State> {
 }
 
 const Wrapped: React.FC<Props> = (props: Props) => {
-  const data = React.useContext(Context.Posts);
-  return <Posts {...props} context={{ data }} />;
+  const posts = React.useContext(Context.Posts);
+  return <Posts {...props} posts={posts} />;
 };
 
 export default Wrapped;
