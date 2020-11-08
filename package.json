@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build:dev": "webpack --watch --mode=development",
+    "build:dev": "webpack --watch --mode=development --devtool=source-map",
     "serve:dev": "nodemon --watch dist/server.js dist/server.js",
     "build:prod": "webpack --mode=production",
     "serve:prod": "node dist/server.js",
