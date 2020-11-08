@@ -6,6 +6,7 @@ import Date from "./Date";
 import Error from "./Error";
 import Spinner from "./Spinner";
 import Tags from "./Tags";
+import { get } from "shared/http";
 
 const PostStub: React.FC<PostStub> = (props: PostStub) => {
   const { title, slug, wordCount, created, tags } = props;
@@ -32,7 +33,6 @@ Additionally, if the component is server rendered, then we supply posts in advan
 type Props = {
   tag?: string;
   posts?: PostStub[];
-  get(url: string, signal: AbortSignal): Promise<PostStub[]>;
 };
 
 type State = {
@@ -134,8 +134,7 @@ class Posts extends React.Component<Props, State> {
   private fetchPosts(tag?: string): void {
     const url = `/api/posts${tag === undefined ? "" : `?tag=${tag}`}`;
     this.setState({ loading: true }, () =>
-      this.props
-        .get(url, this.controller.signal)
+      get<PostStub[]>(url, this.controller.signal)
         .then((posts) => this.setState({ posts, loading: false }))
         .catch((error) => {
           if (error.name !== "AbortError") {
