@@ -1,4 +1,4 @@
 "hooks": {
-  "pre-commit": "yarn lint && yarn format"
+  "pre-commit": "yarn format"
 }
   
