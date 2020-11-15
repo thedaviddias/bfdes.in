@@ -51,7 +51,7 @@ We can assert that these properties hold by verifying that they apply for arbitr
 
 ## Mergesort
 
-This implementation of mergesort is transcribed to Scala from [Algorithms](https://algs4.cs.princeton.edu/home) by Sedgewick and Wayne.
+This implementation of mergesort is transcribed to Scala from Algorithms I by Sedgewick and Wayne.
 
 It consists of two subroutines:
 
