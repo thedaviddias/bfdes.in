@@ -27,7 +27,7 @@ The goal is to enable the client to write Las Vegas variant in terms of the Mont
 
 The Rabin Karp algorithm attempts to find the target pattern by computing a rolling hash of successive substrings. In the Monte Carlo variant, we return the index that defines the first substring with a hash matching that of the pattern -- if one exists. Note that a hash collision can result in a false positive match.
 
-Here is a Python implementation of the Monte Carlo form of Rabin Karp as it appears in [Algorithms II](https://www.pearson.com/us/higher-education/program/Sedgewick-Algorithms-4th-Edition/PGM100869.html):
+Here is a Python implementation of the Monte Carlo form of Rabin Karp as it appears in the book Algorithms II:
 
 ```python
 def monte_carlo(pattern):
