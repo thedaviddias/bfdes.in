@@ -37,27 +37,20 @@ The responsibility for rendering the correct page is delegated to the `App` comp
 
 ```javascript
 const App = () => (
-  <React.Fragment>
-    <Route path="/">
-      <Sidebar />
-    </Route>
+  <>
+    <Route element={<Sidebar />} />
     <div id="content">
-      <Switch>
-        <Route path="/about">
-          <About />
+      <Routes>
+        <Route element={<Posts />} />
+        <Route path="about" element={<About />} />
+        <Route path="posts">
+          <Route element={<Posts />} />
+          <Route path=":slug" element={<PostOr404 />} />
         </Route>
-        <Route path="/posts/:slug">
-          <PostOr404 />
-        </Route>
-        <Route exact path={["/", "/posts"]}>
-          <Posts />
-        </Route>
-        <Route>
-          <NoMatch />
-        </Route>
-      </Switch>
+        <Route path="*" element={<NoMatch />} />
+      </Routes>
     </div>
-  </React.Fragment>
+  </>
 );
 ```
 
@@ -69,7 +62,7 @@ router.get("/posts/:slug", (req, res) => {
   const postOrNone = db.get(req.params.slug);
   // Provide data to `PostOr404` in `App` using the React Context API
   const stream = renderToNodeStream(
-    <StaticRouter location={req.url} context={{}}>
+    <StaticRouter location={req.url}>
       <Context.Post.Provider value={postOrNone}>
         <App />
       </Context.Post.Provider>
@@ -81,7 +74,7 @@ router.get("/posts/:slug", (req, res) => {
     `
       <!DOCTYPE html>
       <html lang="en">
-        <head>${header(data)}</head>
+        <head>${header(postOrNone)}</head>
         <body>
           <div id="root">
     `
