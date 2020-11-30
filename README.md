@@ -1,6 +1,6 @@
 # bfdes.in
 
-![Test](https://github.com/bfdes/bfdes.in/workflows/Build%20and%20Test/badge.svg)
+![Test](https://github.com/bfdes/bfdes.in/workflows/Test/badge.svg)
 [![Codecov](https://codecov.io/gh/bfdes/bfdes.in/branch/master/graph/badge.svg)](https://codecov.io/gh/bfdes/bfdes.in)
 
 Source for my personal blog, built using React SSR and written in TypeScript.
