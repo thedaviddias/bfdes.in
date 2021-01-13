@@ -76,7 +76,7 @@ describe("<Posts />", () => {
       expect(container.querySelectorAll(".post")).toHaveLength(posts.length);
     });
 
-    it("asks the reader to return when therer are no posts", () => {
+    it("asks the user to return when there are no posts", () => {
       act(() => {
         render(
           <MemoryRouter>
